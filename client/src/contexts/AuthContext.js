@@ -12,13 +12,13 @@ export const AuthProvider = ({ children }) => {
   // call this function when you want to authenticate the user
   const login = async (data) => {
     setUser(data);
-    navigate("/courses");
+    navigate("/");
   };
 
   // call this function to sign out logged in user
   const logout = () => {
     setUser(null);
-    navigate("/profile", { replace: true });
+    navigate("/", { replace: true });
   };
 
   const isAuthenticated = () => {

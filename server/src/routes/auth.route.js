@@ -5,7 +5,7 @@ const User = require("../models/user.model")
 const bcrypt = require("bcrypt");
 
 route.post('/signup', async (req, res) => {
-  const {username, password, email} = req.body;
+  let {username, password, email} = req.body;
 
   if(!email || !password || !username){
     return res.status(400).send("Please pass all required fields");
@@ -58,12 +58,19 @@ route.post('/login', async (req, res) => {
 })
 
 const generateToken = (user)=>{
- return jwt.sign(
+ const token = jwt.sign(
   {
     username : user.username,
     email: user.email,
     userId :user._id
   }, "HelloWord", {expiresIn : '2h'})
+
+  return {
+    userId : user._id,
+    username: user.username,
+    email: user.email,
+    token
+  };
 }
 
 module.exports = route;

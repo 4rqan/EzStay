@@ -1,5 +1,7 @@
+import { isExpired } from "react-jwt";
+
 // import { isExpired } from "react-jwt";
-export const TOKEN_KEY = "etl_access_token";
+export const TOKEN_KEY = "ezstay_access_token";
 
 export const getToken = () => {
   let str = localStorage[TOKEN_KEY];
@@ -31,8 +33,7 @@ export const logout = () => {
 };
 
 export const isLoggedIn = () => {
-  // return !isExpired(getToken());
-  return true;
+  return !isExpired(getToken());
 };
 
 export const apiUrl = "http://localhost:3001/";

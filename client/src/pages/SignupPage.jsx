@@ -2,23 +2,31 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useAuth } from '../contexts/AuthContext';
-import { login } from '../services/auth.service';
+import { signup } from '../services/auth.service';
 
-const LoginPage =() => {
-    const [model, setModel] = useState({
-        username:'',
-        password:''
-    })
-
-    const auth = useAuth();
+const SignupPage =() => {
+  const [model, setModel] = useState({
+      email:'',   
+      username:'',
+      password:''
+  })
+const auth = useAuth();
 
     const submit = (e) =>{
         e.preventDefault();
-        login(model, auth.login)
+        signup(model, auth.login)
     }
 
   return (
     <Form onSubmit={submit}>
+
+     <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Email</Form.Label>
+        <Form.Control value={model.email} onChange={(e)=>{
+            setModel({...model, email: e.target.value})
+        }} type="email" placeholder="Enter Email" />
+      </Form.Group>
+
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Username</Form.Label>
         <Form.Control value={model.username} onChange={(e)=>{
@@ -32,14 +40,16 @@ const LoginPage =() => {
             setModel({...model, password: e.target.value})
         }} type="password" placeholder="Password" />
       </Form.Group>
+      
+
       <Form.Group className="mb-3" controlId="formBasicCheckbox">
         <Form.Check type="checkbox" label="Check me out" />
       </Form.Group>
       <Button variant="primary" type="submit">
-        Login
+        Signup
       </Button>
     </Form>
   );
-}
 
-export default LoginPage;
+      }
+export default SignupPage;
