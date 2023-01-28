@@ -1,78 +1,92 @@
-const express = require('express');
+const express = require("express");
 const route = express.Router();
-const jwt = require('jsonwebtoken')
-const User = require("../models/user.model")
+const jwt = require("jsonwebtoken");
+const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 
-route.post('/signup', async (req, res) => {
-  let {username, password, email} = req.body;
+route.post("/signup", async (req, res) => {
+  let { username, password, email, role } = req.body;
 
-  if(!email || !password || !username){
+  if (!email || !password || !username || !role) {
     return res.status(400).send("Please pass all required fields");
   }
+
+  if (!(role == "Landlord" || role == "Tenant"))
+    return res.status(400).send("Invalid user role");
+
   username = username.toLowerCase();
   email = email.toLowerCase();
 
- const usernameExists = await User.findOne({username});
- if(usernameExists){
-  return res.status(400).send("Username already exists");
- }
+  const usernameExists = await User.findOne({ username });
+  if (usernameExists) {
+    return res.status(400).send("Username already exists");
+  }
 
- const emailExists = await User.findOne({email});
- if(emailExists){
-  return res.status(400).send("Email already exists");
- }
+  const emailExists = await User.findOne({ email });
+  if (emailExists) {
+    return res.status(400).send("Email already exists");
+  }
 
- const encryptedPassword = await bcrypt.hash(password, 10);
+  const user = new User();
+  user.salt = await bcrypt.genSalt();
+  const encryptedPassword = await bcrypt.hash(password, user.salt);
+  user.password = encryptedPassword;
+  user.email = email;
+  user.username = username;
+  user.role = role;
+  if (role == "Tenant") user.status = "Active";
+  else user.status = "Inactive";
+  user.createdOn = new Date();
 
- const user = new User();
- user.password = encryptedPassword;
- user.email = email;
- user.username = username;
- user.role = "Customer";
- user.createdOn = (new Date()).toString()
+  await user.save();
+  res.send(generateToken(user));
+});
 
- await user.save();
- res.send(generateToken(user));
-})
+route.post("/login", async (req, res) => {
+  let { username, password } = req.body;
 
-route.post('/login', async (req, res) => {
-    let {username, password} = req.body
+  if (!password || !username) {
+    return res.status(400).send("Please pass all required fields");
+  }
+  username = username.toLowerCase();
+  const user = await User.findOne({ username });
 
-    if(!password || !username){
-      return res.status(400).send("Please pass all required fields");
-    }
-    username = username.toLowerCase();
-    const user = await User.findOne({username})
+  if (!user) {
+    return res.status(404).send("Invalid username");
+  }
 
-    if(!user){
-      return  res.status(404).send('Invalid username');
-    }
+  const validPassword = await bcrypt.compare(password, user.password);
+  if (!validPassword) {
+    return res.status(404).send("Incorrect password");
+  }
 
-    const validPassword = await bcrypt.compare(password, user.password);
-    if(!validPassword){
-        return  res.status(404).send('Incorrect password');
-      }
+  if (user.status == "Inactive")
+    return res
+      .status(401)
+      .send("Your account is inactive. Kindly contact adminstrator");
 
-    return res.send(generateToken(user))
-})
+  return res.send(generateToken(user));
+});
 
-const generateToken = (user)=>{
- const token = jwt.sign(
-  {
-    username : user.username,
-    email: user.email,
-    userId :user._id
-  }, "HelloWord", {expiresIn : '2h'})
+const generateToken = (user) => {
+  const token = jwt.sign(
+    {
+      username: user.username,
+      email: user.email,
+      userId: user._id,
+      role: user.role,
+    },
+    process.env["JWT_SECRET"],
+    { expiresIn: "2h" }
+  );
 
   return {
-    userId : user._id,
+    userId: user._id,
     username: user.username,
     email: user.email,
-    token
+    token,
+    role: user.role,
   };
-}
+};
 
 module.exports = route;
-
-
