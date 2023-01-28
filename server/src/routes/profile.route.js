@@ -18,4 +18,8 @@ route.post("/profile", requireAuth, async (req, res) => {
   res.send(profile);
 });
 
+route.get("/profile", requireAuth, async (req, res) => {
+  const profile = await Profile.findOne({ user: req.user.userId });
+  res.send(profile);
+});
 module.exports = route;
