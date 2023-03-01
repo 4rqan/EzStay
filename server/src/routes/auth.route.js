@@ -3,9 +3,10 @@ const route = express.Router();
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
+const Profile = require("../models/profile.model");
 
 route.post("/signup", async (req, res) => {
-  let { username, password, email, role } = req.body;
+  let { username, password, email, role, fullname, contactNo } = req.body;
 
   if (!email || !password || !username || !role) {
     return res.status(400).send("Please pass all required fields");
@@ -39,6 +40,12 @@ route.post("/signup", async (req, res) => {
   user.createdOn = new Date();
 
   await user.save();
+
+  const profile = new Profile();
+  profile.fullname = fullname;
+  profile.contactNo = contactNo;
+  profile.user = user._id;
+  await profile.save();
   res.send(generateToken(user));
 });
 

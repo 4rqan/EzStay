@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
 const addressSchema = new mongoose.Schema({
-  address1: { type: String, required: true },
+  address1: { type: String },
   address2: String,
-  city: { type: String, required: true },
-  state: { type: String, required: true },
-  country: { type: String, required: true },
-  pincode: { type: String, required: true },
+  city: { type: String },
+  state: { type: String },
+  country: { type: String },
+  pincode: { type: String },
   landmark: String,
 });
 
