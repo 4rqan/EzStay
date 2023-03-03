@@ -1,8 +1,10 @@
-import { Link, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import UserListPage from "../pages/Admin/UserListPage";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import ProfilePage from "../pages/ProfilePage";
 import SignupPage from "../pages/SignupPage";
+import AdminRoute from "./Routes/AdminRoute";
 import PrivateRoute from "./Routes/PrivateRoute";
 import PublicRoute from "./Routes/PublicRoute";
 
@@ -42,6 +44,16 @@ const AppRouter = () => {
             </PrivateRoute>
           }
         />
+        {/* Admin Routes Start */}
+        <Route
+          path={"/admin/users"}
+          element={
+            <AdminRoute>
+              <UserListPage />
+            </AdminRoute>
+          }
+        />
+        {/* Admin Routes End */}
       </Routes>
     </>
   );
