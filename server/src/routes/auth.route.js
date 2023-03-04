@@ -35,8 +35,8 @@ route.post("/signup", async (req, res) => {
   user.email = email;
   user.username = username;
   user.role = role;
-  if (role == "Tenant") user.status = "Active";
-  else user.status = "Inactive";
+  user.status = "Active";
+  user.approvedLL = false;
   user.createdOn = new Date();
 
   await user.save();

@@ -6,6 +6,7 @@ const authRoutes = require("./routes/auth.route");
 const profileRoutes = require("./routes/profile.route");
 const userRoutes = require("./routes/user.route");
 
+app.use(express.static("public/uploads"));
 app.use(express.json());
 
 app.use("/api", authRoutes);

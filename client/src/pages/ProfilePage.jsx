@@ -1,7 +1,14 @@
-import { useEffect, useState } from "react";
-import { getProfile, updateProfile } from "../services/profile.service";
+import { useEffect, useRef, useState } from "react";
+import {
+  getProfile,
+  updateProfile,
+  uploadDp,
+} from "../services/profile.service";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Image from "react-bootstrap/Image";
+import { generateImagePath } from "../utils/utils";
+import "../css/profile-style.css";
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
@@ -28,6 +35,8 @@ const ProfilePage = () => {
     getProfile(setProfile);
   }, []);
 
+  const inputRef = useRef(null);
+
   const submit = (e) => {
     e.preventDefault();
     updateProfile(profile);
@@ -35,6 +44,38 @@ const ProfilePage = () => {
 
   return (
     <div>
+      <div className="mb-5 row justify-content-center">
+        <div className="col-md-3">
+          <Image
+            className="img"
+            roundedCircle={true}
+            src={generateImagePath(profile.dpPath)}
+          />
+          <div>
+            <input
+              style={{ display: "none" }}
+              ref={inputRef}
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                uploadDp(file, (path) => {
+                  setProfile({ ...profile, dpPath: path });
+                });
+              }}
+            />
+            <Button
+              style={{ position: "absolute", left: "27%" }}
+              variant="primary"
+              type="submit"
+              className="mt-2"
+              onClick={() => inputRef.current.click()}
+            >
+              Change
+            </Button>
+          </div>
+        </div>
+      </div>
       <Form onSubmit={submit}>
         <div className="row">
           <Form.Group className="mb-3 col-md-4">

@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   salt: String,
   role: { type: String },
   status: { type: String },
+  approvedLL: Boolean,
   createdOn: Date,
   modifiedBy: String,
   modifiedOn: Date,

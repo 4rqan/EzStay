@@ -14,3 +14,22 @@ export const updateProfile = (model) => {
     Swal.fire("Saved successfully;");
   });
 };
+
+export const uploadDp = (file, setImagePath) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  const config = {
+    headers: {
+      "content-type": "multipart/form-data",
+    },
+  };
+  axios
+    .post("/api/uploadDp", formData, config)
+    .then((response) => {
+      Swal.fire("Profile updated successfully!");
+      setImagePath(response.data);
+    })
+    .catch((error) => {
+      Swal.fire(error.response.data);
+    });
+};
