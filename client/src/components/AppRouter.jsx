@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import UserDetailsPage from "../pages/Admin/UserDetailsPage";
 import UserListPage from "../pages/Admin/UserListPage";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
@@ -50,6 +51,14 @@ const AppRouter = () => {
           element={
             <AdminRoute>
               <UserListPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path={"/admin/userdetails/:id"}
+          element={
+            <AdminRoute>
+              <UserDetailsPage />
             </AdminRoute>
           }
         />

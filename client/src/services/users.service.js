@@ -21,3 +21,9 @@ export const changeApprovedStatus = (data, cb) => {
     Swal.fire("Status changed successfully.");
   });
 };
+
+export const getUserDetails = (id, cb) => {
+  axios.get("/api/users/details/" + id).then(({ data }) => {
+    cb(data);
+  });
+};

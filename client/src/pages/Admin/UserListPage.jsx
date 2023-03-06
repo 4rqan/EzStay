@@ -8,6 +8,7 @@ import {
 } from "../../services/users.service";
 import Moment from "react-moment";
 import Button from "react-bootstrap/Button";
+import { Link } from "react-router-dom";
 
 const UserListPage = () => {
   const [users, setUsers] = useState([]);
@@ -37,7 +38,12 @@ const UserListPage = () => {
           {users.map((item) => {
             return (
               <tr key={item._id}>
-                <td>{item.fullname}</td>
+                <td>
+                  {" "}
+                  <Link to={"/admin/userdetails/" + item.user._id}>
+                    {item.fullname}
+                  </Link>
+                </td>
                 <td>
                   {item.user.email}, {item.user.username}
                 </td>

@@ -12,6 +12,14 @@ route.get("/users/list", adminRequireAuth, async (req, res) => {
 
   res.send(users);
 });
+route.get("/users/details/:id", adminRequireAuth, async (req, res) => {
+  const users = await Profile.findOne({ user: req.params.id }).populate({
+    path: "user",
+    select: ["email", "username", "status", "role", "approvedLL"],
+  });
+
+  res.send(users);
+});
 
 route.put("/users/status", adminRequireAuth, async (req, res) => {
   const { userId, status } = req.body;
