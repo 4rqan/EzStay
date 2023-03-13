@@ -25,6 +25,9 @@ const AdminLayout = ({ children }) => {
               </NavDropdown.Item>
               <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
             </NavDropdown>
+            <Nav.Link to="/admin/users" as={Link}>
+              Users
+            </Nav.Link>
           </Nav>
         </Container>
       </Navbar>

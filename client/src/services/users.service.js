@@ -1,8 +1,8 @@
 import Swal from "sweetalert2";
 import axios from "../utils/axios_client";
 
-export const getAllUsers = (cb) => {
-  axios.get("/api/users/list").then(({ data }) => {
+export const getAllUsers = (page, cb) => {
+  axios.get("/api/users/list", { params: { page } }).then(({ data }) => {
     cb(data);
     console.log(data);
   });

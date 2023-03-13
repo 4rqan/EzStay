@@ -1,6 +1,7 @@
 import Table from "react-bootstrap/Table";
 import Container from "react-bootstrap/Container";
 import { useEffect, useState } from "react";
+import Pagination from "react-bootstrap/Pagination";
 import {
   changeApprovedStatus,
   changeUserStatus,
@@ -11,12 +12,36 @@ import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 
 const UserListPage = () => {
-  const [users, setUsers] = useState([]);
+  const [data, setData] = useState({ users: [], total: 0 });
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    getAllUsers(setUsers);
-  }, []);
+    getAllUsers(currentPage, setData);
+  }, [currentPage]);
 
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const pageSize = 3;
+
+  const renderPaginationButtons = () => {
+    const buttons = [];
+    const pageCount = Math.ceil(data.total / pageSize);
+
+    for (let i = 1; i <= pageCount; i++) {
+      buttons.push(
+        <Pagination.Item
+          key={i}
+          active={i === currentPage}
+          onClick={() => handlePageClick(i)}
+        >
+          {i}
+        </Pagination.Item>
+      );
+    }
+    return buttons;
+  };
   return (
     <Container>
       <h3 className="text-center">Users</h3>
@@ -35,7 +60,7 @@ const UserListPage = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((item) => {
+          {data.users.map((item) => {
             return (
               <tr key={item._id}>
                 <td>
@@ -71,7 +96,7 @@ const UserListPage = () => {
                               : "Active",
                         },
                         () => {
-                          getAllUsers(setUsers);
+                          getAllUsers(setData);
                         }
                       );
                     }}
@@ -87,7 +112,7 @@ const UserListPage = () => {
                             approvedLL: !item.user.approvedLL,
                           },
                           () => {
-                            getAllUsers(setUsers);
+                            getAllUsers(setData);
                           }
                         );
                       }}
@@ -101,6 +126,8 @@ const UserListPage = () => {
           })}
         </tbody>
       </Table>
+
+      <Pagination>{renderPaginationButtons()}</Pagination>
     </Container>
   );
 };

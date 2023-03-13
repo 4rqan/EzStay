@@ -6,7 +6,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { useAuth } from "../../contexts/AuthContext";
 
 const PrivateLayout = ({ children }) => {
-  const { logout } = useAuth();
+  const { logout, isAdmin } = useAuth();
   return (
     <>
       <Navbar bg="light" variant="light">
@@ -25,6 +25,11 @@ const PrivateLayout = ({ children }) => {
               </NavDropdown.Item>
               <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
             </NavDropdown>
+            {isAdmin() && (
+              <Nav.Link to="/admin/users" as={Link}>
+                Admin Panel
+              </Nav.Link>
+            )}
           </Nav>
         </Container>
       </Navbar>
