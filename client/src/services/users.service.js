@@ -1,11 +1,15 @@
 import Swal from "sweetalert2";
 import axios from "../utils/axios_client";
 
-export const getAllUsers = (page, cb) => {
-  axios.get("/api/users/list", { params: { page } }).then(({ data }) => {
-    cb(data);
-    console.log(data);
-  });
+export const getAllUsers = (page, sortOn, cb) => {
+  axios
+    .get("/api/users/list", {
+      params: { page, sortField: sortOn.field, sortOrder: sortOn.order },
+    })
+    .then(({ data }) => {
+      cb(data);
+      console.log(data);
+    });
 };
 
 export const changeUserStatus = (data, cb) => {

@@ -10,14 +10,22 @@ import {
 import Moment from "react-moment";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSort,
+  faSortUp,
+  faSortDown,
+} from "@fortawesome/free-solid-svg-icons";
 
 const UserListPage = () => {
   const [data, setData] = useState({ users: [], total: 0 });
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [sortOn, setSortOn] = useState({});
+
   useEffect(() => {
-    getAllUsers(currentPage, setData);
-  }, [currentPage]);
+    getAllUsers(currentPage, sortOn, setData);
+  }, [currentPage, sortOn]);
 
   const handlePageClick = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -42,13 +50,32 @@ const UserListPage = () => {
     }
     return buttons;
   };
+
   return (
     <Container>
       <h3 className="text-center">Users</h3>
       <Table striped bordered>
         <thead>
           <tr>
-            <th>Name</th>
+            <th>
+              Name{" "}
+              <FontAwesomeIcon
+                onClick={() => {
+                  let order =
+                    sortOn.field === "fullname" && sortOn.order === "asc"
+                      ? "desc"
+                      : "asc";
+                  setSortOn({ field: "fullname", order });
+                }}
+                icon={
+                  sortOn.field === "fullname"
+                    ? sortOn.order === "asc"
+                      ? faSortUp
+                      : faSortDown
+                    : faSort
+                }
+              />
+            </th>
             <th>Email</th>
             <th>Gender</th>
             <th>D.O.B</th>
