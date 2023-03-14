@@ -30,6 +30,10 @@ const PrivateLayout = ({ children }) => {
                 Admin Panel
               </Nav.Link>
             )}
+
+            <Nav.Link to="/landlord/addListings" as={Link}>
+              Listings
+            </Nav.Link>
           </Nav>
         </Container>
       </Navbar>

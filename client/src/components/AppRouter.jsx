@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import UserDetailsPage from "../pages/Admin/UserDetailsPage";
 import UserListPage from "../pages/Admin/UserListPage";
 import HomePage from "../pages/HomePage";
+import AddListingsPage from "../pages/Landlord/AddListingsPage";
 import LoginPage from "../pages/LoginPage";
 import ProfilePage from "../pages/ProfilePage";
 import SignupPage from "../pages/SignupPage";
@@ -63,6 +64,18 @@ const AppRouter = () => {
           }
         />
         {/* Admin Routes End */}
+
+        {/*Landlord Routes Starts  */}
+        <Route
+          path={"/landlord/addlistings"}
+          element={
+            <PrivateRoute>
+              <AddListingsPage />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Lanlord Routes Ends */}
       </Routes>
     </>
   );
