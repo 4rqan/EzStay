@@ -26,4 +26,9 @@ router.post("/rentallistings", requireAuth, async (req, res) => {
   }
 });
 
+router.get("/rentallistings", requireAuth, async (req, res) => {
+  const rentalListing = await RentalListing.find({ owner: req.user.userId });
+  res.json(rentalListing);
+});
+
 module.exports = router;

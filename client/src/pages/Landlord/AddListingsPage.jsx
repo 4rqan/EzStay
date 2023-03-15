@@ -31,7 +31,7 @@ const AddListingsPage = () => {
   return (
     <Form onSubmit={handleSubmit}>
       <div className="row">
-        <Form.Group className="mb-3 col-md-4" controlId="formTitle">
+        <Form.Group className="mb-3 col-md-6" controlId="formTitle">
           <Form.Label>Title</Form.Label>
           <Form.Control
             type="text"
@@ -41,7 +41,7 @@ const AddListingsPage = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3 col-md-4" controlId="formDescription">
+        <Form.Group className="mb-3 col-md-6" controlId="formDescription">
           <Form.Label>Description</Form.Label>
           <Form.Control
             as="textarea"
@@ -54,7 +54,7 @@ const AddListingsPage = () => {
       </div>
 
       <div className="row">
-        <Form.Group className="mb-3 col-md-4" controlId="formPropertyType">
+        <Form.Group className="mb-3 col-md-6" controlId="formPropertyType">
           <Form.Label>Property Type</Form.Label>
           <Form.Control
             type="text"
@@ -64,7 +64,7 @@ const AddListingsPage = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3 col-md-4" controlId="formLocation">
+        <Form.Group className="mb-3 col-md-6" controlId="formLocation">
           <Form.Label>Location</Form.Label>
           <Form.Control
             type="text"
@@ -76,7 +76,7 @@ const AddListingsPage = () => {
       </div>
 
       <div className="row">
-        <Form.Group className="mb-3 col-md-4" controlId="formPrice">
+        <Form.Group className="mb-3 col-md-6" controlId="formPrice">
           <Form.Label>Price</Form.Label>
           <Form.Control
             type="number"
@@ -86,7 +86,7 @@ const AddListingsPage = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3 col-md-4" controlId="formBedrooms">
+        <Form.Group className="mb-3 col-md-6" controlId="formBedrooms">
           <Form.Label>Bedrooms</Form.Label>
           <Form.Control
             type="text"
@@ -98,7 +98,7 @@ const AddListingsPage = () => {
       </div>
 
       <div className="row">
-        <Form.Group className="mb-3 col-md-4" controlId="bathrooms">
+        <Form.Group className="mb-3 col-md-6" controlId="bathrooms">
           <Form.Label>Bathrooms</Form.Label>
           <Form.Control
             type="text"
@@ -108,7 +108,7 @@ const AddListingsPage = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3 col-md-4" controlId="formAvailableDate">
+        <Form.Group className="mb-3 col-md-6" controlId="formAvailableDate">
           <Form.Label>Available Date</Form.Label>
           <Form.Control
             type="date"

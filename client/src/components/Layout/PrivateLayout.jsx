@@ -32,7 +32,11 @@ const PrivateLayout = ({ children }) => {
             )}
 
             <Nav.Link to="/landlord/addListings" as={Link}>
-              Listings
+              Add Listings
+            </Nav.Link>
+
+            <Nav.Link to="/landlord/rentalListings" as={Link}>
+              Rental Listings
             </Nav.Link>
           </Nav>
         </Container>

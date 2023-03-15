@@ -6,3 +6,10 @@ export const addListings = (model) => {
     Swal.fire("Saved successfully;");
   });
 };
+
+export const getListings = (cb) => {
+  axios.get("/api/rentallistings").then(({ data }) => {
+    cb(data);
+    console.log(data);
+  });
+};

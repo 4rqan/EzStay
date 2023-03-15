@@ -3,6 +3,7 @@ import UserDetailsPage from "../pages/Admin/UserDetailsPage";
 import UserListPage from "../pages/Admin/UserListPage";
 import HomePage from "../pages/HomePage";
 import AddListingsPage from "../pages/Landlord/AddListingsPage";
+import RentalListingsPage from "../pages/Landlord/RentalListingsPage";
 import LoginPage from "../pages/LoginPage";
 import ProfilePage from "../pages/ProfilePage";
 import SignupPage from "../pages/SignupPage";
@@ -71,6 +72,14 @@ const AppRouter = () => {
           element={
             <PrivateRoute>
               <AddListingsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={"/landlord/rentalListings"}
+          element={
+            <PrivateRoute>
+              <RentalListingsPage />
             </PrivateRoute>
           }
         />
