@@ -6,7 +6,6 @@ const authRoutes = require("./routes/auth.route");
 const profileRoutes = require("./routes/profile.route");
 const userRoutes = require("./routes/user.route");
 const rentalListingsRoute = require("./routes/rental-listings.route");
-const { addListings } = require("../../client/src/services/listings.service");
 
 app.use(express.static("public/uploads"));
 app.use(express.json());
