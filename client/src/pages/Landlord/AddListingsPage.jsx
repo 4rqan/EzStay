@@ -14,6 +14,12 @@ const AddListingsPage = () => {
     availableDate: "",
   });
 
+  const [images, setImages] = useState([]);
+
+  const handleImageChange = (event) => {
+    setImages(event.target.files);
+  };
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevState) => ({
@@ -25,7 +31,7 @@ const AddListingsPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // code to submit form data goes here
-    addListings(formData);
+    addListings(formData, images);
   };
 
   return (
@@ -115,6 +121,17 @@ const AddListingsPage = () => {
             name="availableDate"
             value={formData.availableDate}
             onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3 col-md-6" controlId="formAvailableDate">
+          <Form.Label>Images</Form.Label>
+          <Form.Control
+            type="file"
+            accept="image/*"
+            multiple
+            name="images"
+            onChange={handleImageChange}
           />
         </Form.Group>
       </div>

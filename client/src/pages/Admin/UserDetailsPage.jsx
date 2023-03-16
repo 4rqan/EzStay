@@ -10,9 +10,9 @@ import "../../css/profile-style.css";
 const UserDetailsPage = () => {
   let { id } = useParams();
 
-  const [profile, setUser] = useState({});
+  const [profile, setProfile] = useState({});
   useEffect(() => {
-    getUserDetails(id, setUser);
+    getUserDetails(id, setProfile);
   }, [id]);
 
   return (

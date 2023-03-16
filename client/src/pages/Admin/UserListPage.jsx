@@ -91,7 +91,6 @@ const UserListPage = () => {
             return (
               <tr key={item._id}>
                 <td>
-                  {" "}
                   <Link to={"/admin/userdetails/" + item.user._id}>
                     {item.fullname}
                   </Link>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Container from "react-bootstrap/Container";
 import { getListings } from "../../services/listings.service";
+import { Link } from "react-router-dom";
 
 const RentalListingsPage = () => {
   const [list, setList] = useState([]);
@@ -29,8 +30,12 @@ const RentalListingsPage = () => {
         <tbody>
           {list.map((item) => {
             return (
-              <tr key={item}>
-                <td>{item.title}</td>
+              <tr key={item._id}>
+                <td>
+                  <Link to={"/landlord/rentalListings/" + item._id}>
+                    {item.title}
+                  </Link>
+                </td>
                 <td>{item.description}</td>
                 <td>{item.propertyType}</td>
                 <td>{item.location}</td>
