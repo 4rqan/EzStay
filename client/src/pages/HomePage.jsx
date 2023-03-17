@@ -1,7 +1,14 @@
+import ListingsComponent from "../components/Home/ListingsComponent";
+
 const HomePage = () => {
   return (
-    <div>HomePage</div>
-  )
-}
+    <div>
+      HomePage
+      <div>
+        <ListingsComponent />
+      </div>
+    </div>
+  );
+};
 
-export default HomePage
+export default HomePage;

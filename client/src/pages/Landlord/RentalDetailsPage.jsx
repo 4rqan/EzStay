@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import { useParams } from "react-router-dom";
 import { getRentalDetails } from "../../services/listings.service";
+import { generateImagePath } from "../../utils/utils";
 
 const RentalDetailsPage = () => {
   let { id } = useParams();
@@ -9,7 +10,7 @@ const RentalDetailsPage = () => {
   const [details, setDetails] = useState({});
   useEffect(() => {
     getRentalDetails(id, setDetails);
-  });
+  }, []);
 
   return (
     <Container>
@@ -95,6 +96,19 @@ const RentalDetailsPage = () => {
             </span>
           </div>
         </div>
+      </div>
+
+      <div className="row">
+        {details.imageUrls?.map((item) => {
+          return (
+            <div className="col-md-4" key={item.imagePath}>
+              <img
+                src={generateImagePath("rentalimages/" + item.imagePath)}
+                style={{ width: "100%", height: "400px" }}
+              />
+            </div>
+          );
+        })}
       </div>
     </Container>
   );

@@ -8,6 +8,7 @@ const userRoutes = require("./routes/user.route");
 const rentalListingsRoute = require("./routes/rental-listings.route");
 
 app.use(express.static("public/uploads"));
+// app.use(express.static("public/uploads/rentalimages"));
 app.use(express.json());
 
 app.use("/api", authRoutes);

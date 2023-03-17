@@ -57,4 +57,21 @@ router.get("/rentallistings/:id", requireAuth, async (req, res) => {
   res.send(rentalListing);
 });
 
+router.get("/allListings", async (req, res) => {
+  const {
+    page = 1,
+    pageSize = 6,
+    sortField = "title",
+    sortOrder = "asc",
+  } = req.query;
+
+  const sortOptions = { [sortField]: sortOrder === "asc" ? 1 : -1 };
+  const skipDocuments = (page - 1) * pageSize;
+  const rentalListing = await RentalListing.find()
+    .sort(sortOptions)
+    .skip(skipDocuments)
+    .limit(pageSize);
+  res.json({ RentalListings: rentalListing });
+});
+
 module.exports = router;

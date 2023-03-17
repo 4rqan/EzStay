@@ -32,3 +32,19 @@ export const getRentalDetails = (id, cb) => {
     cb(data);
   });
 };
+
+export const getAllListings = (
+  cb,
+  page = 1,
+  pageSize = 6,
+  sortField = "title",
+  sortOrder = "asc"
+) => {
+  axios
+    .get("/api/allListings", {
+      params: { page, pageSize, sortField, sortOrder },
+    })
+    .then(({ data }) => {
+      cb(data);
+    });
+};
