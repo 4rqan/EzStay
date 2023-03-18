@@ -1,12 +1,15 @@
 import { Route, Routes } from "react-router-dom";
+import AboutPage from "../pages/AboutPage";
 import UserDetailsPage from "../pages/Admin/UserDetailsPage";
 import UserListPage from "../pages/Admin/UserListPage";
+import ContactPage from "../pages/ContactPage";
 import HomePage from "../pages/HomePage";
 import AddListingsPage from "../pages/Landlord/AddListingsPage";
 import RentalDetailsPage from "../pages/Landlord/RentalDetailsPage";
 import RentalListingsPage from "../pages/Landlord/RentalListingsPage";
 import LoginPage from "../pages/LoginPage";
 import ProfilePage from "../pages/ProfilePage";
+import PropertyDetailsPage from "../pages/PropertyDetailsPage";
 import SignupPage from "../pages/SignupPage";
 import AdminRoute from "./Routes/AdminRoute";
 import PrivateRoute from "./Routes/PrivateRoute";
@@ -40,6 +43,31 @@ const AppRouter = () => {
             </PublicRoute>
           }
         />
+        <Route
+          path={"/contact"}
+          element={
+            <PublicRoute>
+              <ContactPage />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path={"/about"}
+          element={
+            <PublicRoute>
+              <AboutPage />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path={"/propertydetails/:id"}
+          element={
+            <PublicRoute>
+              <PropertyDetailsPage />
+            </PublicRoute>
+          }
+        />
+
         <Route
           path={"/profile"}
           element={

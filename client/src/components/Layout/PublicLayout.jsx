@@ -5,44 +5,105 @@ import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { useAuth } from "../../contexts/AuthContext";
 
+import "../../vendor/bootstrap/css/bootstrap.min.css";
+import "../../assets/css/fontawesome.css";
+import "../../assets/css/templatemo-sixteen.css";
+import "../../assets/css/owl.css";
+
 const PublicLayout = ({ children }) => {
   const { logout, isAuthenticated } = useAuth();
   return (
     <>
-      <Navbar bg="light" variant="light">
-        <Container>
-          <Navbar.Brand to="/" as={Link}>
-            EzStay
-          </Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link to="/" as={Link}>
-              Home
-            </Nav.Link>
-            <NavDropdown title="Account" id="basic-nav-dropdown">
-              {!isAuthenticated() && (
-                <>
-                  <NavDropdown.Item to="/login" as={Link}>
-                    Login
-                  </NavDropdown.Item>
-                  <NavDropdown.Item to="/signup" as={Link}>
-                    Signup
-                  </NavDropdown.Item>
-                </>
-              )}
-              <NavDropdown.Divider />
-              {isAuthenticated() && (
-                <>
-                  <NavDropdown.Item to="/profile" as={Link}>
-                    Profile
-                  </NavDropdown.Item>
-                  <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
-                </>
-              )}
-            </NavDropdown>
-          </Nav>
-        </Container>
-      </Navbar>
-      {children}
+      <header className="">
+        <nav className="navbar navbar-expand-lg">
+          <div className="container">
+            <Link className="navbar-brand" to={"/"}>
+              <h2>
+                Ez <em>Stay</em>
+              </h2>
+            </Link>
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarResponsive"
+              aria-controls="navbarResponsive"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarResponsive">
+              <ul className="navbar-nav ml-auto">
+                <li className="nav-item active">
+                  <Link className="nav-link" to="/">
+                    Home
+                    <span className="sr-only">(current)</span>
+                  </Link>
+                </li>
+                {isAuthenticated() ? (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/profile">
+                        Profile
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" onClick={logout}>
+                        Logout
+                      </Link>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/login">
+                        Login
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/signup">
+                        Signup
+                      </Link>
+                    </li>
+                  </>
+                )}
+                <li className="nav-item">
+                  <Link className="nav-link" to="/about">
+                    About Us
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/contact">
+                    Contact Us
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <Container className="mt-3">{children}</Container>
+      <footer>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12">
+              <div className="inner-content">
+                <p>
+                  Copyright &copy; {new Date().getFullYear()} Ez Stay
+                  <a
+                    rel="nofollow noopener"
+                    href="https://templatemo.com"
+                    target="_blank"
+                  >
+                    TemplateMo
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </>
   );
 };

@@ -1,15 +1,18 @@
 const express = require("express");
-const multer = require("multer");
 const requireAuth = require("../middlewares/requireAuth");
 const router = express.Router();
 const RentalListing = require("../models/rental-listings.model");
-const path = require("path");
+const { uploadMultiple } = require("../utils/utils");
+
+const folderName = "rentalImages";
+const upload = uploadMultiple("files", folderName);
+
 router.post("/rentallistings", requireAuth, async (req, res) => {
   upload(req, res, async (er) => {
     if (!er) {
-      const filenames = req.files.map((file) => ({
-        imagePath: file.filename,
-        default: 0,
+      const filenames = req.files.map((file, i) => ({
+        imagePath: folderName + "/" + file.filename,
+        default: i == 0 ? 1 : 0,
       }));
       try {
         const rentalListing = new RentalListing({
@@ -35,25 +38,14 @@ router.post("/rentallistings", requireAuth, async (req, res) => {
   });
 });
 
-const storage = multer.diskStorage({
-  destination: "./public/uploads/rentalimages",
-  filename: function (req, file, cb) {
-    cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 1000000 },
-}).array("files");
-
 router.get("/rentallistings", requireAuth, async (req, res) => {
   const rentalListing = await RentalListing.find({ owner: req.user.userId });
   res.json(rentalListing);
 });
 
-router.get("/rentallistings/:id", requireAuth, async (req, res) => {
+router.get("/rentallistings/:id", async (req, res) => {
   const rentalListing = await RentalListing.findById(req.params.id);
+  console.log(rentalListing);
   res.send(rentalListing);
 });
 
