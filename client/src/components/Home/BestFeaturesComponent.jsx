@@ -9,43 +9,38 @@ const BestFeaturesComponent = () => {
           <div className="row">
             <div className="col-md-12">
               <div className="section-heading">
-                <h2>Ez Stay</h2>
+                <h2>EzStay</h2>
               </div>
             </div>
             <div className="col-md-6">
               <div className="left-content">
                 <h4>Find your perfect stay, effortlessly with EzStay.</h4>
                 <p>
-                  <a
-                    rel="nofollow"
-                    href="https://templatemo.com/tm-546-sixteen-clothing"
-                    target="_parent"
-                  >
-                    This template
-                  </a>{" "}
-                  is free to use for your business websites. However, you have
-                  no permission to redistribute the downloadable ZIP file on any
-                  template collection website.{" "}
-                  <a rel="nofollow" href="https://templatemo.com/contact">
-                    Contact us
-                  </a>{" "}
-                  for more info.
+                  Ezstay is a reliable house renting website that offers a sleek
+                  and intuitive user interface for renters to search and filter
+                  properties easily. With comprehensive property listings,
+                  renters can view detailed information and virtual tours before
+                  booking. Ezstay's secure payment processing and 24/7
+                  responsive customer support ensure hassle-free transactions.
+                  Furthermore, it verifies landlords to protect renters from
+                  scams and fraud, providing peace of mind when booking a
+                  property.
                 </p>
                 <ul className="featured-list">
                   <li>
-                    <a href="#">Lorem ipsum dolor sit amet</a>
+                    <a href="#">User-Friendly Interface</a>
                   </li>
                   <li>
-                    <a href="#">Consectetur an adipisicing elit</a>
+                    <a href="#">Comprehensive Property Listings</a>
                   </li>
                   <li>
-                    <a href="#">It aquecorporis nulla aspernatur</a>
+                    <a href="#">Secure Payment Processing</a>
                   </li>
                   <li>
-                    <a href="#">Corporis, omnis doloremque</a>
+                    <a href="#">Responsive Customer Support</a>
                   </li>
                   <li>
-                    <a href="#">Non cum id reprehenderit</a>
+                    <a href="#">Trustworthy</a>
                   </li>
                 </ul>
                 <a href="about.html" className="filled-button">

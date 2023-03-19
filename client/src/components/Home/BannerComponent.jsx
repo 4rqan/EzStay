@@ -4,7 +4,7 @@ const BannerComponent = () => {
       <div className="owl-banner owl-carousel">
         <div className="banner-item-01">
           <div className="text-content">
-            <h4>Ez Stay</h4>
+            <h4>EzStay</h4>
             <h2>Find your perfect stay, effortlessly with EzStay.</h2>
           </div>
         </div>

@@ -89,16 +89,7 @@ const PublicLayout = ({ children }) => {
           <div className="row">
             <div className="col-md-12">
               <div className="inner-content">
-                <p>
-                  Copyright &copy; {new Date().getFullYear()} Ez Stay
-                  <a
-                    rel="nofollow noopener"
-                    href="https://templatemo.com"
-                    target="_blank"
-                  >
-                    TemplateMo
-                  </a>
-                </p>
+                <p>Copyright &copy; {new Date().getFullYear()} Ez Stay</p>
               </div>
             </div>
           </div>
