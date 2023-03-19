@@ -39,7 +39,7 @@ const ListingsComponent = () => {
                         </Link>
                       </div>
                       <div className="col-md-3">
-                        <h6>${item.price}</h6>
+                        <h6>₹{item.price}</h6>
                       </div>
                     </div>
 
