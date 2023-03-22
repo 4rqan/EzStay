@@ -2,6 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import AboutPage from "../pages/AboutPage";
 import UserDetailsPage from "../pages/Admin/UserDetailsPage";
 import UserListPage from "../pages/Admin/UserListPage";
+import AllPropertiesPage from "../pages/AllPropertiesPage";
+import BookPropertyPage from "../pages/BookPropertyPage";
 import ContactPage from "../pages/ContactPage";
 import HomePage from "../pages/HomePage";
 import AddListingsPage from "../pages/Landlord/AddListingsPage";
@@ -65,6 +67,23 @@ const AppRouter = () => {
             <PublicRoute>
               <PropertyDetailsPage />
             </PublicRoute>
+          }
+        />
+        <Route
+          path={"/allproperties/"}
+          element={
+            <PublicRoute>
+              <AllPropertiesPage />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path={"/bookproperty/:id"}
+          element={
+            <PrivateRoute>
+              <BookPropertyPage />
+            </PrivateRoute>
           }
         />
 

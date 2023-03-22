@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getRentalDetails } from "../services/listings.service";
 import { generateImagePath } from "../utils/utils";
 
 const PropertyDetailsPage = () => {
   let { id } = useParams();
 
-  const [data, setData] = useState({});
+  const [data, setData] = useState();
   useEffect(() => {
     getRentalDetails(id, setData);
   }, [id]);
-  return (
+  return data ? (
     <div>
       <div className="container">
         <div className="row">
@@ -31,9 +31,9 @@ const PropertyDetailsPage = () => {
                 <li>{data.bathrooms} Bathrooms</li>
                 <li>{data.availableDate}</li>
               </ul>
-              <a href="about.html" className="filled-button">
+              <Link to={"/bookproperty/" + id} className="filled-button">
                 Book Now
-              </a>
+              </Link>
             </div>
           </div>
           <div className="col-md-6">
@@ -46,6 +46,8 @@ const PropertyDetailsPage = () => {
         </div>
       </div>
     </div>
+  ) : (
+    <div>Loading..............</div>
   );
 };
 
