@@ -12,9 +12,15 @@ export const AuthProvider = ({ children }) => {
   // call this function when you want to authenticate the user
   const login = async (data) => {
     setUser(data);
-    let path = "/profile";
-    if (data.role === "Admin") path = "/admin/users";
-    navigate(path);
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const returnUrl = searchParams.get("returnUrl");
+    if (returnUrl) navigate(returnUrl);
+    else {
+      let path = "/profile";
+      if (data.role === "Admin") path = "/admin/users";
+      navigate(path);
+    }
   };
 
   // call this function to sign out logged in user
@@ -28,9 +34,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   const isAdmin = () => {
+    return isInRole("Admin");
+  };
+
+  const isInRole = (role) => {
     if (!isAuthenticated()) return false;
     const payload = decodeToken(user?.token);
-    return payload.role === "Admin";
+    return payload.role === role;
   };
 
   const value = useMemo(
@@ -40,6 +50,7 @@ export const AuthProvider = ({ children }) => {
       login,
       logout,
       isAuthenticated,
+      isInRole,
     }),
     [user]
   );

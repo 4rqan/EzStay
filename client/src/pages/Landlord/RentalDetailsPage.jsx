@@ -103,7 +103,7 @@ const RentalDetailsPage = () => {
           return (
             <div className="col-md-4" key={item.imagePath}>
               <img
-                src={generateImagePath("rentalimages/" + item.imagePath)}
+                src={generateImagePath(item.imagePath)}
                 style={{ width: "100%", height: "400px" }}
               />
             </div>

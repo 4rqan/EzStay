@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import axios from "../utils/axios_client";
 
-export const addListings = (model, images) => {
+export const addListings = (model, images, navigate) => {
   const formdata = new FormData();
   formdata.append("title", model.title);
   formdata.append("description", model.description);
@@ -15,8 +15,9 @@ export const addListings = (model, images) => {
   for (let i = 0; i < images.length; i++) {
     formdata.append("files", images[i]);
   }
-  axios.post("/api/rentallistings", formdata).then(() => {
+  axios.post("/api/rentallistings", formdata).then(({ data }) => {
     Swal.fire("Saved successfully;");
+    navigate("/landlord/rentalListings/" + data._id);
   });
 };
 

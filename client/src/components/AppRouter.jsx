@@ -7,6 +7,8 @@ import BookPropertyPage from "../pages/BookPropertyPage";
 import ContactPage from "../pages/ContactPage";
 import HomePage from "../pages/HomePage";
 import AddListingsPage from "../pages/Landlord/AddListingsPage";
+import BookingDetailsPage from "../pages/Landlord/BookingDetailsPage";
+import LandlordBookingsPage from "../pages/Landlord/LandlordBookingsPage";
 import RentalDetailsPage from "../pages/Landlord/RentalDetailsPage";
 import RentalListingsPage from "../pages/Landlord/RentalListingsPage";
 import LoginPage from "../pages/LoginPage";
@@ -118,7 +120,7 @@ const AppRouter = () => {
         <Route
           path={"/landlord/addlistings"}
           element={
-            <PrivateRoute>
+            <PrivateRoute landLordRoute>
               <AddListingsPage />
             </PrivateRoute>
           }
@@ -126,7 +128,7 @@ const AppRouter = () => {
         <Route
           path={"/landlord/rentalListings"}
           element={
-            <PrivateRoute>
+            <PrivateRoute landLordRoute>
               <RentalListingsPage />
             </PrivateRoute>
           }
@@ -135,12 +137,29 @@ const AppRouter = () => {
         <Route
           path={"/landlord/rentalListings/:id"}
           element={
-            <PrivateRoute>
+            <PrivateRoute landLordRoute>
               <RentalDetailsPage />
             </PrivateRoute>
           }
         />
 
+        <Route
+          path={"/landlord/bookings"}
+          element={
+            <PrivateRoute landLordRoute>
+              <LandlordBookingsPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={"landlord/booking/:id"}
+          element={
+            <PrivateRoute landLordRoute>
+              <BookingDetailsPage />
+            </PrivateRoute>
+          }
+        />
         {/* Lanlord Routes Ends */}
       </Routes>
     </>

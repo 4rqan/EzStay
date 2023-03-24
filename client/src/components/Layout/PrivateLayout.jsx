@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 const PrivateLayout = ({ children }) => {
-  const { logout, isAdmin } = useAuth();
+  const { logout, isAdmin, isInRole } = useAuth();
   return (
     <>
       <header className="">
@@ -53,18 +53,26 @@ const PrivateLayout = ({ children }) => {
                     </li>
                   </>
                 )}
+                {isInRole("Landlord") && (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/landlord/addListings">
+                        Add Listings
+                      </Link>
+                    </li>
 
-                <li className="nav-item">
-                  <Link className="nav-link" to="/landlord/addListings">
-                    Add Listings
-                  </Link>
-                </li>
-
-                <li className="nav-item">
-                  <Link className="nav-link" to="/landlord/rentalListings">
-                    Rental Listings
-                  </Link>
-                </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/landlord/rentalListings">
+                        Rental Listings
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/landlord/bookings">
+                        Lanlord Bookings
+                      </Link>
+                    </li>
+                  </>
+                )}
                 <li className="nav-item">
                   <Link className="nav-link" onClick={logout}>
                     Logout

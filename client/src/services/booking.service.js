@@ -7,3 +7,18 @@ export const bookProperty = (model) => {
     Swal.fire("Booking Successfull...");
   });
 };
+
+//bookingsForLandlord
+
+export const bookingsForLandlord = (cb) => {
+  axios.get("/api/bookingsForLandlord").then(({ data }) => {
+    cb(data);
+    console.log(data);
+  });
+};
+
+export const getBookingDetails = (id, cb) => {
+  axios.get("/api/bookings/" + id).then(({ data }) => {
+    cb(data);
+  });
+};

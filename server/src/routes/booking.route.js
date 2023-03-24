@@ -25,4 +25,40 @@ router.post("/bookings", requireAuth, async (req, res) => {
   return res.send(booking);
 });
 
+router.get("/bookingsForLandlord", requireAuth, async (req, res) => {
+  if (req.user.role != "Landlord")
+    return res
+      .status(401)
+      .send("You don't have permission to access this feature");
+  Booking.find()
+    .populate({
+      path: "property",
+    })
+    .populate({
+      path: "bookedBy",
+      select: ["username", "email"],
+    })
+    .exec(function (err, bookings) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      const list = bookings.filter((x) => x.property.owner == req.user.userId);
+      return res.json(list);
+    });
+});
+
+router.get("/bookings/:id", requireAuth, async (req, res) => {
+  const booking = await Booking.findById(req.params.id)
+    .populate({
+      path: "bookedBy",
+      select: ["email"],
+    })
+    .populate({
+      path: "property",
+    });
+
+  res.send(booking);
+});
+
 module.exports = router;

@@ -8,6 +8,11 @@ const folderName = "rentalImages";
 const upload = uploadMultiple("files", folderName);
 
 router.post("/rentallistings", requireAuth, async (req, res) => {
+  if (req.user.role != "Landlord")
+    return res
+      .status(401)
+      .send("You don't have permission to access this feature");
+
   upload(req, res, async (er) => {
     if (!er) {
       const filenames = req.files.map((file, i) => ({
@@ -29,7 +34,7 @@ router.post("/rentallistings", requireAuth, async (req, res) => {
 
         rentalListing.owner = req.user.userId;
         await rentalListing.save();
-        res.json({ success: true });
+        res.json(rentalListing);
       } catch (err) {
         console.error(err);
         res.status(500).json({ success: false, error: err.message });
