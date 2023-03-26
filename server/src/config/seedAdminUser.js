@@ -20,6 +20,7 @@ exports.seedAdminUser = async () => {
 
   const profile = new Profile();
   profile.user = user._id;
+  profile.email = user.email;
   profile.fullname = "Furqan Nun Zahoor";
   profile.contactNo = "78787878787";
   profile.gender = "Male";

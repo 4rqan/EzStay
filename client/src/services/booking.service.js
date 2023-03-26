@@ -17,8 +17,28 @@ export const bookingsForLandlord = (cb) => {
   });
 };
 
+export const bookingsForUser = (cb) => {
+  axios.get("/api/bookingsForUser").then(({ data }) => {
+    cb(data);
+  });
+};
+
 export const getBookingDetails = (id, cb) => {
   axios.get("/api/bookings/" + id).then(({ data }) => {
+    cb(data);
+  });
+};
+
+export const addComment = (id, comment, cb) => {
+  axios.post("/api/addComment", { id, comment }).then(({ data }) => {
+    Swal.fire("Comment added.");
+    cb(data);
+  });
+};
+
+export const processRequest = (model, cb) => {
+  axios.post("/api/processRequest", model).then(({ data }) => {
+    Swal.fire("Status updated.");
     cb(data);
   });
 };

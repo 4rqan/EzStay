@@ -32,7 +32,7 @@ router.post("/rentallistings", requireAuth, async (req, res) => {
           availableDate: req.body.availableDate,
         });
 
-        rentalListing.owner = req.user.userId;
+        rentalListing.owner = req.user.profileId;
         await rentalListing.save();
         res.json(rentalListing);
       } catch (err) {

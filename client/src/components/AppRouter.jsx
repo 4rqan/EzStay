@@ -12,6 +12,8 @@ import LandlordBookingsPage from "../pages/Landlord/LandlordBookingsPage";
 import RentalDetailsPage from "../pages/Landlord/RentalDetailsPage";
 import RentalListingsPage from "../pages/Landlord/RentalListingsPage";
 import LoginPage from "../pages/LoginPage";
+import MyBookingDetailsPage from "../pages/MyBookingDetailsPage";
+import MyBookingsPage from "../pages/MyBookingsPage";
 import ProfilePage from "../pages/ProfilePage";
 import PropertyDetailsPage from "../pages/PropertyDetailsPage";
 import SignupPage from "../pages/SignupPage";
@@ -85,6 +87,22 @@ const AppRouter = () => {
           element={
             <PrivateRoute>
               <BookPropertyPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={"/mybookings"}
+          element={
+            <PrivateRoute>
+              <MyBookingsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={"/booking/:id"}
+          element={
+            <PrivateRoute>
+              <MyBookingDetailsPage />
             </PrivateRoute>
           }
         />

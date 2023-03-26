@@ -43,10 +43,11 @@ route.post("/signup", async (req, res) => {
 
   const profile = new Profile();
   profile.fullname = fullname;
+  profile.email = email;
   profile.contactNo = contactNo;
   profile.user = user._id;
   await profile.save();
-  res.send(generateToken(user));
+  res.send(generateToken(user, profile));
 });
 
 route.post("/login", async (req, res) => {
@@ -72,16 +73,19 @@ route.post("/login", async (req, res) => {
       .status(401)
       .send("Your account is inactive. Kindly contact adminstrator");
 
-  return res.send(generateToken(user));
+  const profile = await Profile.findOne({ user: user._id });
+
+  return res.send(generateToken(user, profile));
 });
 
-const generateToken = (user) => {
+const generateToken = (user, profile) => {
   const token = jwt.sign(
     {
       username: user.username,
       email: user.email,
       userId: user._id,
       role: user.role,
+      profileId: profile._id,
     },
     process.env["JWT_SECRET"],
     { expiresIn: "2h" }
@@ -93,6 +97,7 @@ const generateToken = (user) => {
     email: user.email,
     token,
     role: user.role,
+    profileId: profile._id,
   };
 };
 

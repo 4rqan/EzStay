@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 exports.connect = () => {
   mongoose
-    .connect("mongodb://127.0.0.1:27017/EzStayDB", {
+    .connect("mongodb://127.0.0.1:27017/EzStayDB2", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })

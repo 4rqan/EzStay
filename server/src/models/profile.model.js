@@ -16,6 +16,7 @@ const profileSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
+  email: String,
   fullname: { type: String, required: true },
   gender: { type: String, enum: ["Male", "Female"] },
   dob: Date,

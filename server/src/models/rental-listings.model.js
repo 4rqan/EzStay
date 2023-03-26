@@ -15,7 +15,11 @@ const rentalListingSchema = new mongoose.Schema({
     },
   ],
   availableDate: { type: Date, required: true },
-  owner: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "profile",
+    required: true,
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

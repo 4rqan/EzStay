@@ -7,16 +7,8 @@ import {
   ListGroupItem,
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import {
-  addComment,
-  getBookingDetails,
-  processRequest,
-} from "../../services/booking.service";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
-import Swal from "sweetalert2";
-
-const BookingDetailsPage = () => {
+import { addComment, getBookingDetails } from "../services/booking.service";
+const MyBookingDetailsPage = () => {
   let { id } = useParams();
 
   const [comment, setComment] = useState("");
@@ -32,36 +24,6 @@ const BookingDetailsPage = () => {
     addComment(id, comment, (data) => {
       setComment("");
       setDetails(data);
-    });
-  };
-
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const process = () => {
-    if (!model.status) {
-      Swal.fire({ title: "Error", text: "Status is required", icon: "error" });
-      return;
-    }
-
-    if (model.status == "confirmed") {
-      if (model.price == 0) {
-        Swal.fire({
-          title: "Error",
-          text: "Price is required",
-          icon: "error",
-        });
-        return;
-      }
-    } else {
-      model.price = 0;
-    }
-
-    processRequest(model, (data) => {
-      handleClose();
-      setDetails(data);
-      setModel({ status: "", price: 0, comment: "", id });
     });
   };
 
@@ -159,15 +121,7 @@ const BookingDetailsPage = () => {
           </div>
 
           <div className="mb-3">
-            <span className="ml-3" id="pbutton">
-              <Button
-                onClick={handleShow}
-                className="btn btn-primary"
-                role="button"
-              >
-                Process
-              </Button>
-            </span>
+            <span className="ml-3" id="pbutton"></span>
           </div>
         </div>
       </div>
@@ -206,60 +160,8 @@ const BookingDetailsPage = () => {
           </div>
         </Card.Body>
       </Card>
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>Status</Form.Label>
-            <Form.Select
-              value={model.status}
-              onChange={(e) => {
-                setModel({ ...model, status: e.target.value });
-              }}
-            >
-              <option value="">Select Status</option>
-              <option value="confirmed">Confirm</option>
-              <option value="rejected">Reject</option>
-            </Form.Select>
-          </Form.Group>
-          {model.status == "confirmed" && (
-            <Form.Group>
-              <Form.Label>Price</Form.Label>
-              <input
-                type="number"
-                class="form-control"
-                value={model.price}
-                onChange={(e) => {
-                  setModel({ ...model, price: e.target.value });
-                }}
-              />
-            </Form.Group>
-          )}
-          <Form.Group>
-            <Form.Label>Comment</Form.Label>
-            <textarea
-              class="form-control"
-              value={model.comment}
-              onChange={(e) => {
-                setModel({ ...model, comment: e.target.value });
-              }}
-            ></textarea>
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button type="button" variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button type="submit" variant="primary" onClick={process}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </Container>
   );
 };
 
-export default BookingDetailsPage;
+export default MyBookingDetailsPage;

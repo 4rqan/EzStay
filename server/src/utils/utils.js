@@ -2,6 +2,7 @@ const path = require("path");
 const multer = require("multer");
 const { promisify } = require("util");
 const fs = require("fs");
+const nodeMailer = require("nodemailer");
 
 const storage = (folderName) => {
   let destination = "./public/uploads";
@@ -30,4 +31,29 @@ const uploadSingle = (name, folderName) => {
 
 const deleteFileAsync = promisify(fs.unlink);
 
-module.exports = { uploadMultiple, uploadSingle, deleteFileAsync };
+const sendMail = (to, subject, html, text) => {
+  let transporter = nodeMailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env["MAIL_USERNAME"],
+      pass: process.env["MAIL_PASSWORD"],
+    },
+  });
+
+  const mailOptions = {
+    from: process.env["MAIL_FROM"],
+    to,
+    subject,
+    text,
+    html,
+  };
+
+  transporter
+    .sendMail(mailOptions)
+    .then(() => {})
+    .catch(() => {});
+};
+
+module.exports = { uploadMultiple, uploadSingle, deleteFileAsync, sendMail };

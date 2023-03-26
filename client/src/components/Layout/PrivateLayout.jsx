@@ -44,6 +44,13 @@ const PrivateLayout = ({ children }) => {
                     </Link>
                   </li>
                 </>
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/mybookings">
+                      My Bookings
+                    </Link>
+                  </li>
+                </>
                 {isAdmin() && (
                   <>
                     <li className="nav-item">

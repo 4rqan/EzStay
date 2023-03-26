@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const commentsSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: "profile",
     required: true,
   },
   comment: {
@@ -31,7 +31,7 @@ const bookingSchema = new Schema(
     },
     bookedBy: {
       type: Schema.Types.ObjectId,
-      ref: "user",
+      ref: "profile",
       required: true,
     },
     checkIn: {
@@ -63,7 +63,7 @@ const bookingSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "confirmed", "completed", "cancelled"],
+      enum: ["pending", "confirmed", "completed", "cancelled", "rejected"],
       default: "pending",
     },
     comments: [commentsSchema],
