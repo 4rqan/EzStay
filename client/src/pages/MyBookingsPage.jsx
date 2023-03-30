@@ -37,7 +37,7 @@ const MyBookingsPage = () => {
                 </div>
                 <div>
                   <span className="font-weight-bold">Owner:</span>{" "}
-                  {item.property?.owner.username}
+                  {item.property?.owner?.fullname}
                 </div>
                 <div>
                   <span className="font-weight-bold">Location:</span>{" "}

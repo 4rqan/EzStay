@@ -31,7 +31,7 @@ const LandlordBookingsPage = () => {
           {list.map((item) => {
             return (
               <tr key={item._id}>
-                <td>{item.bookedBy?.username}</td>
+                <td>{item.bookedBy?.fullname}</td>
                 <td>{item.property?.title}</td>
                 <td>
                   <Moment format="d-MMM-yyyy">{item.checkIn}</Moment>

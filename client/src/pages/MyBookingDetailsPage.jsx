@@ -8,6 +8,7 @@ import {
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { addComment, getBookingDetails } from "../services/booking.service";
+import { generateImagePath } from "../utils/utils";
 const MyBookingDetailsPage = () => {
   let { id } = useParams();
 
@@ -133,8 +134,14 @@ const MyBookingDetailsPage = () => {
               return (
                 <ListGroupItem key={item._id}>
                   <div className="row">
-                    <div className="col-md-2">Furqan</div>
-                    <div className="col-md-10">{item.comment}</div>
+                    <div className="col-md-3">
+                      <img
+                        style={{ height: "40px", width: "40px" }}
+                        src={generateImagePath(item.userId.dpPath)}
+                      />
+                      {item.userId.fullname}
+                    </div>
+                    <div className="col-md-9">{item.comment}</div>
                   </div>
                 </ListGroupItem>
               );

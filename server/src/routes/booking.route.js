@@ -36,7 +36,7 @@ router.get("/bookingsForLandlord", requireAuth, async (req, res) => {
     })
     .populate({
       path: "bookedBy",
-      select: ["username", "email"],
+      select: ["fullname", "email"],
     })
     .exec(function (err, bookings) {
       if (err) {
@@ -57,10 +57,11 @@ router.get("/bookingsForUser", requireAuth, async (req, res) => {
     path: "property",
     populate: {
       path: "owner",
-      select: ["username"],
+      select: ["fullname"],
     },
   });
 
+  console.log(bookings);
   res.send(bookings);
 });
 
@@ -68,11 +69,12 @@ router.get("/bookings/:id", requireAuth, async (req, res) => {
   const booking = await Booking.findById(req.params.id)
     .populate({
       path: "bookedBy",
-      select: ["email"],
+      select: ["email", "fullname"],
     })
     .populate({
       path: "property",
-    });
+    })
+    .populate({ path: "comments.userId", select: ["dpPath", "fullname"] });
 
   res.send(booking);
 });

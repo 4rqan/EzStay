@@ -21,36 +21,43 @@ const LoginPage = () => {
   };
 
   return (
-    <Form onSubmit={submit}>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Username</Form.Label>
-        <Form.Control
-          value={model.username}
-          onChange={(e) => {
-            setModel({ ...model, username: e.target.value });
-          }}
-          type="text"
-          placeholder="Enter username"
-        />
-      </Form.Group>
+    <Form
+      className="row justify-content-center align-items-center"
+      onSubmit={submit}
+    >
+      <div className="col-md-6 card p-5">
+        <h2 className=" text-center">Login</h2>
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          value={model.password}
-          onChange={(e) => {
-            setModel({ ...model, password: e.target.value });
-          }}
-          type="password"
-          placeholder="Password"
-        />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicCheckbox">
-        <Form.Check type="checkbox" label="Check me out" />
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Login
-      </Button>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            value={model.username}
+            onChange={(e) => {
+              setModel({ ...model, username: e.target.value });
+            }}
+            type="text"
+            placeholder="Enter username"
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            value={model.password}
+            onChange={(e) => {
+              setModel({ ...model, password: e.target.value });
+            }}
+            type="password"
+            placeholder="Password"
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Check type="checkbox" label="Check me out" />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Login
+        </Button>
+      </div>
     </Form>
   );
 };
