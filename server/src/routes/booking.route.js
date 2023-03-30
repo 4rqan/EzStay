@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Booking = require("../models/booking.model");
+const Property = require("../models/rental-listings.model");
 const requireAuth = require("../middlewares/requireAuth");
+const { sendMail } = require("../utils/utils");
 
 router.post("/bookings", requireAuth, async (req, res) => {
   const { propertyId, checkIn, checkOut, totalGuests, comment } = req.body;
@@ -9,6 +11,12 @@ router.post("/bookings", requireAuth, async (req, res) => {
   if (!propertyId) return res.status(400).send("propertyId is required");
   if (!checkIn) return res.status(400).send("checkIn is required");
   if (!checkOut) return res.status(400).send("checkOut is required");
+
+  const count = await Booking.countDocuments({
+    property: propertyId,
+    bookedBy: req.user.profileId,
+  });
+  if (count > 0) return res.status(400).send("Already booked");
 
   const booking = new Booking({
     bookedBy: req.user.profileId,
@@ -21,6 +29,22 @@ router.post("/bookings", requireAuth, async (req, res) => {
   if (comment) booking.comments = [{ comment, userId: req.user.profileId }];
 
   await booking.save();
+
+  const property = await Property.findOne({ _id: propertyId }).populate({
+    path: "owner",
+    select: ["fullname", "email"],
+  });
+  const replacements = {
+    "##LANDLORD##": property.owner.fullname,
+    "##USER##": req.user.fullname,
+    "##TITLE##": property.title,
+  };
+  sendMail(
+    property.owner.email,
+    "Booking Placed",
+    "booking-placed.html",
+    replacements
+  );
 
   return res.send(booking);
 });

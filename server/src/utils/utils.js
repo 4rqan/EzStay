@@ -31,29 +31,40 @@ const uploadSingle = (name, folderName) => {
 
 const deleteFileAsync = promisify(fs.unlink);
 
-const sendMail = (to, subject, html, text) => {
+const sendMail = (to, subject, templateName, replacements) => {
+  let html = fs.readFileSync("src/templates/" + templateName, "utf-8");
+
+  Object.keys(replacements).forEach((key) => {
+    html = html.replace(key, replacements[key]);
+  });
+
+  const auth = {
+    user: process.env["MAIL_USERNAME"],
+    pass: process.env["MAIL_PASSWORD"],
+  };
+
   let transporter = nodeMailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
+    host: process.env["SMTP_SERVER"],
+    port: process.env["PORT"],
     secure: true,
-    auth: {
-      user: process.env["MAIL_USERNAME"],
-      pass: process.env["MAIL_PASSWORD"],
-    },
+    auth,
   });
 
   const mailOptions = {
     from: process.env["MAIL_FROM"],
     to,
     subject,
-    text,
     html,
   };
+
+  console.log(mailOptions);
 
   transporter
     .sendMail(mailOptions)
     .then(() => {})
-    .catch(() => {});
+    .catch((e) => {
+      console.log(e);
+    });
 };
 
 module.exports = { uploadMultiple, uploadSingle, deleteFileAsync, sendMail };

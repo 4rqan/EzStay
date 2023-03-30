@@ -3,7 +3,7 @@ const requireAuth = require("../middlewares/requireAuth");
 const route = express.Router();
 const Profile = require("../models/profile.model");
 
-const { uploadSingle, deleteFileAsync } = require("../utils/utils");
+const { uploadSingle, deleteFileAsync, sendMail } = require("../utils/utils");
 
 route.post("/profile", requireAuth, async (req, res) => {
   const { fullname, dob, contactNo, gender, address } = req.body;
@@ -26,6 +26,7 @@ route.get("/profile", requireAuth, async (req, res) => {
     path: "user",
     select: ["email", "username"],
   });
+  // sendMail("wizshahid@gmail.com", "Hello World", "Hello");
   res.send(profile);
 });
 

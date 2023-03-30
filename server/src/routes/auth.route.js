@@ -86,6 +86,7 @@ const generateToken = (user, profile) => {
       userId: user._id,
       role: user.role,
       profileId: profile._id,
+      fullname: profile.fullname,
     },
     process.env["JWT_SECRET"],
     { expiresIn: "2h" }
