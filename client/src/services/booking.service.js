@@ -1,11 +1,12 @@
 import Swal from "sweetalert2";
 import axios from "../utils/axios_client";
 
-export const bookProperty = (model) => {
+export const bookProperty = (model, navigate) => {
   axios
     .post("/api/bookings", model)
     .then(({ data }) => {
       //navigate it to booking details
+      navigate("/booking/" + data._id);
       Swal.fire("Booking Placed...");
     })
     .catch(({ response }) => {

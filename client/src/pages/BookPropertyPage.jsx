@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getRentalDetails } from "../services/listings.service";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -16,6 +16,8 @@ const BookPropertyPage = () => {
     totalGuests: 1,
   });
 
+  const navigate = useNavigate();
+
   const [data, setData] = useState();
   useEffect(() => {
     getRentalDetails(id, setData);
@@ -23,8 +25,9 @@ const BookPropertyPage = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    bookProperty(model);
+    bookProperty(model, navigate);
   };
+
   return data ? (
     <>
       <div>

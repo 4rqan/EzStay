@@ -1,29 +1,30 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { login } from "../services/auth.service";
+import { useForm } from "react-hook-form";
 
 const LoginPage = () => {
   const auth = useAuth();
 
-  const [model, setModel] = useState({
-    username: "",
-    password: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   if (auth.isAuthenticated()) return <Navigate to="/" />;
 
-  const submit = (e) => {
-    e.preventDefault();
-    login(model, auth.login);
+  const submit = (data) => {
+    login(data, auth.login);
   };
 
   return (
     <Form
       className="row justify-content-center align-items-center"
-      onSubmit={submit}
+      onSubmit={handleSubmit(submit)}
     >
       <div className="col-md-6 card p-5">
         <h2 className=" text-center">Login</h2>
@@ -31,25 +32,25 @@ const LoginPage = () => {
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Username</Form.Label>
           <Form.Control
-            value={model.username}
-            onChange={(e) => {
-              setModel({ ...model, username: e.target.value });
-            }}
+            {...register("username", { required: true })}
             type="text"
             placeholder="Enter username"
           />
+          {errors.username && (
+            <span className="text-danger">Username is required</span>
+          )}
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
-            value={model.password}
-            onChange={(e) => {
-              setModel({ ...model, password: e.target.value });
-            }}
+            {...register("password", { required: true })}
             type="password"
             placeholder="Password"
           />
+          {errors.password && (
+            <span className="text-danger">Password is required</span>
+          )}
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Check me out" />
@@ -57,6 +58,7 @@ const LoginPage = () => {
         <Button variant="primary" type="submit">
           Login
         </Button>
+        <Link to="/signup">Create a new account</Link>
       </div>
     </Form>
   );

@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import axios from "../utils/axios_client";
 
-export const addListings = (model, images, navigate) => {
+export const addListings = (model, navigate) => {
   const formdata = new FormData();
   formdata.append("title", model.title);
   formdata.append("description", model.description);
@@ -12,8 +12,8 @@ export const addListings = (model, images, navigate) => {
   formdata.append("bathrooms", model.bathrooms);
   formdata.append("availableDate", model.availableDate);
 
-  for (let i = 0; i < images.length; i++) {
-    formdata.append("files", images[i]);
+  for (let i = 0; i < model.images.length; i++) {
+    formdata.append("files", model.images[i]);
   }
   axios.post("/api/rentallistings", formdata).then(({ data }) => {
     Swal.fire("Saved successfully;");

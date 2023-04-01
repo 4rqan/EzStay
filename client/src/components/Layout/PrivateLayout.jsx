@@ -1,3 +1,4 @@
+import { Dropdown } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 
@@ -36,21 +37,11 @@ const PrivateLayout = ({ children }) => {
                     <span className="sr-only">(current)</span>
                   </Link>
                 </li>
-
-                <>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/profile">
-                      Profile
-                    </Link>
-                  </li>
-                </>
-                <>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/mybookings">
-                      My Bookings
-                    </Link>
-                  </li>
-                </>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/mybookings">
+                    My Bookings
+                  </Link>
+                </li>
                 {isAdmin() && (
                   <>
                     <li className="nav-item">
@@ -62,29 +53,53 @@ const PrivateLayout = ({ children }) => {
                 )}
                 {isInRole("Landlord") && (
                   <>
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/landlord/addListings">
-                        Add Listings
-                      </Link>
-                    </li>
+                    <Dropdown>
+                      <Dropdown.Toggle
+                        className="nav-link"
+                        id="dropdown-basic"
+                        style={{
+                          color: "white",
+                          background: "transparent",
+                          border: "transparent",
+                        }}
+                      >
+                        Landlord
+                      </Dropdown.Toggle>
 
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/landlord/rentalListings">
-                        Rental Listings
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/landlord/bookings">
-                        Lanlord Bookings
-                      </Link>
-                    </li>
+                      <Dropdown.Menu>
+                        <Dropdown.Item as={Link} to="/landlord/addListings">
+                          Add Listings
+                        </Dropdown.Item>
+                        <Dropdown.Item to="/landlord/rentalListings" as={Link}>
+                          Rental Listings
+                        </Dropdown.Item>
+                        <Dropdown.Item to="/landlord/bookings" as={Link}>
+                          Lanlord Bookings
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
                   </>
                 )}
-                <li className="nav-item">
-                  <Link className="nav-link" onClick={logout}>
-                    Logout
-                  </Link>
-                </li>
+                <Dropdown>
+                  <Dropdown.Toggle
+                    className="nav-link"
+                    id="dropdown-basic"
+                    style={{
+                      color: "white",
+                      background: "transparent",
+                      border: "transparent",
+                    }}
+                  >
+                    Account
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item as={Link} to="/profile">
+                      Profile
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </ul>
             </div>
           </div>

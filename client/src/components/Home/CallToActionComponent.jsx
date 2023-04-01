@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const CallToActionComponent = () => {
   return (
@@ -21,9 +22,9 @@ const CallToActionComponent = () => {
                     </p>
                   </div>
                   <div className="col-md-4">
-                    <a href="#" className="filled-button">
+                    <Link to={"/allproperties"} className="filled-button">
                       Book Now
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>

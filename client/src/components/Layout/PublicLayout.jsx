@@ -9,6 +9,7 @@ import "../../vendor/bootstrap/css/bootstrap.min.css";
 import "../../assets/css/fontawesome.css";
 import "../../assets/css/templatemo-sixteen.css";
 import "../../assets/css/owl.css";
+import { Dropdown } from "react-bootstrap";
 
 const PublicLayout = ({ children }) => {
   const { logout, isAuthenticated } = useAuth();
@@ -43,16 +44,26 @@ const PublicLayout = ({ children }) => {
                 </li>
                 {isAuthenticated() ? (
                   <>
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/profile">
-                        Profile
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link className="nav-link" onClick={logout}>
-                        Logout
-                      </Link>
-                    </li>
+                    <Dropdown>
+                      <Dropdown.Toggle
+                        className="nav-link"
+                        id="dropdown-basic"
+                        style={{
+                          color: "white",
+                          background: "transparent",
+                          border: "transparent",
+                        }}
+                      >
+                        Account
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu>
+                        <Dropdown.Item as={Link} to="/profile">
+                          Profile
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
                   </>
                 ) : (
                   <>

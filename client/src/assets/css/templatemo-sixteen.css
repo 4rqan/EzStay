@@ -369,6 +369,25 @@ header .navbar {
   letter-spacing: 5px;
 }
 
+.carousel .caption h4 {
+  color: #f33f3f;
+  font-size: 22px;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.carousel .caption h2 {
+  color: #fff;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+}
+
+.carousel img {
+  height: 500px;
+}
+
 .owl-banner .owl-dots .owl-dot {
   border-radius: 3px;
 }
