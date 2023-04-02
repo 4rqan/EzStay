@@ -10,9 +10,15 @@ import "../../assets/css/fontawesome.css";
 import "../../assets/css/templatemo-sixteen.css";
 import "../../assets/css/owl.css";
 import { Dropdown } from "react-bootstrap";
+import PrivateLayout from "./PrivateLayout";
 
 const PublicLayout = ({ children }) => {
-  const { logout, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated()) {
+    return <PrivateLayout>{children}</PrivateLayout>;
+  }
+
   return (
     <>
       <header className="">
@@ -42,43 +48,18 @@ const PublicLayout = ({ children }) => {
                     <span className="sr-only">(current)</span>
                   </Link>
                 </li>
-                {isAuthenticated() ? (
-                  <>
-                    <Dropdown>
-                      <Dropdown.Toggle
-                        className="nav-link"
-                        id="dropdown-basic"
-                        style={{
-                          color: "white",
-                          background: "transparent",
-                          border: "transparent",
-                        }}
-                      >
-                        Account
-                      </Dropdown.Toggle>
-
-                      <Dropdown.Menu>
-                        <Dropdown.Item as={Link} to="/profile">
-                          Profile
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </>
-                ) : (
-                  <>
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/login">
-                        Login
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/signup">
-                        Signup
-                      </Link>
-                    </li>
-                  </>
-                )}
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/login">
+                      Login
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/signup">
+                      Signup
+                    </Link>
+                  </li>
+                </>
                 <li className="nav-item">
                   <Link className="nav-link" to="/about">
                     About Us

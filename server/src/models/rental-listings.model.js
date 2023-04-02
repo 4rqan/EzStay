@@ -1,13 +1,38 @@
 const mongoose = require("mongoose");
 
+const addressSchema = new mongoose.Schema({
+  city: { type: String, required: true },
+  state: { type: String, required: true },
+  pincode: { type: String, required: true },
+  landmark: String,
+  houseNo: String,
+});
+
 const rentalListingSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   propertyType: { type: String, required: true },
-  location: { type: String, required: true },
+  address: { type: addressSchema, required: true },
+
+  amenities: {
+    furnished: { type: Boolean, default: false },
+    parkingSpace: { type: Boolean, default: false },
+    electricityAvailable: { type: Boolean, default: false },
+    waterAvailable: { type: Boolean, default: false },
+    heating: { type: String, required: true },
+    cooling: { type: String, required: true },
+    bedrooms: { type: Number, required: true },
+    bathrooms: { type: Number, required: true },
+  },
+
+  contact: {
+    name: String,
+    email: String,
+    phone: String,
+  },
+
   price: { type: Number, required: true },
-  bedrooms: { type: Number, required: true },
-  bathrooms: { type: Number, required: true },
+
   imageUrls: [
     {
       imagePath: { type: String, required: true },

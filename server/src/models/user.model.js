@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
   createdOn: Date,
   modifiedBy: String,
   modifiedOn: Date,
+  resetLink: String,
 });
 
 module.exports = mongoose.model("user", userSchema);

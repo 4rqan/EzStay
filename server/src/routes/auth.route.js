@@ -4,6 +4,9 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const Profile = require("../models/profile.model");
+const requireAuth = require("../middlewares/requireAuth");
+const randomstring = require("randomstring");
+const { sendMail } = require("../utils/utils");
 
 route.post("/signup", async (req, res) => {
   let { username, password, email, role, fullname, contactNo } = req.body;
@@ -78,6 +81,24 @@ route.post("/login", async (req, res) => {
   return res.send(generateToken(user, profile));
 });
 
+route.put("/changepassword", requireAuth, async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  const user = await User.findById(req.user.userId);
+
+  const validPassword = await bcrypt.compare(oldPassword, user.password);
+  if (!validPassword) {
+    return res.status(404).send("Incorrect password");
+  }
+
+  console.log(newPassword);
+
+  user.salt = await bcrypt.genSalt();
+  const encryptedPassword = await bcrypt.hash(newPassword, user.salt);
+  user.password = encryptedPassword;
+  await user.save();
+  res.send("Password changed successfully");
+});
+
 const generateToken = (user, profile) => {
   const token = jwt.sign(
     {
@@ -101,5 +122,52 @@ const generateToken = (user, profile) => {
     profileId: profile._id,
   };
 };
+
+route.post("/forgotpassword", async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).send("Invalid email");
+
+  user.resetLink = randomstring.generate();
+  await user.save();
+
+  const link =
+    process.env["CLIENT_URL"] +
+    "/resetpassword?resetLink=" +
+    user.resetLink +
+    "&email=" +
+    email;
+
+  const replacements = {
+    "[MESSAGE1]":
+      "We have sent you this email in response to your request to reset your password on company name.",
+    "[MESSAGE2]": "To reset your password, please follow the link below:",
+    "[MESSAGE3]": `<a href="${link}">Reset Password</a>`,
+    "[MESSAGE4]": "",
+  };
+
+  sendMail(
+    email,
+    "Please reset your Password",
+    "general-template.html",
+    replacements
+  );
+
+  res.send("Kindly check your email");
+});
+
+route.post("/resetPassword", async (req, res) => {
+  const { email, resetLink, newPassword } = req.body;
+  if (!resetLink) return res.status(400).send("Invalid link");
+  const user = await User.findOne({ email, resetLink });
+
+  if (!user) return res.status(400).send("Invalid link");
+
+  user.resetLink = "";
+  user.salt = await bcrypt.genSalt();
+  user.password = await bcrypt.hash(newPassword, user.salt);
+  await user.save();
+  res.send("Password reset successfully.");
+});
 
 module.exports = route;

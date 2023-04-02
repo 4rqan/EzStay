@@ -97,6 +97,9 @@ const PrivateLayout = ({ children }) => {
                     <Dropdown.Item as={Link} to="/profile">
                       Profile
                     </Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/changepassword">
+                      Change Password
+                    </Dropdown.Item>
                     <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

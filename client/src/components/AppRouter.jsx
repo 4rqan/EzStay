@@ -4,7 +4,9 @@ import UserDetailsPage from "../pages/Admin/UserDetailsPage";
 import UserListPage from "../pages/Admin/UserListPage";
 import AllPropertiesPage from "../pages/AllPropertiesPage";
 import BookPropertyPage from "../pages/BookPropertyPage";
+import ChangePasswordPage from "../pages/ChangePasswordPage";
 import ContactPage from "../pages/ContactPage";
+import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import HomePage from "../pages/HomePage";
 import AddListingsPage from "../pages/Landlord/AddListingsPage";
 import BookingDetailsPage from "../pages/Landlord/BookingDetailsPage";
@@ -16,6 +18,7 @@ import MyBookingDetailsPage from "../pages/MyBookingDetailsPage";
 import MyBookingsPage from "../pages/MyBookingsPage";
 import ProfilePage from "../pages/ProfilePage";
 import PropertyDetailsPage from "../pages/PropertyDetailsPage";
+import ResetPasswordPage from "../pages/ResetPasswordPage";
 import SignupPage from "../pages/SignupPage";
 import AdminRoute from "./Routes/AdminRoute";
 import PrivateRoute from "./Routes/PrivateRoute";
@@ -115,6 +118,33 @@ const AppRouter = () => {
             </PrivateRoute>
           }
         />
+        <Route
+          path={"/changepassword"}
+          element={
+            <PrivateRoute>
+              <ChangePasswordPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={"/forgotpassword"}
+          element={
+            <PublicRoute>
+              <ForgotPasswordPage />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path={"/resetpassword"}
+          element={
+            <PublicRoute>
+              <ResetPasswordPage />
+            </PublicRoute>
+          }
+        />
+
         {/* Admin Routes Start */}
         <Route
           path={"/admin/users"}

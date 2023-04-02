@@ -19,18 +19,32 @@ router.post("/rentallistings", requireAuth, async (req, res) => {
         imagePath: folderName + "/" + file.filename,
         default: i == 0 ? 1 : 0,
       }));
+
       try {
-        const rentalListing = new RentalListing({
-          title: req.body.title,
-          description: req.body.description,
-          propertyType: req.body.propertyType,
-          location: req.body.location,
-          price: req.body.price,
-          bedrooms: req.body.bedrooms,
-          bathrooms: req.body.bathrooms,
-          imageUrls: filenames,
-          availableDate: req.body.availableDate,
-        });
+        const rentalListing = new RentalListing(
+          ({
+            title,
+            description,
+            propertyType,
+            price,
+            availableDate,
+            amenities: {
+              furnished,
+              parkingSpace,
+              electricityAvailable,
+              waterAvailable,
+              heating,
+              cooling,
+              bedrooms,
+              bathrooms,
+            },
+            address: { city, state, pincode, landmark, houseNo },
+            contact: { name, email, phone },
+          } = req.body)
+        );
+
+        console.log(rentalListing);
+        rentalListing.imageUrls = filenames;
 
         rentalListing.owner = req.user.profileId;
         await rentalListing.save();

@@ -59,6 +59,7 @@ const LoginPage = () => {
           Login
         </Button>
         <Link to="/signup">Create a new account</Link>
+        <Link to="/forgotpassword">Forgot Password?</Link>
       </div>
     </Form>
   );
