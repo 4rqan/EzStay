@@ -42,3 +42,26 @@ export const generateImagePath = (filePath) => {
   if (filePath) return apiUrl + filePath;
   return "/logo192.png";
 };
+
+export const objectToFormData = (obj) => {
+  const formData = new FormData();
+  for (const key in obj) {
+    if (Array.isArray(obj[key])) {
+      obj[key].forEach((value) => {
+        if (typeof value === "object" && value instanceof File) {
+          formData.append(key, value);
+        } else {
+          formData.append(key, value.toString());
+        }
+      });
+    } else if (typeof obj[key] === "object" && !(obj[key] instanceof File)) {
+      const nestedFormData = objectToFormData(obj[key]);
+      for (const nestedKey of nestedFormData.keys()) {
+        formData.append(`${key}[${nestedKey}]`, nestedFormData.get(nestedKey));
+      }
+    } else {
+      formData.append(key, obj[key].toString());
+    }
+  }
+  return formData;
+};

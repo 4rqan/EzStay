@@ -1,20 +1,9 @@
 import Swal from "sweetalert2";
 import axios from "../utils/axios_client";
+import { objectToFormData } from "../utils/utils";
 
 export const addListings = (model, navigate) => {
-  const formdata = new FormData();
-  formdata.append("title", model.title);
-  formdata.append("description", model.description);
-  formdata.append("propertyType", model.propertyType);
-  formdata.append("location", model.location);
-  formdata.append("price", model.price);
-  formdata.append("bedrooms", model.bedrooms);
-  formdata.append("bathrooms", model.bathrooms);
-  formdata.append("availableDate", model.availableDate);
-
-  for (let i = 0; i < model.images.length; i++) {
-    formdata.append("files", model.images[i]);
-  }
+  const formdata = objectToFormData(model);
   axios.post("/api/rentallistings", formdata).then(({ data }) => {
     Swal.fire("Saved successfully;");
     navigate("/landlord/rentalListings/" + data._id);

@@ -14,6 +14,7 @@ const AddListingsPage = () => {
   const navigate = useNavigate();
 
   const submit = (data) => {
+    console.log(data);
     addListings(data, navigate);
   };
 
@@ -34,45 +35,247 @@ const AddListingsPage = () => {
             )}
           </Form.Group>
 
-          <Form.Group className="mb-3 col-md-6" controlId="formAvailableDate">
+          <Form.Group className="mb-3 col-md-6" controlId="formImages">
             <Form.Label>Images</Form.Label>
             <Form.Control
               type="file"
               multiple={true}
-              {...register("images", { required: true })}
+              {...register("files", { required: true })}
               accept="image/*"
             />
-            {errors.images && (
+            {errors.files && (
               <span className="text-danger">Images are required</span>
             )}
           </Form.Group>
         </div>
-
         <div className="row">
           <Form.Group className="mb-3 col-md-6">
-            <Form.Label htmFor="disabledSelect">Property Type</Form.Label>
+            <Form.Label htmlFor="disabledSelect">Property Type</Form.Label>
             <Form.Select {...register("propertyType", { required: true })}>
               <option>AirBnb</option>
-              <option>Apartment(Rent)</option>
+              <option>Apartment</option>
+              <option>House</option>
+              <option>Building</option>
             </Form.Select>
             {errors.propertyType && (
               <span className="text-danger">property Type is required</span>
             )}
           </Form.Group>
-
-          <Form.Group className="mb-3 col-md-6" controlId="formLocation">
-            <Form.Label>Location</Form.Label>
+        </div>
+        <div className="row">
+          <Form.Group className="mb-3 col-md-2" controlId="formState">
+            <Form.Label>State</Form.Label>
             <Form.Control
               type="text"
-              name="location"
-              {...register("location", { required: true })}
+              name="state"
+              {...register("address.state", { required: true })}
             />
-            {errors.location && (
-              <span className="text-danger">Location is required</span>
+            {errors.address?.state && (
+              <span className="text-danger">State is required</span>
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3 col-md-2" controlId="formCity">
+            <Form.Label>City</Form.Label>
+            <Form.Control
+              type="text"
+              name="city"
+              {...register("address.city", { required: true })}
+            />
+            {errors.address?.city && (
+              <span className="text-danger">City is required</span>
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3 col-md-3" controlId="formLandmark">
+            <Form.Label>Landmark</Form.Label>
+            <Form.Control
+              type="text"
+              name="landmark"
+              {...register("address.landmark", { required: true })}
+            />
+            {errors.address?.landmark && (
+              <span className="text-danger">Landmark is required</span>
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3 col-md-2" controlId="formHouseNo">
+            <Form.Label>House No.</Form.Label>
+            <Form.Control
+              type="text"
+              name="houseNo"
+              {...register("address.houseNo", { required: true })}
+            />
+            {errors.address?.houseNo && (
+              <span className="text-danger">House No is required</span>
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3 col-md-2" controlId="formPincode">
+            <Form.Label>Pincode</Form.Label>
+            <Form.Control
+              type="text"
+              name="pincode"
+              {...register("address.pincode", { required: true })}
+            />
+            {errors.address?.pincode && (
+              <span className="text-danger">Pincode is required</span>
             )}
           </Form.Group>
         </div>
+        <div className="row">
+          <Form.Group className="mb-3" controlId="formFurnished">
+            <Form.Label>Furnished</Form.Label>
+            <Form.Check
+              inline
+              label="Yes"
+              value={true}
+              type="radio"
+              {...register("amenities.furnished", { required: true })}
+            />
 
+            <Form.Check
+              inline
+              label="No"
+              value={false}
+              type="radio"
+              {...register("amenities.furnished", { required: true })}
+            />
+
+            {errors.amenities?.furnished && (
+              <span className="text-danger">Furnished is required</span>
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formElectricityAvailable">
+            <Form.Label>Electricity Availability</Form.Label>
+            <Form.Check
+              inline
+              label="Yes"
+              value={true}
+              type="radio"
+              {...register("amenities.electricityAvailable", {
+                required: true,
+              })}
+            />
+            <Form.Check
+              inline
+              label="No"
+              value={false}
+              type="radio"
+              {...register("amenities.electricityAvailable", {
+                required: true,
+              })}
+            />
+
+            {errors.amenities?.electricityAvailable && (
+              <span className="text-danger">
+                Electricity Availability is required
+              </span>
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formWaterAvailability">
+            <Form.Label>Water Availabiity</Form.Label>
+            <Form.Check
+              inline
+              label="Yes"
+              value={true}
+              type="radio"
+              {...register("amenities.waterAvailable", {
+                required: true,
+              })}
+            />
+            <Form.Check
+              inline
+              label="No"
+              value={false}
+              type="radio"
+              {...register("amenities.waterAvailable", {
+                required: true,
+              })}
+            />
+            {errors.amenities?.waterAvailable && (
+              <span className="text-danger">
+                Water Availability is required
+              </span>
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formParkingSpace">
+            <Form.Label>Parking Space</Form.Label>
+            <Form.Check
+              inline
+              label="yes"
+              value={true}
+              type="radio"
+              {...register("amenities.parkingSpace", {
+                required: true,
+              })}
+            />
+            <Form.Check
+              inline
+              label="No"
+              value={false}
+              type="radio"
+              {...register("amenities.parkingSpace", {
+                required: true,
+              })}
+            />
+            {errors.amenities?.parkingSpace && (
+              <span className="text-danger">Parking Space is required</span>
+            )}
+          </Form.Group>
+        </div>
+        <div className="row">
+          <Form.Group className="mb-3 col-md-3">
+            <Form.Label htmlFor="disabledSelect">Heating</Form.Label>
+            <Form.Select {...register("amenities.heating", { required: true })}>
+              <option>Central Heating</option>
+              <option>Perimeter Heating</option>
+              <option>Direct Heating</option>
+            </Form.Select>
+            {errors.amenities?.heating && (
+              <span className="text-danger">Heating Sytem is required</span>
+            )}
+          </Form.Group>
+          <Form.Group className="mb-3 col-md-3">
+            <Form.Label htmlFor="disabledSelect">Cooling</Form.Label>
+            <Form.Select {...register("amenities.cooling", { required: true })}>
+              <option>Central Air Conditioner</option>
+              <option>Evaporative Air Conditioners</option>
+              <option>fans</option>
+            </Form.Select>
+            {errors.amenities?.cooling && (
+              <span className="text-danger">Cooling System is required</span>
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3 col-md-3" controlId="formBedrooms">
+            <Form.Label>Bedrooms</Form.Label>
+            <Form.Control
+              type="text"
+              name="bedrooms"
+              {...register("amenities.bedrooms", { required: true })}
+            />
+            {errors.amenities?.bedrooms && (
+              <span className="text-danger">Bedrooms is required</span>
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3 col-md-3" controlId="bathrooms">
+            <Form.Label>Bathrooms</Form.Label>
+            <Form.Control
+              type="text"
+              name="bathrooms"
+              {...register("amenities.bathrooms", { required: true })}
+            />
+            {errors.amenities?.bathrooms && (
+              <span className="text-danger">Bathrooms is required</span>
+            )}
+          </Form.Group>
+        </div>
+        <div className="row"></div>
         <div className="row">
           <Form.Group className="mb-3 col-md-6" controlId="formPrice">
             <Form.Label>Price</Form.Label>
@@ -83,32 +286,6 @@ const AddListingsPage = () => {
             />
             {errors.price && (
               <span className="text-danger">Price is required</span>
-            )}
-          </Form.Group>
-
-          <Form.Group className="mb-3 col-md-6" controlId="formBedrooms">
-            <Form.Label>Bedrooms</Form.Label>
-            <Form.Control
-              type="text"
-              name="bedrooms"
-              {...register("bedrooms", { required: true })}
-            />
-            {errors.bedrooms && (
-              <span className="text-danger">Bedrooms is required</span>
-            )}
-          </Form.Group>
-        </div>
-
-        <div className="row">
-          <Form.Group className="mb-3 col-md-6" controlId="bathrooms">
-            <Form.Label>Bathrooms</Form.Label>
-            <Form.Control
-              type="text"
-              name="bathrooms"
-              {...register("bathrooms", { required: true })}
-            />
-            {errors.bathrooms && (
-              <span className="text-danger">Bathrooms is required</span>
             )}
           </Form.Group>
 
@@ -124,6 +301,43 @@ const AddListingsPage = () => {
             )}
           </Form.Group>
 
+          <Form.Group className="mb-3 col-md-4" controlId="formName">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              type="text"
+              name="name"
+              {...register("contact.name", { required: true })}
+            />
+            {errors.contact?.name && (
+              <span className="text-danger">Name is required</span>
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3 col-md-4" controlId="formEmail">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              name="email"
+              {...register("contact.email", { required: true })}
+            />
+            {errors.contact?.email && (
+              <span className="text-danger">Email is required</span>
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3 col-md-4" controlId="formPhone">
+            <Form.Label>Phone</Form.Label>
+            <Form.Control
+              type="number"
+              name="phone"
+              {...register("contact.phone", { required: true })}
+            />
+            {errors.contact?.phone && (
+              <span className="text-danger">Phone is required</span>
+            )}
+          </Form.Group>
+        </div>
+        <div className="row">
           <Form.Group className="mb-3 col-md-6" controlId="formDescription">
             <Form.Label>Description</Form.Label>
             <Form.Control
@@ -137,7 +351,6 @@ const AddListingsPage = () => {
             )}
           </Form.Group>
         </div>
-
         <Button variant="primary" type="submit">
           Submit
         </Button>

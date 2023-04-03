@@ -26,10 +26,12 @@ const ListingsComponent = () => {
               <div key={item._id} className="col-md-4">
                 <div className="product-item">
                   <Link to={"/propertydetails/" + item._id}>
-                    <img
-                      src={generateImagePath(item.imageUrls[0].imagePath)}
-                      alt=""
-                    />
+                    {item.imageUrls?.length > 0 && (
+                      <img
+                        src={generateImagePath(item.imageUrls[0].imagePath)}
+                        alt=""
+                      />
+                    )}
                   </Link>
                   <div className="down-content">
                     <div className="row">
