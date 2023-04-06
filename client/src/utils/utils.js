@@ -46,15 +46,14 @@ export const generateImagePath = (filePath) => {
 export const objectToFormData = (obj) => {
   const formData = new FormData();
   for (const key in obj) {
-    if (Array.isArray(obj[key])) {
-      obj[key].forEach((value) => {
-        if (typeof value === "object" && value instanceof File) {
-          formData.append(key, value);
-        } else {
-          formData.append(key, value.toString());
-        }
-      });
-    } else if (typeof obj[key] === "object" && !(obj[key] instanceof File)) {
+    if (typeof obj[key] === "object" && obj[key] instanceof FileList) {
+      for (let i = 0; i < obj[key].length; i++) {
+        formData.append(key, obj[key][i]);
+      }
+    } else if (
+      typeof obj[key] === "object" &&
+      !(obj[key] instanceof FileList)
+    ) {
       const nestedFormData = objectToFormData(obj[key]);
       for (const nestedKey of nestedFormData.keys()) {
         formData.append(`${key}[${nestedKey}]`, nestedFormData.get(nestedKey));

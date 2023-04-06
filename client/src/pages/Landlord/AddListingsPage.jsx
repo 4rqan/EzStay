@@ -124,8 +124,9 @@ const AddListingsPage = () => {
           </Form.Group>
         </div>
         <div className="row">
-          <Form.Group className="mb-3" controlId="formFurnished">
+          <Form.Group className="col-md-6 mb-3" controlId="formFurnished">
             <Form.Label>Furnished</Form.Label>
+            {"  "}
             <Form.Check
               inline
               label="Yes"
@@ -133,7 +134,6 @@ const AddListingsPage = () => {
               type="radio"
               {...register("amenities.furnished", { required: true })}
             />
-
             <Form.Check
               inline
               label="No"
@@ -141,14 +141,17 @@ const AddListingsPage = () => {
               type="radio"
               {...register("amenities.furnished", { required: true })}
             />
-
             {errors.amenities?.furnished && (
               <span className="text-danger">Furnished is required</span>
             )}
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formElectricityAvailable">
+          <Form.Group
+            className="col-md-6 mb-3"
+            controlId="formElectricityAvailable"
+          >
             <Form.Label>Electricity Availability</Form.Label>
+            {"  "}
             <Form.Check
               inline
               label="Yes"
@@ -175,8 +178,12 @@ const AddListingsPage = () => {
             )}
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formWaterAvailability">
+          <Form.Group
+            className="col-md-6 mb-3"
+            controlId="formWaterAvailability"
+          >
             <Form.Label>Water Availabiity</Form.Label>
+            {"   "}
             <Form.Check
               inline
               label="Yes"
@@ -202,8 +209,9 @@ const AddListingsPage = () => {
             )}
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formParkingSpace">
+          <Form.Group className="col-md-6 mb-3" controlId="formParkingSpace">
             <Form.Label>Parking Space</Form.Label>
+            {"   "}
             <Form.Check
               inline
               label="yes"

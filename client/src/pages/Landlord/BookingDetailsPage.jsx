@@ -81,6 +81,14 @@ const BookingDetailsPage = () => {
               {details.bookedBy?.email}
             </span>
           </div>
+          <div className="mb-3">
+            <label className="lbl" htmlFor="bookedBy">
+              Booked By:
+            </label>
+            <span className="ml-3" id="bookedBy">
+              {details.bookedBy?.fullname}
+            </span>
+          </div>
 
           <div className="mb-3">
             <label className="lbl" htmlFor="title">
@@ -119,6 +127,22 @@ const BookingDetailsPage = () => {
               {details.property?.price}
             </span>
           </div>
+          <div className="mb-3">
+            <label className="lbl" htmlFor="totalPrice">
+              Total Price:
+            </label>
+            <span className="ml-3" id="paymentStatus">
+              {details.totalPrice}
+            </span>
+          </div>
+          <div className="mb-3">
+            <label className="lbl" htmlFor="paymentStatus">
+              Payment Status:
+            </label>
+            <span className="ml-3" id="paymentStatus">
+              {details.paymentStatus}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -133,22 +157,6 @@ const BookingDetailsPage = () => {
             </span>
           </div>
 
-          <div className="mb-3">
-            <label className="lbl" htmlFor="paymentStatus">
-              Payment Status:
-            </label>
-            <span className="ml-3" id="paymentStatus">
-              {details.paymentStatus}
-            </span>
-          </div>
-          <div className="mb-3">
-            <label className="lbl" htmlFor="totalPrice">
-              Total Price:
-            </label>
-            <span className="ml-3" id="paymentStatus">
-              {details.totalPrice}
-            </span>
-          </div>
           <div className="mb-3">
             <label className="lbl" htmlFor="status">
               Status:

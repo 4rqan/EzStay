@@ -37,16 +37,7 @@ const MyBookingDetailsPage = () => {
       <div className="row">
         <div className="col-md-6">
           <div className="mb-3">
-            <label className="lbl" htmlFor="bookedBy">
-              Booked By:
-            </label>
-            <span className="ml-3" id="bookedBy">
-              {details.bookedBy?.email}
-            </span>
-          </div>
-
-          <div className="mb-3">
-            <label className="lbl" htmlFor="title">
+            <label className="lbl font-weight-bold" htmlFor="title">
               Property Title:
             </label>
             <span className="ml-3" id="title">
@@ -55,61 +46,44 @@ const MyBookingDetailsPage = () => {
           </div>
 
           <div className="mb-3">
-            <label className="lbl" htmlFor="checkIn">
-              Check In Date:
+            <label className="lbl " htmlFor="checkIn">
+              Property Type:
             </label>
-            <span className="ml-3" id="checkIn">
-              {details.checkIn}
+            <span className="ml-3 " id="checkIn">
+              {details.property?.propertyType}
             </span>
           </div>
-        </div>
-
-        <div className="col-md-6">
-          <div className="mb-3">
-            <label className="lbl" htmlFor="checkOut">
-              Check Out Date:
-            </label>
-            <span className="ml-3" id="checkOut">
-              {details.checkOut}
-            </span>
-          </div>
-
-          <div className="mb-3">
-            <label className="lbl" htmlFor="price">
-              Price:
-            </label>
-            <span className="ml-3" id="price">
-              {details.property?.price}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div className="row">
-        <div className="col-md-6">
           <div className="mb-3">
             <label className="lbl" htmlFor="totalGuests">
-              Total Guests:
+              Furnished:
             </label>
             <span className="ml-3" id="totalGuests">
-              {details.totalGuests}
+              {details.property?.amenities?.furnished ? "Yes" : "No"}
             </span>
           </div>
 
           <div className="mb-3">
             <label className="lbl" htmlFor="paymentStatus">
-              Payment Status:
+              Electricity:
             </label>
             <span className="ml-3" id="paymentStatus">
-              {details.paymentStatus}
+              {details.property?.amenities?.electricityAvailable ? "Yes" : "No"}
             </span>
           </div>
           <div className="mb-3">
             <label className="lbl" htmlFor="totalPrice">
-              Total Price:
+              Water Supply:
             </label>
             <span className="ml-3" id="paymentStatus">
-              {details.totalPrice}
+              {details.property?.amenities?.waterAvailable ? "Yes" : "No"}
+            </span>
+          </div>
+          <div className="mb-3">
+            <label className="lbl" htmlFor="totalPrice">
+              Parking Space:
+            </label>
+            <span className="ml-3" id="paymentStatus">
+              {details.property?.amenities?.parkingSpace ? "Yes" : "No"}
             </span>
           </div>
           <div className="mb-3">
@@ -123,6 +97,82 @@ const MyBookingDetailsPage = () => {
 
           <div className="mb-3">
             <span className="ml-3" id="pbutton"></span>
+          </div>
+        </div>
+
+        <div className="col-md-6">
+          <div className="mb-3">
+            <label className="lbl " htmlFor="checkOut">
+              Bedrooms:
+            </label>
+            <span className="ml-3" id="checkOut">
+              {details.property?.amenities?.bedrooms}
+            </span>
+          </div>
+
+          <div className="mb-3">
+            <label className="lbl" htmlFor="price">
+              Bathrooms:
+            </label>
+            <span className="ml-3" id="price">
+              {details.property?.amenities?.bathrooms}
+            </span>
+          </div>
+          <div className="mb-3">
+            <label className="lbl" htmlFor="price">
+              Heating:
+            </label>
+            <span className="ml-3" id="price">
+              {details.property?.amenities?.heating}
+            </span>
+          </div>
+          <div className="mb-3">
+            <label className="lbl" htmlFor="price">
+              Cooling:
+            </label>
+            <span className="ml-3" id="price">
+              {details.property?.amenities?.cooling}
+            </span>
+          </div>
+          <div className="mb-3">
+            <label className="lbl" htmlFor="price">
+              Check-In Date:
+            </label>
+            <span className="ml-3" id="price">
+              {details.checkIn}
+            </span>
+          </div>
+          <div className="mb-3">
+            <label className="lbl" htmlFor="price">
+              Check-Out Date:
+            </label>
+            <span className="ml-3" id="price">
+              {details.checkOut}
+            </span>
+          </div>
+          <div className="mb-3">
+            <label className="lbl" htmlFor="price">
+              Total Guests:
+            </label>
+            <span className="ml-3" id="price">
+              {details.totalGuests}
+            </span>
+          </div>
+          <div className="mb-3">
+            <label className="lbl" htmlFor="price">
+              Price:
+            </label>
+            <span className="ml-3" id="price">
+              {details.property?.price}
+            </span>
+          </div>
+          <div className="mb-3">
+            <label className="lbl" htmlFor="price">
+              Total Price:
+            </label>
+            <span className="ml-3" id="price">
+              {details.totalPrice}
+            </span>
           </div>
         </div>
       </div>

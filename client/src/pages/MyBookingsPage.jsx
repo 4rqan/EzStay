@@ -1,9 +1,11 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Card, Table } from "react-bootstrap";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
 import { bookingsForUser } from "../services/booking.service";
 import { generateImagePath } from "../utils/utils";
+import { faBed } from "@fortawesome/free-solid-svg-icons";
 
 const MyBookingsPage = () => {
   const [list, setList] = useState([]);
@@ -41,7 +43,8 @@ const MyBookingsPage = () => {
                 </div>
                 <div>
                   <span className="font-weight-bold">Location:</span>{" "}
-                  {item.property?.location}
+                  {item.property?.address.city} ,{" "}
+                  {item.property?.address?.state}
                 </div>
                 <div>
                   <span className="font-weight-bold">Check In:</span>{" "}
@@ -53,11 +56,12 @@ const MyBookingsPage = () => {
                 </div>
               </div>
               <div className="col-md-4">
-                <div>
-                  {" "}
-                  <span className="font-weight-bold">BHK | WC:</span>{" "}
-                  {item.property?.bedrooms}|{item.property?.bathrooms}
-                </div>
+                {/* <div>
+                  <div>
+                    <FontAwesomeIcon style={{ color: "blue" }} icon={faBed} />{" "}
+                    {item.property?.amenities?.bedrooms}
+                  </div>
+                </div> */}
                 <div>
                   {" "}
                   <span className="font-weight-bold">Total Guests:</span>{" "}
