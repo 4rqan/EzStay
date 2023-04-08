@@ -10,17 +10,84 @@ export const addListings = (model, navigate) => {
   });
 };
 
+export const deleteListing = (id, cb) => {
+  axios
+    .delete("/api/rentallistings/" + id)
+    .then(({ data }) => {
+      Swal.fire("Deleted Successfully");
+      cb();
+    })
+    .catch(({ response }) => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: response.data,
+      });
+    });
+};
+
 export const getListings = (cb) => {
   axios.get("/api/rentallistings").then(({ data }) => {
     cb(data);
-    console.log(data);
   });
 };
 
-export const getRentalDetails = (id, cb) => {
+export const getRentalDetails = (id, cb, setDefaultValues) => {
   axios.get("/api/rentallistings/" + id).then(({ data }) => {
     cb(data);
+    setDefaultValues(data);
   });
+};
+
+export const updateListing = (model, cb) => {
+  axios
+    .put("/api/rentallistings", model)
+    .then(({ data }) => {
+      Swal.fire("Updated successfully");
+      cb(data);
+    })
+    .catch(({ response }) => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: response.data,
+      });
+    });
+};
+
+export const deleteImage = (propertyId, imageId, cb) => {
+  axios
+    .delete("/api/rentallistings/images/" + propertyId + "/" + imageId)
+    .then(({ data }) => {
+      Swal.fire("Updated successfully");
+      cb(data);
+    })
+    .catch(({ response }) => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: response.data,
+      });
+    });
+};
+
+export const addImage = (propertyId, file, cb) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("id", propertyId);
+  axios
+    .post("/api/rentallistings/images", formData)
+    .then(({ data }) => {
+      Swal.fire("Updated successfully");
+      cb(data);
+    })
+    .catch(({ response }) => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: response.data,
+      });
+    });
 };
 
 export const getAllListings = (

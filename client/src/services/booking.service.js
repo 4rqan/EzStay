@@ -14,12 +14,9 @@ export const bookProperty = (model, navigate) => {
     });
 };
 
-//bookingsForLandlord
-
 export const bookingsForLandlord = (cb) => {
   axios.get("/api/bookingsForLandlord").then(({ data }) => {
     cb(data);
-    console.log(data);
   });
 };
 
@@ -38,6 +35,13 @@ export const getBookingDetails = (id, cb) => {
 export const addComment = (id, comment, cb) => {
   axios.post("/api/addComment", { id, comment }).then(({ data }) => {
     Swal.fire("Comment added.");
+    cb(data);
+  });
+};
+
+export const cancelRequest = (id, cb) => {
+  axios.post("/api/cancelRequest", { id }).then(({ data }) => {
+    Swal.fire("Booking Cancelled");
     cb(data);
   });
 };

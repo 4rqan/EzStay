@@ -1,16 +1,37 @@
 import { useEffect, useState } from "react";
-import { getListings } from "../../services/listings.service";
+import { deleteListing, getListings } from "../../services/listings.service";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
-import { Card } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import { generateImagePath } from "../../utils/utils";
+import Swal from "sweetalert2";
 
 const RentalListingsPage = () => {
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    getListings(setList);
+    getData();
   }, []);
+
+  const getData = () => {
+    getListings(setList);
+  };
+
+  const deleteProperty = (id) => {
+    Swal.fire({
+      title: "Do you want to delete this Property",
+
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        deleteListing(id, getData);
+      } else if (result.isDenied) {
+        Swal.fire("Property Cannot be Deleted", "", "info");
+      }
+    });
+  };
 
   return (
     <div>
@@ -78,14 +99,26 @@ const RentalListingsPage = () => {
                   <span className="font-weight-bold">Price:</span> {item.price}
                 </div>
               </div>
+
               <div className="col-md-2">
-                <Link
-                  className="btn btn-primary"
-                  to={"/landlord/rentalListings/" + item._id}
-                  role="button"
-                >
-                  View Details
-                </Link>
+                <div>
+                  <Link
+                    className="btn btn-primary"
+                    to={"/landlord/rentalListings/" + item._id}
+                    role="button"
+                  >
+                    View Details
+                  </Link>
+                </div>
+
+                <div className="mt-2">
+                  <Button
+                    className="btn-primary"
+                    onClick={() => deleteProperty(item._id)}
+                  >
+                    Delete
+                  </Button>
+                </div>
               </div>
             </Card.Body>
           </Card>
@@ -94,5 +127,4 @@ const RentalListingsPage = () => {
     </div>
   );
 };
-
 export default RentalListingsPage;

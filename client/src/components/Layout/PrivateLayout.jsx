@@ -2,7 +2,7 @@ import { Dropdown } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -13,11 +13,11 @@ const PrivateLayout = ({ children }) => {
       <header className="">
         <nav className="navbar navbar-expand-lg">
           <div className="container">
-            <Link className="navbar-brand" to={"/"}>
+            <NavLink className="navbar-brand" to={"/"}>
               <h2>
                 Ez <em>Stay</em>
               </h2>
-            </Link>
+            </NavLink>
             <button
               className="navbar-toggler"
               type="button"
@@ -31,23 +31,39 @@ const PrivateLayout = ({ children }) => {
             </button>
             <div className="collapse navbar-collapse" id="navbarResponsive">
               <ul className="navbar-nav ml-auto">
-                <li className="nav-item active">
-                  <Link className="nav-link" to="/">
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/">
                     Home
-                    <span className="sr-only">(current)</span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/mybookings">
+                  <NavLink
+                    className="nav-link"
+                    activeClassName="active"
+                    to="/allproperties"
+                  >
+                    Properties
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink
+                    className="nav-link"
+                    to="/mybookings"
+                    activeClassName="active"
+                  >
                     My Bookings
-                  </Link>
+                  </NavLink>
                 </li>
                 {isAdmin() && (
                   <>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/admin/users">
+                      <NavLink
+                        className="nav-link"
+                        to="/admin/users"
+                        activeClassName="active"
+                      >
                         Admin Panel
-                      </Link>
+                      </NavLink>
                     </li>
                   </>
                 )}
@@ -70,6 +86,7 @@ const PrivateLayout = ({ children }) => {
                         <Dropdown.Item as={Link} to="/landlord/addListings">
                           Add Listings
                         </Dropdown.Item>
+
                         <Dropdown.Item to="/landlord/rentalListings" as={Link}>
                           Rental Listings
                         </Dropdown.Item>

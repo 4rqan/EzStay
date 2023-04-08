@@ -14,8 +14,6 @@ route.get("/users/list", adminRequireAuth, async (req, res) => {
   } = req.query;
   let filter = {};
 
-  console.log(req.query);
-
   if (fullname) {
     filter.fullname = { $regex: fullname, $options: "i" };
   }
@@ -67,7 +65,6 @@ route.put("/users/status", adminRequireAuth, async (req, res) => {
 
 route.put("/users/approvedStatus", adminRequireAuth, async (req, res) => {
   const { userId, approvedLL } = req.body;
-  console.log(approvedLL);
   const user = await User.findById(userId);
   user.approvedLL = approvedLL;
   user.modifiedBy = req.user.userId;

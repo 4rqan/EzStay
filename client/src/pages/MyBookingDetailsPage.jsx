@@ -7,7 +7,11 @@ import {
   ListGroupItem,
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { addComment, getBookingDetails } from "../services/booking.service";
+import {
+  addComment,
+  cancelRequest,
+  getBookingDetails,
+} from "../services/booking.service";
 import { generateImagePath } from "../utils/utils";
 const MyBookingDetailsPage = () => {
   let { id } = useParams();
@@ -15,17 +19,14 @@ const MyBookingDetailsPage = () => {
   const [comment, setComment] = useState("");
   const [details, setDetails] = useState({});
 
-  const [model, setModel] = useState({
-    status: "",
-    price: 0,
-    comment: "",
-    id,
-  });
   const addNewComment = () => {
     addComment(id, comment, (data) => {
       setComment("");
       setDetails(data);
     });
+  };
+  const cancelBooking = () => {
+    cancelRequest(id, setDetails);
   };
 
   useEffect(() => {
@@ -93,6 +94,18 @@ const MyBookingDetailsPage = () => {
             <span className="ml-3" id="status">
               {details.status}
             </span>
+          </div>
+          <div className="mb-3">
+            {(details.status === "pending" ||
+              details.status === "confirmed") && (
+              <button className="btn btn-primary" onClick={cancelBooking}>
+                Cancel Booking
+              </button>
+            )}
+            {(details.status === "pending" ||
+              details.status === "confirmed") && (
+              <button className="btn btn-primary">Pay Advance</button>
+            )}
           </div>
 
           <div className="mb-3">
@@ -197,24 +210,26 @@ const MyBookingDetailsPage = () => {
               );
             })}
           </ListGroup>
-          <div className="row">
-            <div className="col-md-8">
-              <textarea
-                name="comment"
-                value={comment}
-                onChange={(e) => {
-                  setComment(e.target.value);
-                }}
-                rows="10"
-                className="form-control"
-              ></textarea>
+          {!(details.status == "cancelled" || details.status == "rejected") && (
+            <div className="row">
+              <div className="col-md-8">
+                <textarea
+                  name="comment"
+                  value={comment}
+                  onChange={(e) => {
+                    setComment(e.target.value);
+                  }}
+                  rows="10"
+                  className="form-control"
+                ></textarea>
+              </div>
+              <div className="col-md-4">
+                <button className="btn btn-primary" onClick={addNewComment}>
+                  Add Comment
+                </button>
+              </div>
             </div>
-            <div className="col-md-4">
-              <button className="btn btn-primary" onClick={addNewComment}>
-                Add Comment
-              </button>
-            </div>
-          </div>
+          )}
         </Card.Body>
       </Card>
     </Container>

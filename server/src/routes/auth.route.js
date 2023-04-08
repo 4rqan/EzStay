@@ -90,8 +90,6 @@ route.put("/changepassword", requireAuth, async (req, res) => {
     return res.status(404).send("Incorrect password");
   }
 
-  console.log(newPassword);
-
   user.salt = await bcrypt.genSalt();
   const encryptedPassword = await bcrypt.hash(newPassword, user.salt);
   user.password = encryptedPassword;

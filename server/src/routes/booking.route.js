@@ -12,11 +12,11 @@ router.post("/bookings", requireAuth, async (req, res) => {
   if (!checkIn) return res.status(400).send("checkIn is required");
   if (!checkOut) return res.status(400).send("checkOut is required");
 
-  // const count = await Booking.countDocuments({
-  //   property: propertyId,
-  //   bookedBy: req.user.profileId,
-  // });
-  // if (count > 0) return res.status(400).send("Already booked");
+  const count = await Booking.countDocuments({
+    property: propertyId,
+    bookedBy: req.user.profileId,
+  });
+  if (count > 0) return res.status(400).send("Already booked");
 
   const booking = new Booking({
     bookedBy: req.user.profileId,
@@ -114,6 +114,26 @@ router.post("/addComment", requireAuth, async (req, res) => {
   const booking = await Booking.findById(id);
   booking.comments.push(newComment);
   await booking.save();
+  const newBooking = await Booking.findById(id)
+    .populate({
+      path: "bookedBy",
+      select: ["email", "fullname"],
+    })
+    .populate({
+      path: "property",
+    })
+    .populate({ path: "comments.userId", select: ["dpPath", "fullname"] });
+
+  res.send(newBooking);
+});
+
+router.post("/cancelRequest", requireAuth, async (req, res) => {
+  const { id } = req.body;
+  const booking = await Booking.findById(id);
+
+  booking.status = "cancelled";
+  await booking.save();
+
   const newBooking = await Booking.findById(id)
     .populate({
       path: "bookedBy",

@@ -168,13 +168,15 @@ const BookingDetailsPage = () => {
 
           <div className="mb-3">
             <span className="ml-3" id="pbutton">
-              <Button
-                onClick={handleShow}
-                className="btn btn-primary"
-                role="button"
-              >
-                Process
-              </Button>
+              {["pending", "confirmed"].includes(details.status) && (
+                <Button
+                  onClick={handleShow}
+                  className="btn btn-primary"
+                  role="button"
+                >
+                  Process
+                </Button>
+              )}
             </span>
           </div>
         </div>
@@ -194,24 +196,26 @@ const BookingDetailsPage = () => {
               );
             })}
           </ListGroup>
-          <div className="row">
-            <div className="col-md-8">
-              <textarea
-                name="comment"
-                value={comment}
-                onChange={(e) => {
-                  setComment(e.target.value);
-                }}
-                rows="10"
-                className="form-control"
-              ></textarea>
+          {!["cancelled", "rejected"].includes(details.status) && (
+            <div className="row">
+              <div className="col-md-8">
+                <textarea
+                  name="comment"
+                  value={comment}
+                  onChange={(e) => {
+                    setComment(e.target.value);
+                  }}
+                  rows="10"
+                  className="form-control"
+                ></textarea>
+              </div>
+              <div className="col-md-4">
+                <button className="btn btn-primary" onClick={addNewComment}>
+                  Add Comment
+                </button>
+              </div>
             </div>
-            <div className="col-md-4">
-              <button className="btn btn-primary" onClick={addNewComment}>
-                Add Comment
-              </button>
-            </div>
-          </div>
+          )}
         </Card.Body>
       </Card>
 

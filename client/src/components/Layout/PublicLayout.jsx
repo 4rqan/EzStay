@@ -1,15 +1,11 @@
 import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import { Link } from "react-router-dom";
-import NavDropdown from "react-bootstrap/NavDropdown";
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 import "../../vendor/bootstrap/css/bootstrap.min.css";
 import "../../assets/css/fontawesome.css";
 import "../../assets/css/templatemo-sixteen.css";
 import "../../assets/css/owl.css";
-import { Dropdown } from "react-bootstrap";
 import PrivateLayout from "./PrivateLayout";
 
 const PublicLayout = ({ children }) => {
@@ -24,11 +20,11 @@ const PublicLayout = ({ children }) => {
       <header className="">
         <nav className="navbar navbar-expand-lg">
           <div className="container">
-            <Link className="navbar-brand" to={"/"}>
+            <NavLink className="navbar-brand" to={"/"}>
               <h2>
                 Ez <em>Stay</em>
               </h2>
-            </Link>
+            </NavLink>
             <button
               className="navbar-toggler"
               type="button"
@@ -42,33 +38,57 @@ const PublicLayout = ({ children }) => {
             </button>
             <div className="collapse navbar-collapse" id="navbarResponsive">
               <ul className="navbar-nav ml-auto">
-                <li className="nav-item active">
-                  <Link className="nav-link" to="/">
+                <li className="nav-item">
+                  <NavLink className="nav-link" activeClassName="active" to="/">
                     Home
-                    <span className="sr-only">(current)</span>
-                  </Link>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink
+                    className="nav-link"
+                    activeClassName="active"
+                    to="/allproperties"
+                  >
+                    Properties
+                  </NavLink>
                 </li>
                 <>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/login">
+                    <NavLink
+                      className="nav-link"
+                      activeClassName="active"
+                      to="/login"
+                    >
                       Login
-                    </Link>
+                    </NavLink>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/signup">
+                    <NavLink
+                      className="nav-link"
+                      activeClassName="active"
+                      to="/signup"
+                    >
                       Signup
-                    </Link>
+                    </NavLink>
                   </li>
                 </>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/about">
+                  <NavLink
+                    className="nav-link"
+                    to="/about"
+                    activeClassName="active"
+                  >
                     About Us
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/contact">
+                  <NavLink
+                    className="nav-link"
+                    to="/contact"
+                    activeClassName="active"
+                  >
                     Contact Us
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
             </div>

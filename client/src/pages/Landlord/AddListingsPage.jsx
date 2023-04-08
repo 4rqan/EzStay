@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +13,6 @@ const AddListingsPage = () => {
   const navigate = useNavigate();
 
   const submit = (data) => {
-    console.log(data);
     addListings(data, navigate);
   };
 

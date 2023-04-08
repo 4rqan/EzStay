@@ -5,7 +5,6 @@ export const getProfile = (cb) => {
   axios.get("/api/profile").then(({ data }) => {
     data.address = data.address || {};
     cb(data);
-    console.log(data);
   });
 };
 

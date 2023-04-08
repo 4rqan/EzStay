@@ -40,16 +40,16 @@ const BookPropertyPage = () => {
                 <strong>Property Type:</strong> {data.propertyType}
               </ListGroupItem>
               <ListGroupItem>
-                <strong>Location:</strong> {data.location}
+                <strong>Location:</strong> {data.address?.landmark}
               </ListGroupItem>
               <ListGroupItem>
-                <strong>Price:</strong> {data.price}
+                <strong>Price:</strong> {data.price}q
               </ListGroupItem>
               <ListGroupItem>
-                <strong>Bedrooms:</strong> {data.bedrooms}
+                <strong>Bedrooms:</strong> {data.amenities?.bedrooms}
               </ListGroupItem>
               <ListGroupItem>
-                <strong>Bathrooms:</strong> {data.bathrooms}
+                <strong>Bathrooms:</strong> {data.amenities?.bathrooms}
               </ListGroupItem>
               <ListGroupItem>
                 <strong>Available Date:</strong> {data.availableDate}

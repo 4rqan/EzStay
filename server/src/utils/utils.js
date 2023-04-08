@@ -57,8 +57,6 @@ const sendMail = (to, subject, templateName, replacements) => {
     html,
   };
 
-  console.log(mailOptions);
-
   transporter
     .sendMail(mailOptions)
     .then(() => {})

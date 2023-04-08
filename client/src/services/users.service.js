@@ -8,7 +8,6 @@ export const getAllUsers = (page, sortOn, cb) => {
     })
     .then(({ data }) => {
       cb(data);
-      console.log(data);
     });
 };
 
