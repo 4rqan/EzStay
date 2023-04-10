@@ -18,7 +18,6 @@ route.get("/users/list", adminRequireAuth, async (req, res) => {
     filter.fullname = { $regex: fullname, $options: "i" };
   }
   const sortOptions = { [sortField]: sortOrder === "asc" ? 1 : -1 };
-  console.log(sortOptions);
   const total = await User.countDocuments(filter);
   const skipDocuments = (page - 1) * pageSize;
   const paginatedUsers = await Profile.find(filter)

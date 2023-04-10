@@ -8,6 +8,7 @@ const {
   uploadSingle,
 } = require("../utils/utils");
 const Booking = require("../models/booking.model");
+const State = require("../models/state.schema");
 
 const folderName = "rentalImages";
 const upload = uploadMultiple("files", folderName);
@@ -72,7 +73,6 @@ router.post("/rentallistings", requireAuth, async (req, res) => {
 
         rentalListing.owner = req.user.profileId;
         await rentalListing.save();
-        res.json(rentalListing);
       } catch (err) {
         console.error(err);
         res.status(500).json({ success: false, error: err.message });
@@ -198,9 +198,24 @@ router.get("/rentallistings", requireAuth, async (req, res) => {
 });
 
 router.get("/rentallistings/:id", async (req, res) => {
-  const rentalListing = await RentalListing.findById(req.params.id);
+  const rentalListing = await RentalListing.findById(req.params.id).populate(
+    "address.stateName"
+  );
+  // const stateName = (
+  //   await State.findOne({
+  //     isoCode: rentalListing.address.state,
+  //   })
+  // ).name;
+
   console.log(rentalListing);
-  res.send(rentalListing);
+  const data = rentalListing.toJSON();
+  res.json({
+    ...data,
+    address: {
+      ...data.address,
+      stateName,
+    },
+  });
 });
 
 router.get("/allListings", async (req, res) => {
@@ -209,12 +224,23 @@ router.get("/allListings", async (req, res) => {
     pageSize = 6,
     sortField = "title",
     sortOrder = "asc",
+    stateCode,
+    city,
   } = req.query;
+
+  let filter = {};
+
+  if (stateCode) {
+    filter["address.state"] = stateCode;
+    if (city) {
+      filter["address.city"] = city;
+    }
+  }
 
   const sortOptions = { [sortField]: sortOrder === "asc" ? 1 : -1 };
   const skipDocuments = (page - 1) * pageSize;
-  const totalCount = await RentalListing.countDocuments();
-  const rentalListing = await RentalListing.find()
+  const totalCount = await RentalListing.countDocuments(filter);
+  const rentalListing = await RentalListing.find(filter)
     .sort(sortOptions)
     .skip(skipDocuments)
     .limit(pageSize);

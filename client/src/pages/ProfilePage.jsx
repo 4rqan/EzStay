@@ -188,19 +188,7 @@ const ProfilePage = () => {
                   placeholder="Enter City"
                 />
               </Form.Group>
-              <Form.Group className="mb-3 col-md-4">
-                <Form.Label htmlFor="disabledTextInput">Country</Form.Label>
-                <Form.Control
-                  value={profile.address.country}
-                  onChange={(e) => {
-                    setProfile({
-                      ...profile,
-                      address: { ...profile.address, country: e.target.value },
-                    });
-                  }}
-                  placeholder="Enter Country"
-                />
-              </Form.Group>
+
               <Form.Group className="mb-3 col-md-4">
                 <Form.Label htmlFor="disabledTextInput">State</Form.Label>
                 <Form.Control

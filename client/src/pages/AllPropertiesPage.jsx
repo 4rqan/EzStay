@@ -1,31 +1,57 @@
 import { useEffect, useState } from "react";
 import { Pagination } from "react-bootstrap";
 import ListingsItemComponent from "../components/Listings/ListingsItemComponent";
-import { getAllListings } from "../services/listings.service";
+import {
+  getAllListings,
+  getCities,
+  getStates,
+} from "../services/listings.service";
 
 const AllPropertiesPage = () => {
   const [data, setData] = useState([]);
-  const [pageNo, setPageNo] = useState(1);
-  const [pageSize, _] = useState(6);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [params, setParams] = useState({
+    pageNo: 1,
+    pageSize: 6,
+    stateCode: "JK",
+    city: "",
+  });
 
   useEffect(() => {
-    getAllListings(setData, pageNo, pageSize);
-  }, [pageNo, pageSize]);
+    getStates(setStates);
+  }, []);
+
+  useEffect(() => {
+    if (params.stateCode) getCities(params.stateCode, setCities);
+    else setCities([]);
+  }, [params.stateCode]);
+
+  useEffect(() => {
+    getAllListings(
+      setData,
+      params.pageNo,
+      params.pageSize,
+      params.stateCode,
+      params.city
+    );
+  }, [params]);
 
   const renderPaginationButtons = () => {
-    if (pageSize >= data.totalCount) return null;
+    if (params.pageSize >= data.totalCount) return null;
     const buttons = [];
-    const pageCount = Math.ceil(data.totalCount / pageSize);
+    const pageCount = Math.ceil(data.totalCount / params.pageSize);
 
     for (let i = 1; i <= pageCount; i++) {
       buttons.push(
         <Pagination.Item
           className={
-            "btn ml-2 pl-2 pr-3 btn-" + (i === pageNo ? "danger" : "primary")
+            "btn ml-2 pl-2 pr-3 btn-" +
+            (i === params.pageNo ? "danger" : "primary")
           }
           style={{ width: "20px", height: "20px;" }}
           key={i}
-          onClick={() => setPageNo(i)}
+          onClick={() => setParams({ ...params, pageNo: i })}
         >
           {i}
         </Pagination.Item>
@@ -35,7 +61,58 @@ const AllPropertiesPage = () => {
   };
   return (
     <>
-      <div className="latest-products">
+      <div className="row m-3 justify-content-center">
+        <div className="mb-3 col-md-3" controlId="formState">
+          <label>State</label>
+          <select
+            value={params.stateCode}
+            className="form-control"
+            onChange={(e) => {
+              setParams({
+                ...params,
+                pageNo: 1,
+                city: "",
+                stateCode: e.target.value,
+              });
+            }}
+          >
+            <option value="">Select State</option>
+            {states.map((item) => {
+              return (
+                <option key={item._id} value={item.isoCode}>
+                  {item.name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+
+        <div className="mb-3 col-md-3" controlId="formCity">
+          <label>City</label>
+
+          <select
+            value={params.city}
+            className="form-control"
+            onChange={(e) => {
+              setParams({
+                ...params,
+                pageNo: 1,
+                city: e.target.value,
+              });
+            }}
+          >
+            <option value="">Select Cities</option>
+            {cities.map((item) => {
+              return (
+                <option key={item._id} value={item.name}>
+                  {item.name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      </div>
+      <div className="latest-products mt-1">
         <div className="container">
           <div className="row">
             <div className="col-md-12">

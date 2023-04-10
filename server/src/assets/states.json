@@ -1,0 +1,217 @@
+[{
+  "name": "Meghalaya",
+  "isoCode": "ML",
+  "countryCode": "IN",
+  "latitude": 25.4670308,
+  "longitude": 91.366216
+},{
+  "name": "Haryana",
+  "isoCode": "HR",
+  "countryCode": "IN",
+  "latitude": 29.0587757,
+  "longitude": 76.085601
+},{
+  "name": "Maharashtra",
+  "isoCode": "MH",
+  "countryCode": "IN",
+  "latitude": 19.7514798,
+  "longitude": 75.7138884
+},{
+  "name": "Goa",
+  "isoCode": "GA",
+  "countryCode": "IN",
+  "latitude": 15.2993265,
+  "longitude": 74.123996
+},{
+  "name": "Manipur",
+  "isoCode": "MN",
+  "countryCode": "IN",
+  "latitude": 24.6637173,
+  "longitude": 93.9062688
+},{
+  "name": "Puducherry",
+  "isoCode": "PY",
+  "countryCode": "IN",
+  "latitude": 11.9415915,
+  "longitude": 79.8083133
+},{
+  "name": "Telangana",
+  "isoCode": "TG",
+  "countryCode": "IN",
+  "latitude": 18.1124372,
+  "longitude": 79.0192997
+},{
+  "name": "Odisha",
+  "isoCode": "OR",
+  "countryCode": "IN",
+  "latitude": 20.9516658,
+  "longitude": 85.0985236
+},{
+  "name": "Rajasthan",
+  "isoCode": "RJ",
+  "countryCode": "IN",
+  "latitude": 27.0238036,
+  "longitude": 74.2179326
+},{
+  "name": "Punjab",
+  "isoCode": "PB",
+  "countryCode": "IN",
+  "latitude": 31.1471305,
+  "longitude": 75.3412179
+},{
+  "name": "Uttarakhand",
+  "isoCode": "UT",
+  "countryCode": "IN",
+  "latitude": 30.066753,
+  "longitude": 79.0192997
+},{
+  "name": "Andhra Pradesh",
+  "isoCode": "AP",
+  "countryCode": "IN",
+  "latitude": 15.9128998,
+  "longitude": 79.7399875
+},{
+  "name": "Nagaland",
+  "isoCode": "NL",
+  "countryCode": "IN",
+  "latitude": 26.1584354,
+  "longitude": 94.5624426
+},{
+  "name": "Lakshadweep",
+  "isoCode": "LD",
+  "countryCode": "IN",
+  "latitude": 10.3280265,
+  "longitude": 72.7846336
+},{
+  "name": "Himachal Pradesh",
+  "isoCode": "HP",
+  "countryCode": "IN",
+  "latitude": 31.1048294,
+  "longitude": 77.1733901
+},{
+  "name": "Delhi",
+  "isoCode": "DL",
+  "countryCode": "IN",
+  "latitude": 28.7040592,
+  "longitude": 77.1024902
+},{
+  "name": "Uttar Pradesh",
+  "isoCode": "UP",
+  "countryCode": "IN",
+  "latitude": 26.8467088,
+  "longitude": 80.9461592
+},{
+  "name": "Andaman and Nicobar Islands",
+  "isoCode": "AN",
+  "countryCode": "IN",
+  "latitude": 11.7400867,
+  "longitude": 92.6586401
+},{
+  "name": "Arunachal Pradesh",
+  "isoCode": "AR",
+  "countryCode": "IN",
+  "latitude": 28.2179994,
+  "longitude": 94.7277528
+},{
+  "name": "Jharkhand",
+  "isoCode": "JH",
+  "countryCode": "IN",
+  "latitude": 23.6101808,
+  "longitude": 85.2799354
+},{
+  "name": "Karnataka",
+  "isoCode": "KA",
+  "countryCode": "IN",
+  "latitude": 15.3172775,
+  "longitude": 75.7138884
+},{
+  "name": "Assam",
+  "isoCode": "AS",
+  "countryCode": "IN",
+  "latitude": 26.2006043,
+  "longitude": 92.9375739
+},{
+  "name": "Kerala",
+  "isoCode": "KL",
+  "countryCode": "IN",
+  "latitude": 10.8505159,
+  "longitude": 76.2710833
+},{
+  "name": "Jammu and Kashmir",
+  "isoCode": "JK",
+  "countryCode": "IN",
+  "latitude": 33.277839,
+  "longitude": 75.3412179
+},{
+  "name": "Gujarat",
+  "isoCode": "GJ",
+  "countryCode": "IN",
+  "latitude": 22.258652,
+  "longitude": 71.1923805
+},{
+  "name": "Chandigarh",
+  "isoCode": "CH",
+  "countryCode": "IN",
+  "latitude": 30.7333148,
+  "longitude": 76.7794179
+},{
+  "name": "Dadra and Nagar Haveli and Daman and Diu",
+  "isoCode": "DH",
+  "countryCode": "IN",
+  "latitude": 20.3973736,
+  "longitude": 72.8327991
+},{
+  "name": "Sikkim",
+  "isoCode": "SK",
+  "countryCode": "IN",
+  "latitude": 27.5329718,
+  "longitude": 88.5122178
+},{
+  "name": "Tamil Nadu",
+  "isoCode": "TN",
+  "countryCode": "IN",
+  "latitude": 11.1271225,
+  "longitude": 78.6568942
+},{
+  "name": "Mizoram",
+  "isoCode": "MZ",
+  "countryCode": "IN",
+  "latitude": 23.164543,
+  "longitude": 92.9375739
+},{
+  "name": "Bihar",
+  "isoCode": "BR",
+  "countryCode": "IN",
+  "latitude": 25.0960742,
+  "longitude": 85.3131194
+},{
+  "name": "Tripura",
+  "isoCode": "TR",
+  "countryCode": "IN",
+  "latitude": 23.9408482,
+  "longitude": 91.9881527
+},{
+  "name": "Madhya Pradesh",
+  "isoCode": "MP",
+  "countryCode": "IN",
+  "latitude": 22.9734229,
+  "longitude": 78.6568942
+},{
+  "name": "Chhattisgarh",
+  "isoCode": "CT",
+  "countryCode": "IN",
+  "latitude": 21.2786567,
+  "longitude": 81.8661442
+},{
+  "name": "Ladakh",
+  "isoCode": "LA",
+  "countryCode": "IN",
+  "latitude": 34.2268475,
+  "longitude": 77.5619419
+},{
+  "name": "West Bengal",
+  "isoCode": "WB",
+  "countryCode": "IN",
+  "latitude": 22.9867569,
+  "longitude": 87.8549755
+}]

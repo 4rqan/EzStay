@@ -94,14 +94,28 @@ export const getAllListings = (
   cb,
   page = 1,
   pageSize = 6,
+  stateCode = "",
+  city = "",
   sortField = "title",
   sortOrder = "asc"
 ) => {
   axios
     .get("/api/allListings", {
-      params: { page, pageSize, sortField, sortOrder },
+      params: { page, pageSize, sortField, sortOrder, stateCode, city },
     })
     .then(({ data }) => {
       cb(data);
     });
+};
+
+export const getStates = (cb) => {
+  axios.get("/api/states").then(({ data }) => {
+    cb(data);
+  });
+};
+
+export const getCities = (stateCode, cb) => {
+  axios.get("/api/cities/" + stateCode).then(({ data }) => {
+    cb(data);
+  });
 };

@@ -1,20 +1,46 @@
+import { useEffect, useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { addListings } from "../../services/listings.service";
+import {
+  addListings,
+  getCities,
+  getStates,
+} from "../../services/listings.service";
 
 const AddListingsPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
+    setValue,
   } = useForm();
 
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const stateValue = watch("address.state");
   const navigate = useNavigate();
 
   const submit = (data) => {
     addListings(data, navigate);
   };
+
+  useEffect(() => {
+    getStates(setStates);
+    setValue("amenities.furnished", "false");
+    setValue("amenities.electricityAvailable", "false");
+    setValue("amenities.waterAvailable", "false");
+    setValue("amenities.parkingSpace", "false");
+  }, []);
+
+  useEffect(() => {
+    setValue("address.city", "");
+    if (stateValue) getCities(stateValue, setCities);
+    else {
+      setCities([]);
+    }
+  }, [stateValue]);
 
   return (
     <Container>
@@ -63,11 +89,22 @@ const AddListingsPage = () => {
         <div className="row">
           <Form.Group className="mb-3 col-md-2" controlId="formState">
             <Form.Label>State</Form.Label>
-            <Form.Control
-              type="text"
-              name="state"
+            <Form.Select
+              onChange={(e) => {
+                console.log(e);
+              }}
               {...register("address.state", { required: true })}
-            />
+            >
+              <option value="">Select State</option>
+              {states.map((item) => {
+                return (
+                  <option key={item._id} value={item.isoCode}>
+                    {item.name}
+                  </option>
+                );
+              })}
+            </Form.Select>
+
             {errors.address?.state && (
               <span className="text-danger">State is required</span>
             )}
@@ -75,11 +112,22 @@ const AddListingsPage = () => {
 
           <Form.Group className="mb-3 col-md-2" controlId="formCity">
             <Form.Label>City</Form.Label>
-            <Form.Control
-              type="text"
-              name="city"
+
+            <Form.Select
+              onChange={(e) => {
+                console.log(e);
+              }}
               {...register("address.city", { required: true })}
-            />
+            >
+              <option value="">Select Cities</option>
+              {cities.map((item) => {
+                return (
+                  <option key={item._id} value={item.name}>
+                    {item.name}
+                  </option>
+                );
+              })}
+            </Form.Select>
             {errors.address?.city && (
               <span className="text-danger">City is required</span>
             )}

@@ -8,6 +8,13 @@ const addressSchema = new mongoose.Schema({
   houseNo: String,
 });
 
+addressSchema.virtual("stateName", {
+  ref: "states",
+  localField: "state",
+  foreignField: "isoCode",
+  justOne: true,
+});
+
 const rentalListingSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
