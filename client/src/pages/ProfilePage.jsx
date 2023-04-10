@@ -11,6 +11,7 @@ import { generateImagePath } from "../utils/utils";
 import "../css/profile-style.css";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { getCities, getStates } from "../services/listings.service";
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
@@ -36,9 +37,19 @@ const ProfilePage = () => {
   useEffect(() => {
     getProfile(setProfile);
   }, []);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    getStates(setStates);
+  }, []);
+
+  useEffect(() => {
+    if (profile?.address?.state) getCities(profile?.address?.state, setCities);
+    else setCities([]);
+  }, [profile?.address?.state]);
 
   const inputRef = useRef(null);
-
   const submit = (e) => {
     e.preventDefault();
     updateProfile(profile);
@@ -175,33 +186,50 @@ const ProfilePage = () => {
                   placeholder="Enter Address Line 2"
                 />
               </Form.Group>
-              <Form.Group className="mb-3 col-md-4">
-                <Form.Label htmlFor="disabledTextInput">City</Form.Label>
-                <Form.Control
-                  value={profile.address.city}
-                  onChange={(e) => {
-                    setProfile({
-                      ...profile,
-                      address: { ...profile.address, city: e.target.value },
-                    });
-                  }}
-                  placeholder="Enter City"
-                />
-              </Form.Group>
 
               <Form.Group className="mb-3 col-md-4">
                 <Form.Label htmlFor="disabledTextInput">State</Form.Label>
-                <Form.Control
-                  value={profile.address.state}
+                <Form.Select
+                  value={profile?.address?.state}
                   onChange={(e) => {
                     setProfile({
                       ...profile,
                       address: { ...profile.address, state: e.target.value },
                     });
                   }}
-                  placeholder="Enter State"
-                />
+                >
+                  <option value="">Select State</option>
+                  {states.map((item) => {
+                    return (
+                      <option key={item._id} value={item.isoCode}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </Form.Select>
               </Form.Group>
+              <Form.Group className="mb-3 col-md-4">
+                <Form.Label htmlFor="disabledTextInput">City</Form.Label>
+                <Form.Select
+                  value={profile?.address?.city}
+                  onChange={(e) => {
+                    setProfile({
+                      ...profile,
+                      address: { ...profile.address, city: e.target.value },
+                    });
+                  }}
+                >
+                  <option value="">Select City</option>
+                  {cities.map((item) => {
+                    return (
+                      <option key={item._id} value={item.name}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </Form.Select>
+              </Form.Group>
+
               <Form.Group className="mb-3 col-md-4">
                 <Form.Label htmlFor="disabledTextInput">Pincode</Form.Label>
                 <Form.Control

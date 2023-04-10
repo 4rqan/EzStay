@@ -7,6 +7,7 @@ import {
   getCities,
   getStates,
 } from "../../services/listings.service";
+import { getProfile } from "../../services/profile.service";
 
 const AddListingsPage = () => {
   const {
@@ -28,6 +29,7 @@ const AddListingsPage = () => {
 
   useEffect(() => {
     getStates(setStates);
+    getProfile(setDefaultValues);
     setValue("amenities.furnished", "false");
     setValue("amenities.electricityAvailable", "false");
     setValue("amenities.waterAvailable", "false");
@@ -41,6 +43,16 @@ const AddListingsPage = () => {
       setCities([]);
     }
   }, [stateValue]);
+
+  const setDefaultValues = (data) => {
+    setValue("contact.name", data.fullname);
+    setValue("contact.email", data.email);
+    setValue("contact.phone", data.contactNo);
+    setValue("address.state", data.address?.state);
+    setValue("address.city", data.address?.city);
+    setValue("address.pincode", data.address?.pincode);
+    setValue("address.address1", data.address?.address1);
+  };
 
   return (
     <Container>
@@ -134,11 +146,11 @@ const AddListingsPage = () => {
           </Form.Group>
 
           <Form.Group className="mb-3 col-md-3" controlId="formLandmark">
-            <Form.Label>Landmark</Form.Label>
+            <Form.Label>Address</Form.Label>
             <Form.Control
               type="text"
               name="landmark"
-              {...register("address.landmark", { required: true })}
+              {...register("address.address1", { required: true })}
             />
             {errors.address?.landmark && (
               <span className="text-danger">Landmark is required</span>

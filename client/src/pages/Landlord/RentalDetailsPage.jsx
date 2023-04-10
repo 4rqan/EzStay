@@ -16,6 +16,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { generateImagePath } from "../../utils/utils";
+import { getCities, getStates } from "../../services/listings.service";
 
 const RentalDetailsPage = () => {
   let { id } = useParams();
@@ -25,10 +26,26 @@ const RentalDetailsPage = () => {
     handleSubmit,
     formState: { errors },
     setValue,
+    watch,
   } = useForm();
 
   const inputRef = useRef();
 
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const stateValue = watch("address.state");
+
+  useEffect(() => {
+    getStates(setStates);
+  }, []);
+
+  useEffect(() => {
+    setValue("address.city", "");
+    if (stateValue) getCities(stateValue, setCities);
+    else {
+      setCities([]);
+    }
+  }, [stateValue]);
   const [details, setDetails] = useState({
     imageUrls: [],
   });
@@ -104,11 +121,22 @@ const RentalDetailsPage = () => {
             <div className="row">
               <Form.Group className="mb-3 col-md-2" controlId="formState">
                 <Form.Label>State</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="state"
+                <Form.Select
+                  onChange={(e) => {
+                    console.log(e);
+                  }}
                   {...register("address.state", { required: true })}
-                />
+                >
+                  <option value="">Select State</option>
+                  {states.map((item) => {
+                    return (
+                      <option key={item._id} value={item.isoCode}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </Form.Select>
+
                 {errors.address?.state && (
                   <span className="text-danger">State is required</span>
                 )}
@@ -116,25 +144,35 @@ const RentalDetailsPage = () => {
 
               <Form.Group className="mb-3 col-md-2" controlId="formCity">
                 <Form.Label>City</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="city"
+                <Form.Select
+                  onChange={(e) => {
+                    console.log(e);
+                  }}
                   {...register("address.city", { required: true })}
-                />
+                >
+                  <option value="">Select Cities</option>
+                  {cities.map((item) => {
+                    return (
+                      <option key={item._id} value={item.name}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </Form.Select>
                 {errors.address?.city && (
                   <span className="text-danger">City is required</span>
                 )}
               </Form.Group>
 
-              <Form.Group className="mb-3 col-md-3" controlId="formLandmark">
-                <Form.Label>Landmark</Form.Label>
+              <Form.Group className="mb-3 col-md-3" controlId="formAddress">
+                <Form.Label>Address</Form.Label>
                 <Form.Control
                   type="text"
-                  name="landmark"
-                  {...register("address.landmark", { required: true })}
+                  name="address1"
+                  {...register("address.address1", { required: true })}
                 />
-                {errors.address?.landmark && (
-                  <span className="text-danger">Landmark is required</span>
+                {errors.address?.address1 && (
+                  <span className="text-danger">Address is required</span>
                 )}
               </Form.Group>
 

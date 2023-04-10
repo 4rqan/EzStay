@@ -198,24 +198,22 @@ router.get("/rentallistings", requireAuth, async (req, res) => {
 });
 
 router.get("/rentallistings/:id", async (req, res) => {
-  const rentalListing = await RentalListing.findById(req.params.id).populate(
-    "address.stateName"
-  );
+  const rentalListing = await RentalListing.findById(req.params.id);
+  res.send(rentalListing);
   // const stateName = (
   //   await State.findOne({
   //     isoCode: rentalListing.address.state,
   //   })
   // ).name;
 
-  console.log(rentalListing);
-  const data = rentalListing.toJSON();
-  res.json({
-    ...data,
-    address: {
-      ...data.address,
-      stateName,
-    },
-  });
+  // const data = rentalListing.toJSON();
+  // res.json({
+  //   ...data,
+  //   address: {
+  //     ...data.address,
+  //     stateName,
+  //   },
+  // });
 });
 
 router.get("/allListings", async (req, res) => {
