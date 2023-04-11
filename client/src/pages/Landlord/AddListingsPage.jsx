@@ -29,7 +29,7 @@ const AddListingsPage = () => {
 
   useEffect(() => {
     getStates(setStates);
-    getProfile(setDefaultValues);
+    // getProfile(setDefaultValues);
     setValue("amenities.furnished", "false");
     setValue("amenities.electricityAvailable", "false");
     setValue("amenities.waterAvailable", "false");
@@ -152,8 +152,8 @@ const AddListingsPage = () => {
               name="landmark"
               {...register("address.address1", { required: true })}
             />
-            {errors.address?.landmark && (
-              <span className="text-danger">Landmark is required</span>
+            {errors.address?.address1 && (
+              <span className="text-danger">Address is required</span>
             )}
           </Form.Group>
 

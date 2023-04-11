@@ -36,11 +36,6 @@ const RentalDetailsPage = () => {
   const stateValue = watch("address.state");
 
   useEffect(() => {
-    getStates(setStates);
-  }, []);
-
-  useEffect(() => {
-    setValue("address.city", "");
     if (stateValue) getCities(stateValue, setCities);
     else {
       setCities([]);
@@ -50,6 +45,7 @@ const RentalDetailsPage = () => {
     imageUrls: [],
   });
   useEffect(() => {
+    getStates(setStates);
     getData();
   }, []);
 

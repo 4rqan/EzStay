@@ -23,6 +23,7 @@ import SignupPage from "../pages/SignupPage";
 import AdminRoute from "./Routes/AdminRoute";
 import PrivateRoute from "./Routes/PrivateRoute";
 import PublicRoute from "./Routes/PublicRoute";
+import DashboardPage from "../pages/Admin/DashboardPage";
 
 const AppRouter = () => {
   return (
@@ -159,6 +160,14 @@ const AppRouter = () => {
           element={
             <AdminRoute>
               <UserDetailsPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path={"/admin/dashboard"}
+          element={
+            <AdminRoute>
+              <DashboardPage />
             </AdminRoute>
           }
         />

@@ -32,7 +32,7 @@ const ForgotPasswordPage = () => {
             <Form.Control
               {...register("email", { required: true })}
               type="email"
-              placeholder="Enter username"
+              placeholder="Enter email"
             />
             {errors.email && (
               <span className="text-danger">Email is required</span>

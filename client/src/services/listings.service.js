@@ -4,10 +4,19 @@ import { objectToFormData } from "../utils/utils";
 
 export const addListings = (model, navigate) => {
   const formdata = objectToFormData(model);
-  axios.post("/api/rentallistings", formdata).then(({ data }) => {
-    Swal.fire("Saved successfully;");
-    navigate("/landlord/rentalListings/" + data._id);
-  });
+  axios
+    .post("/api/rentallistings", formdata)
+    .then(({ data }) => {
+      Swal.fire("Saved successfully;");
+      navigate("/landlord/rentalListings/" + data._id);
+    })
+    .catch(({ response }) => {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: response.data,
+      });
+    });
 };
 
 export const deleteListing = (id, cb) => {

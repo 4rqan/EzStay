@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
     if (returnUrl) navigate(returnUrl);
     else {
       let path = "/profile";
-      if (data.role === "Admin") path = "/admin/users";
+      if (data.role === "Admin") path = "/admin/dashboard";
       navigate(path);
     }
   };

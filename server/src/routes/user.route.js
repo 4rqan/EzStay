@@ -72,4 +72,21 @@ route.put("/users/approvedStatus", adminRequireAuth, async (req, res) => {
   res.send(user);
 });
 
+route.get("/usersbycities", async (_, res) => {
+  const data = await Profile.aggregate([
+    { $match: { "address.city": { $ne: null } } },
+    {
+      $group: {
+        _id: "$address.city",
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { count: -1 } },
+    { $limit: 10 },
+    { $project: { _id: 0, cityName: "$_id", count: 1 } },
+  ]);
+
+  res.send(data);
+});
+
 module.exports = route;

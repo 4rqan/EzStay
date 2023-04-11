@@ -8,7 +8,6 @@ const {
   uploadSingle,
 } = require("../utils/utils");
 const Booking = require("../models/booking.model");
-const State = require("../models/state.schema");
 
 const folderName = "rentalImages";
 const upload = uploadMultiple("files", folderName);
@@ -63,16 +62,16 @@ router.post("/rentallistings", requireAuth, async (req, res) => {
               bedrooms,
               bathrooms,
             },
-            address: { city, state, pincode, landmark, houseNo },
+            address: { city, state, pincode, address1, houseNo },
             contact: { name, email, phone },
           } = req.body)
         );
 
-        console.log(rentalListing);
         rentalListing.imageUrls = filenames;
 
         rentalListing.owner = req.user.profileId;
         await rentalListing.save();
+        res.send(rentalListing);
       } catch (err) {
         console.error(err);
         res.status(500).json({ success: false, error: err.message });
@@ -105,7 +104,7 @@ router.put("/rentallistings", requireAuth, async (req, res) => {
         bedrooms,
         bathrooms,
       },
-      address: { city, state, pincode, landmark, houseNo },
+      address: { city, state, pincode, address1, houseNo },
       contact: { name, email, phone },
     } = req.body;
 
@@ -129,7 +128,7 @@ router.put("/rentallistings", requireAuth, async (req, res) => {
       bedrooms,
       bathrooms,
     };
-    property.address = { city, state, pincode, landmark, houseNo };
+    property.address = { city, state, pincode, address1, houseNo };
     property.contact = { name, email, phone };
 
     await property.save();
