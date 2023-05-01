@@ -1,0 +1,95 @@
+.worker-details-page {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+.worker-img {
+  flex: 1 1 100%;
+  text-align: center;
+}
+
+.worker-img img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+}
+
+.worker-details,
+.worker-skills,
+.worker-address {
+  flex: 1 1 100%;
+  border: 1px solid #ccc;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.worker-details h3,
+.worker-skills h3,
+.worker-address h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.worker-details div,
+.worker-address div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.worker-details span,
+.worker-address span {
+  margin-right: 10px;
+  color: #333;
+  font-weight: bold;
+  flex: 0 0 auto;
+  width: 150px;
+}
+
+.worker-skills ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.worker-skills li {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: #f5f5f5;
+  font-size: 1rem;
+  color: #333;
+}
+
+.worker-book-now {
+  flex: 1 1 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.worker-book-now button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.worker-book-now button:hover {
+  background-color: #0062cc;
+}

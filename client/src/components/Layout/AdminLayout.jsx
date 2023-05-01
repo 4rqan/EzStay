@@ -1,12 +1,10 @@
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import { useAuth } from "../../contexts/AuthContext";
 import { generateImagePath } from "../../utils/utils";
-import "../../css/admin-layout.css";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faSignOut } from "@fortawesome/free-solid-svg-icons";
+import "../../css/admin-layout.css";
 
 const AdminLayout = ({ children }) => {
   const { logout } = useAuth();
@@ -38,19 +36,18 @@ const AdminLayout = ({ children }) => {
             </Link>
           </li>
           <li className="sidenav-item">
-            <Link className="nav-link" to="/profile">
+            <Link className="nav-link" to="/admin/profile">
               Profile
             </Link>
           </li>
           <li className="sidenav-item">
             <Link className="nav-link" onClick={logout}>
-              Logout
+              Logout <FontAwesomeIcon icon={faSignOut} />
             </Link>
           </li>
         </ul>
         <div className="toggle-sidebar" onClick={toggleSidebar}>
-          {/* <FaBars /> */}
-          <button>CC</button>
+          <FontAwesomeIcon icon={faBars} />
         </div>
       </div>
       <div className="col-md-10 main-content">{children}</div>

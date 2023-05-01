@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import axios from "../utils/axios_client";
-import { objectToFormData } from "../utils/utils";
+import { objectToFormData, showError } from "../utils/utils";
 
 export const addListings = (model, navigate) => {
   const formdata = objectToFormData(model);
@@ -10,13 +10,7 @@ export const addListings = (model, navigate) => {
       Swal.fire("Saved successfully;");
       navigate("/landlord/rentalListings/" + data._id);
     })
-    .catch(({ response }) => {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: response.data,
-      });
-    });
+    .catch(showError);
 };
 
 export const deleteListing = (id, cb) => {
@@ -26,13 +20,7 @@ export const deleteListing = (id, cb) => {
       Swal.fire("Deleted Successfully");
       cb();
     })
-    .catch(({ response }) => {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: response.data,
-      });
-    });
+    .catch(showError);
 };
 
 export const getListings = (cb) => {
@@ -55,13 +43,7 @@ export const updateListing = (model, cb) => {
       Swal.fire("Updated successfully");
       cb(data);
     })
-    .catch(({ response }) => {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: response.data,
-      });
-    });
+    .catch(showError);
 };
 
 export const deleteImage = (propertyId, imageId, cb) => {
@@ -71,13 +53,7 @@ export const deleteImage = (propertyId, imageId, cb) => {
       Swal.fire("Updated successfully");
       cb(data);
     })
-    .catch(({ response }) => {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: response.data,
-      });
-    });
+    .catch(showError);
 };
 
 export const addImage = (propertyId, file, cb) => {
@@ -90,13 +66,7 @@ export const addImage = (propertyId, file, cb) => {
       Swal.fire("Updated successfully");
       cb(data);
     })
-    .catch(({ response }) => {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: response.data,
-      });
-    });
+    .catch(showError);
 };
 
 export const getAllListings = (
@@ -125,6 +95,18 @@ export const getStates = (cb) => {
 
 export const getCities = (stateCode, cb) => {
   axios.get("/api/cities/" + stateCode).then(({ data }) => {
+    cb(data);
+  });
+};
+
+export const getPropertiesByCities = (cb) => {
+  axios.get("/api/propertiesbycities").then(({ data }) => {
+    cb(data);
+  });
+};
+
+export const hasBooked = (propertyId, cb) => {
+  axios.get("/api/property/hasbooked/" + propertyId).then(({ data }) => {
     cb(data);
   });
 };

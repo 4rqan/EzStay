@@ -491,9 +491,11 @@ const RentalDetailsPage = () => {
                 addImage(id, file, getData);
               }}
             />
-            <Button onClick={() => inputRef.current.click()}>
-              Upload Image
-            </Button>
+            <div className="mt-2">
+              <Button onClick={() => inputRef.current.click()}>
+                Upload Image
+              </Button>
+            </div>
           </div>
         </Tab>
       </Tabs>

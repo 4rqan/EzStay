@@ -83,7 +83,7 @@ route.get("/usersbycities", async (_, res) => {
     },
     { $sort: { count: -1 } },
     { $limit: 10 },
-    { $project: { _id: 0, cityName: "$_id", count: 1 } },
+    { $project: { _id: 0, cityName: "$_id", count: "$count" } },
   ]);
 
   res.send(data);

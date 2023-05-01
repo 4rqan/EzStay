@@ -15,7 +15,7 @@ route.post("/signup", async (req, res) => {
     return res.status(400).send("Please pass all required fields");
   }
 
-  if (!(role == "Landlord" || role == "Tenant"))
+  if (!(role == "Landlord" || role == "Tenant" || role == "Worker"))
     return res.status(400).send("Invalid user role");
 
   username = username.toLowerCase();

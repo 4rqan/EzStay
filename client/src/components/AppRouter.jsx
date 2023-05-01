@@ -2,28 +2,35 @@ import { Route, Routes } from "react-router-dom";
 import AboutPage from "../pages/AboutPage";
 import UserDetailsPage from "../pages/Admin/UserDetailsPage";
 import UserListPage from "../pages/Admin/UserListPage";
-import AllPropertiesPage from "../pages/AllPropertiesPage";
-import BookPropertyPage from "../pages/BookPropertyPage";
-import ChangePasswordPage from "../pages/ChangePasswordPage";
+import AllPropertiesPage from "../pages/Properties/AllPropertiesPage";
+import BookPropertyPage from "../pages/Bookings/PropertyBookings/BookPropertyPage";
+import ChangePasswordPage from "../pages/Account/ChangePasswordPage";
 import ContactPage from "../pages/ContactPage";
-import ForgotPasswordPage from "../pages/ForgotPasswordPage";
+import ForgotPasswordPage from "../pages/Account/ForgotPasswordPage";
 import HomePage from "../pages/HomePage";
 import AddListingsPage from "../pages/Landlord/AddListingsPage";
 import BookingDetailsPage from "../pages/Landlord/BookingDetailsPage";
 import LandlordBookingsPage from "../pages/Landlord/LandlordBookingsPage";
 import RentalDetailsPage from "../pages/Landlord/RentalDetailsPage";
 import RentalListingsPage from "../pages/Landlord/RentalListingsPage";
-import LoginPage from "../pages/LoginPage";
-import MyBookingDetailsPage from "../pages/MyBookingDetailsPage";
-import MyBookingsPage from "../pages/MyBookingsPage";
-import ProfilePage from "../pages/ProfilePage";
-import PropertyDetailsPage from "../pages/PropertyDetailsPage";
-import ResetPasswordPage from "../pages/ResetPasswordPage";
-import SignupPage from "../pages/SignupPage";
+import LoginPage from "../pages/Account/LoginPage";
+import MyBookingDetailsPage from "../pages/Bookings/PropertyBookings/MyBookingDetailsPage";
+import MyBookingsPage from "../pages/Bookings/PropertyBookings/MyBookingsPage";
+import ProfilePage from "../pages/Account/ProfilePage";
+import PropertyDetailsPage from "../pages/Properties/PropertyDetailsPage";
+import ResetPasswordPage from "../pages/Account/ResetPasswordPage";
+import SignupPage from "../pages/Account/SignupPage";
 import AdminRoute from "./Routes/AdminRoute";
 import PrivateRoute from "./Routes/PrivateRoute";
 import PublicRoute from "./Routes/PublicRoute";
 import DashboardPage from "../pages/Admin/DashboardPage";
+import AdminProfilePage from "../pages/Admin/AdminProfilePage";
+import ServicesBySkillPage from "../pages/ServicePages/ServicesBySkillPage";
+import WorkerDetailsPage from "../pages/ServicePages/WorkerDetailsPage";
+import WorkerBookingsPage from "../pages/Worker/WorkerBookingsPage";
+import WorkerBookingDetailsPage from "../pages/Worker/WorkerBookingDetailsPage";
+import MyServiceBookingsPage from "../pages/Bookings/WorkerBookings/MyServiceBookingsPage";
+import MyServiceBookingDetailsPage from "../pages/Bookings/WorkerBookings/MyServiceBookingDetailsPage";
 
 const AppRouter = () => {
   return (
@@ -87,6 +94,42 @@ const AppRouter = () => {
         />
 
         <Route
+          path={"/services/:skill"}
+          element={
+            <PublicRoute>
+              <ServicesBySkillPage />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path={"/worker/mybookings"}
+          element={
+            <PrivateRoute>
+              <WorkerBookingsPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={"/worker/mybookings/:id"}
+          element={
+            <PrivateRoute>
+              <WorkerBookingDetailsPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={"/worker/:id"}
+          element={
+            <PublicRoute>
+              <WorkerDetailsPage />
+            </PublicRoute>
+          }
+        />
+
+        <Route
           path={"/bookproperty/:id"}
           element={
             <PrivateRoute>
@@ -107,6 +150,23 @@ const AppRouter = () => {
           element={
             <PrivateRoute>
               <MyBookingDetailsPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={"/myservicebookings"}
+          element={
+            <PrivateRoute>
+              <MyServiceBookingsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={"/myservicebookings/:id"}
+          element={
+            <PrivateRoute>
+              <MyServiceBookingDetailsPage />
             </PrivateRoute>
           }
         />
@@ -152,6 +212,14 @@ const AppRouter = () => {
           element={
             <AdminRoute>
               <UserListPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path={"/admin/profile"}
+          element={
+            <AdminRoute>
+              <AdminProfilePage />
             </AdminRoute>
           }
         />

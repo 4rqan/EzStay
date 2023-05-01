@@ -23,6 +23,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const loginWithoutRedirecting = (data, cb) => {
+    setUser(data);
+    if (cb) cb();
+  };
+
+  const getUsername = () => {
+    return user?.username;
+  };
+
   // call this function to sign out logged in user
   const logout = () => {
     setUser(null);
@@ -51,6 +60,8 @@ export const AuthProvider = ({ children }) => {
       logout,
       isAuthenticated,
       isInRole,
+      loginWithoutRedirecting,
+      getUsername,
     }),
     [user]
   );

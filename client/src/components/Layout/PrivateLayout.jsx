@@ -7,7 +7,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 const PrivateLayout = ({ children }) => {
-  const { logout, isAdmin, isInRole } = useAuth();
+  const { logout, isAdmin, isInRole, getUsername } = useAuth();
   return (
     <>
       <header className="">
@@ -46,13 +46,28 @@ const PrivateLayout = ({ children }) => {
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink
-                    className="nav-link"
-                    to="/mybookings"
-                    activeClassName="active"
-                  >
-                    My Bookings
-                  </NavLink>
+                  <Dropdown>
+                    <Dropdown.Toggle
+                      className="nav-link"
+                      id="dropdown-basic"
+                      style={{
+                        color: "white",
+                        background: "transparent",
+                        border: "transparent",
+                      }}
+                    >
+                      My Bookings
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item as={Link} to="/mybookings">
+                        Property Bookings
+                      </Dropdown.Item>
+                      <Dropdown.Item as={Link} to="/myservicebookings">
+                        Service Bookings
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </li>
                 {isAdmin() && (
                   <>
@@ -97,6 +112,29 @@ const PrivateLayout = ({ children }) => {
                     </Dropdown>
                   </>
                 )}
+                {isInRole("Worker") && (
+                  <>
+                    <Dropdown>
+                      <Dropdown.Toggle
+                        className="nav-link"
+                        id="dropdown-basic"
+                        style={{
+                          color: "white",
+                          background: "transparent",
+                          border: "transparent",
+                        }}
+                      >
+                        Worker
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu>
+                        <Dropdown.Item as={Link} to="/worker/mybookings">
+                          My Bookings
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </>
+                )}
                 <Dropdown>
                   <Dropdown.Toggle
                     className="nav-link"
@@ -107,7 +145,7 @@ const PrivateLayout = ({ children }) => {
                       border: "transparent",
                     }}
                   >
-                    Account
+                    {getUsername()}
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>

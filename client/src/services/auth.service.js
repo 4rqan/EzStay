@@ -1,5 +1,6 @@
 import axios from "../utils/axios_client";
 import Swal from "sweetalert2";
+import { showError } from "../utils/utils";
 
 export const login = (model, cb) => {
   axios
@@ -7,13 +8,7 @@ export const login = (model, cb) => {
     .then(({ data }) => {
       cb(data);
     })
-    .catch(({ response }) => {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: response.data,
-      });
-    });
+    .catch(showError);
 };
 
 export const changePassword = (model) => {
@@ -22,13 +17,7 @@ export const changePassword = (model) => {
     .then(() => {
       Swal.fire("Password changed successfully");
     })
-    .catch(({ response }) => {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: response.data,
-      });
-    });
+    .catch(showError);
 };
 
 export const signup = (model, cb) => {
@@ -37,13 +26,7 @@ export const signup = (model, cb) => {
     .then(({ data }) => {
       cb(data);
     })
-    .catch(({ response }) => {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: response.data,
-      });
-    });
+    .catch(showError);
 };
 
 export const forgotPassword = (model) => {
@@ -52,13 +35,7 @@ export const forgotPassword = (model) => {
     .then(({ data }) => {
       Swal.fire(data);
     })
-    .catch(({ response }) => {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: response.data,
-      });
-    });
+    .catch(showError);
 };
 
 export const resetPassword = (model, navigate) => {
@@ -68,11 +45,5 @@ export const resetPassword = (model, navigate) => {
       Swal.fire(data);
       navigate("/login");
     })
-    .catch(({ response }) => {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: response.data,
-      });
-    });
+    .catch(showError);
 };

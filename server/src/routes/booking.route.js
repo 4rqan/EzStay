@@ -175,4 +175,14 @@ router.post("/processRequest", requireAuth, async (req, res) => {
   res.send(newBooking);
 });
 
+router.get("/property/hasbooked/:property", requireAuth, async (req, res) => {
+  const { property } = req.params;
+  const count = await Booking.countDocuments({
+    property,
+    bookedBy: req.user.profileId,
+  });
+
+  res.send({ hasBooked: count > 0 });
+});
+
 module.exports = router;

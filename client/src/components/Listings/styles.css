@@ -1,0 +1,22 @@
+.product-item {
+  position: relative;
+}
+
+.product-item .product-rating {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  padding: 10px;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.product-item:hover .product-rating {
+  opacity: 1;
+  pointer-events: auto;
+}

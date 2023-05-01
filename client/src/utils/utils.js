@@ -1,4 +1,5 @@
 import { isExpired } from "react-jwt";
+import Swal from "sweetalert2";
 
 // import { isExpired } from "react-jwt";
 export const TOKEN_KEY = "ezstay_access_token";
@@ -39,7 +40,7 @@ export const isLoggedIn = () => {
 export const apiUrl = "http://localhost:4000/";
 
 export const generateImagePath = (filePath) => {
-  if (filePath) return apiUrl + filePath;
+  if (filePath) return filePath;
   return "/logo192.png";
 };
 
@@ -63,4 +64,12 @@ export const objectToFormData = (obj) => {
     }
   }
   return formData;
+};
+
+export const showError = ({ response }) => {
+  Swal.fire({
+    icon: "error",
+    title: "Error",
+    text: response.data,
+  });
 };

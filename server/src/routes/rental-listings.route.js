@@ -233,15 +233,61 @@ router.get("/allListings", async (req, res) => {
       filter["address.city"] = city;
     }
   }
-
   const sortOptions = { [sortField]: sortOrder === "asc" ? 1 : -1 };
   const skipDocuments = (page - 1) * pageSize;
   const totalCount = await RentalListing.countDocuments(filter);
-  const rentalListing = await RentalListing.find(filter)
-    .sort(sortOptions)
-    .skip(skipDocuments)
-    .limit(pageSize);
-  res.json({ RentalListings: rentalListing, totalCount });
+
+  RentalListing.aggregate([
+    { $match: filter },
+    { $sort: sortOptions },
+    { $skip: skipDocuments },
+    { $limit: parseInt(pageSize) },
+    {
+      $lookup: {
+        from: "propertyratings",
+        localField: "_id",
+        foreignField: "property",
+        as: "ratings",
+      },
+    },
+    {
+      $addFields: {
+        averageRating: { $avg: "$ratings.rating" },
+        totalRatings: { $size: "$ratings" },
+      },
+    },
+    {
+      $project: {
+        ratings: 0,
+        address: 0,
+        amenities: 0,
+        contact: 0,
+      },
+    },
+  ]).exec((err, properties) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.json({ RentalListings: properties, totalCount });
+    }
+  });
+});
+
+router.get("/propertiesbycities", async (_, res) => {
+  const data = await RentalListing.aggregate([
+    { $match: { "address.city": { $ne: null } } },
+    {
+      $group: {
+        _id: "$address.city",
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { count: -1 } },
+    { $limit: 6 },
+    { $project: { _id: 0, cityName: "$_id", count: "$count" } },
+  ]);
+
+  res.send(data);
 });
 
 module.exports = router;
