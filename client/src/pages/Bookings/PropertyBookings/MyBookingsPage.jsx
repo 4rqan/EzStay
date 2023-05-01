@@ -3,14 +3,14 @@ import React, { useEffect, useState } from "react";
 import { Card, Table } from "react-bootstrap";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
-import { bookingsForUser } from "../../../services/booking.service";
+import { propertyBookingsForUser } from "../../../services/property-booking.service";
 import { generateImagePath } from "../../../utils/utils";
 import { faBed } from "@fortawesome/free-solid-svg-icons";
 
 const MyBookingsPage = () => {
   const [list, setList] = useState([]);
   useEffect(() => {
-    bookingsForUser(setList);
+    propertyBookingsForUser(setList);
   }, []);
 
   return (

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
-import { bookingsForLandlord } from "../../services/booking.service";
+import { bookingsForLandlord } from "../../services/property-booking.service";
 import { generateImagePath } from "../../utils/utils";
 
 const LandlordBookingsPage = () => {

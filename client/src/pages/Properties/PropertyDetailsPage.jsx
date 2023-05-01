@@ -5,8 +5,8 @@ import { getRentalDetails, hasBooked } from "../../services/listings.service";
 import { generateImagePath } from "../../utils/utils";
 import StarRatings from "react-star-ratings";
 import {
-  addratings,
-  getAllRatings,
+  addPropertyratings,
+  getAllPropertyRatings,
   getMyPropertyRatings,
 } from "../../services/property-ratings.service";
 import { useAuth } from "../../contexts/AuthContext";
@@ -143,7 +143,7 @@ const Ratings = ({ property }) => {
   useEffect(() => {
     if (isAuthenticated()) hasBooked(property, setBooked);
 
-    getAllRatings(property, setReviews);
+    getAllPropertyRatings(property, setReviews);
   }, [property]);
 
   useEffect(() => {
@@ -182,9 +182,9 @@ const Ratings = ({ property }) => {
             <button
               className="btn btn-primary"
               onClick={() => {
-                addratings(model, (data) => {
+                addPropertyratings(model, (data) => {
                   setModel(data);
-                  getAllRatings(property, setReviews);
+                  getAllPropertyRatings(property, setReviews);
                 });
               }}
             >

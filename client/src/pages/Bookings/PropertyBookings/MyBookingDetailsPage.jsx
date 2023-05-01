@@ -8,10 +8,10 @@ import {
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import {
-  addComment,
-  cancelRequest,
-  getBookingDetails,
-} from "../../../services/booking.service";
+  addCommentToPropertyBooking,
+  cancelPropertyRequest,
+  getPropertyBookingDetails,
+} from "../../../services/property-booking.service";
 import { generateImagePath } from "../../../utils/utils";
 const MyBookingDetailsPage = () => {
   let { id } = useParams();
@@ -20,17 +20,17 @@ const MyBookingDetailsPage = () => {
   const [details, setDetails] = useState({});
 
   const addNewComment = () => {
-    addComment(id, comment, (data) => {
+    addCommentToPropertyBooking(id, comment, (data) => {
       setComment("");
       setDetails(data);
     });
   };
   const cancelBooking = () => {
-    cancelRequest(id, setDetails);
+    cancelPropertyRequest(id, setDetails);
   };
 
   useEffect(() => {
-    getBookingDetails(id, setDetails);
+    getPropertyBookingDetails(id, setDetails);
   }, []);
 
   return (

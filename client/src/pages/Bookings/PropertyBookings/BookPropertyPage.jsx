@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getRentalDetails } from "../../../services/listings.service";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { bookProperty } from "../../../services/booking.service";
+import { bookProperty } from "../../../services/property-booking.service";
 import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
 
 const BookPropertyPage = () => {

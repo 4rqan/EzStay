@@ -14,13 +14,13 @@ export const bookWorker = (model, navigate) => {
     });
 };
 
-export const getBookingById = (id, cb) => {
+export const getServiceBookingById = (id, cb) => {
   axios.get("/api/workerbookings/" + id).then(({ data }) => {
     cb(data);
   });
 };
 
-export const getBookingsForUser = (cb) => {
+export const getServiceBookingsForUser = (cb) => {
   axios.get("/api/servicebookings").then(({ data }) => {
     cb(data);
   });
@@ -32,7 +32,7 @@ export const getBookingsForWorker = (cb) => {
   });
 };
 
-export const addComment = (id, comment, cb) => {
+export const addCommentToServiceBooking = (id, comment, cb) => {
   axios
     .post("/api/workerbooking/addComment", { id, comment })
     .then(({ data }) => {
@@ -41,16 +41,26 @@ export const addComment = (id, comment, cb) => {
     });
 };
 
-export const cancelRequest = (id, cb) => {
+export const cancelServiceRequest = (id, cb) => {
   axios.post("/api/workerbooking/cancel", { id }).then(({ data }) => {
     Swal.fire("Booking Cancelled");
     cb(data);
   });
 };
 
-export const processRequest = (model, cb) => {
+export const processServiceRequest = (model, cb) => {
   axios
     .post("/api/workerbooking/process", model)
+    .then(({ data }) => {
+      Swal.fire("Status updated.");
+      cb(data);
+    })
+    .catch(showError);
+};
+
+export const completeWorkerBooking = (bookingId, cb) => {
+  axios
+    .post("/api/workerbooking/complete", { bookingId })
     .then(({ data }) => {
       Swal.fire("Status updated.");
       cb(data);

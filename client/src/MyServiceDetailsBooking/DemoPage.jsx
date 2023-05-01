@@ -2,50 +2,27 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import "./style.css";
 import {
-  addCommentToServiceBooking,
+  addComment,
   cancelServiceRequest,
-  completeWorkerBooking,
-  getServiceBookingById,
-} from "../../../services/worker-bookings.service";
+  getBookingById,
+} from "../services/worker-bookings.service";
 import useRazorpay from "react-razorpay";
 import { useParams } from "react-router-dom";
-import { generateImagePath } from "../../../utils/utils";
-import { capturePayment, createOrder } from "../../../services/payment.service";
+import { generateImagePath } from "../utils/utils";
+import { capturePayment, createOrder } from "../services/payment.service";
 import Moment from "react-moment";
-import { Form, Modal } from "react-bootstrap";
-import { getPaymentAccountByProfileId } from "../../../services/payment-account.service";
-const MyServiceBookingDetailsPage = () => {
+function DemoPage() {
   const { id } = useParams();
   const [data, setData] = useState(null);
-
-  const [paymentAccount, setPaymentAccount] = useState(null);
-
-  const [showPayNowModal, setShowPayNowModal] = useState(false);
-  const handleClose = () => {
-    setShowPayNowModal(false);
-  };
-
   useEffect(() => {
-    getBooking();
+    getBookingById(id, setData);
   }, [id]);
-
-  const getBooking = () => {
-    getServiceBookingById(id, setData);
-  };
-
-  useEffect(() => {
-    if (data?.worker?.profileId?._id)
-      getPaymentAccountByProfileId(
-        data?.worker?.profileId?._id,
-        setPaymentAccount
-      );
-  }, [data?.worker?.profileId?._id]);
 
   const RazorPay = useRazorpay();
 
   const [comment, setComment] = useState("");
   const addNewComment = () => {
-    addCommentToServiceBooking(id, comment, (data) => {
+    addComment(id, comment, (data) => {
       setComment("");
       setData(data);
     });
@@ -54,18 +31,11 @@ const MyServiceBookingDetailsPage = () => {
     cancelServiceRequest(id, setData);
   };
 
-  const complete = () => {
-    completeWorkerBooking(id, () => {
-      getBooking();
-      handleClose();
-    });
-  };
-
   const handlePayment = useCallback(async () => {
-    if (paymentAccount) {
+    if (data) {
       const { data: order } = await createOrder({ bookingId: id });
       const options = {
-        key: paymentAccount.keyId,
+        key: "rzp_test_NWRvt7rB4wHiAZ",
         amount: order.amount,
         currency: order.currency,
         name: data.worker?.profileId?.fullname,
@@ -79,8 +49,7 @@ const MyServiceBookingDetailsPage = () => {
             bookingId: id,
           });
 
-          getBooking();
-          handleClose();
+          getBookingById(id, setData);
         },
         prefill: {
           name: data.bookedBy?.fullname,
@@ -108,11 +77,8 @@ const MyServiceBookingDetailsPage = () => {
         <div className="row mt-3 justify-content-end">
           {data.status === "confirmed" && (
             <div className="col-md-2">
-              <button
-                className="btn btn-primary"
-                onClick={() => setShowPayNowModal(true)}
-              >
-                Complete the Booking
+              <button className="btn btn-primary" onClick={handlePayment}>
+                Pay Now
               </button>
             </div>
           )}
@@ -127,7 +93,7 @@ const MyServiceBookingDetailsPage = () => {
             </div>
           )}
         </div>
-        <div className="booking-details-header mt-2">
+        <div className="booking-details-header mt-5">
           <img src={generateImagePath(data.worker?.imagePath)} alt="Worker" />
           <div className="booking-details-header-info">
             <h1>{data.worker?.profileId?.fullname}</h1>
@@ -139,33 +105,15 @@ const MyServiceBookingDetailsPage = () => {
         <div className="row mt-5 p-5">
           <div className="booking-details-content col-md-5">
             <div className="booking-details-info ">
-              <div class="form-field">
-                <span class="label">Start Date:</span>
-                <span class="value">
-                  <Moment format="d-MMM-yyyy">{data.startDate}</Moment>
-                </span>
-              </div>
-              <div class="form-field">
-                <span class="label">No. of Days:</span>
-                <span class="value">{data.noOfDays}</span>
-              </div>
-              <div class="form-field">
-                <span class="label">Work Type:</span>
-                <span class="value">{data.workType}</span>
-              </div>
-              <div class="form-field">
-                <span class="label">Location:</span>
-                <span class="value">{data.location}</span>
-              </div>
-              <div class="form-field">
-                <span class="label">Booking Status:</span>
-                <span class="value">{data.status}</span>
-              </div>
-
-              <div class="form-field">
-                <span class="label">Payment Status:</span>
-                <span class="value">{data.paymentStatus}</span>
-              </div>
+              <p>
+                Start Date:{" "}
+                <Moment format="d-MMM-yyyy">{data.startDate}</Moment>
+              </p>
+              <p>No. of Days: {data.noOfDays}</p>
+              <p>Work Type: {data.workType}</p>
+              <p>Location: {data.location}</p>
+              <p>Booking Status: {data.status}</p>
+              <p>Payment Status: {data.paymentStatus}</p>
             </div>
           </div>
           <div className="booking-details-comments col-md-7">
@@ -223,39 +171,9 @@ const MyServiceBookingDetailsPage = () => {
             )}
           </div>
         </div>
-        <Modal show={showPayNowModal} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Complete Booking</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="row">
-              {paymentAccount && (
-                <div className="col-md-6">
-                  <button className="btn btn-primary" onClick={handlePayment}>
-                    Pay Now and Complete
-                  </button>
-                </div>
-              )}
-              <div className="col-md-6">
-                <button className="btn btn-primary" onClick={complete}>
-                  Pay Later and Complete
-                </button>
-              </div>
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              onClick={handleClose}
-            >
-              Close
-            </button>
-          </Modal.Footer>
-        </Modal>
       </div>
     )
   );
-};
+}
 
-export default MyServiceBookingDetailsPage;
+export default DemoPage;

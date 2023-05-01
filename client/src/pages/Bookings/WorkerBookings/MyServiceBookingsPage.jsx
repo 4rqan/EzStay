@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getBookingsForUser } from "../../../services/worker-bookings.service";
+import { getServiceBookingsForUser } from "../../../services/worker-bookings.service";
 import { generateImagePath } from "../../../utils/utils";
 import { Link } from "react-router-dom";
 import "../../../css/myservices-style.css";
@@ -8,7 +8,7 @@ import Moment from "react-moment";
 const MyServiceBookingsPage = () => {
   const [list, setList] = useState([]);
   useEffect(() => {
-    getBookingsForUser(setList);
+    getServiceBookingsForUser(setList);
   }, []);
   return (
     <div>

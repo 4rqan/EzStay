@@ -8,10 +8,10 @@ import {
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import {
-  addComment,
-  getBookingDetails,
-  processRequest,
-} from "../../services/booking.service";
+  addCommentToPropertyBooking,
+  getPropertyBookingDetails,
+  processPropertyRequest,
+} from "../../services/property-booking.service";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Swal from "sweetalert2";
@@ -29,7 +29,7 @@ const BookingDetailsPage = () => {
     id,
   });
   const addNewComment = () => {
-    addComment(id, comment, (data) => {
+    addCommentToPropertyBooking(id, comment, (data) => {
       setComment("");
       setDetails(data);
     });
@@ -58,7 +58,7 @@ const BookingDetailsPage = () => {
       model.price = 0;
     }
 
-    processRequest(model, (data) => {
+    processPropertyRequest(model, (data) => {
       handleClose();
       setDetails(data);
       setModel({ status: "", price: 0, comment: "", id });
@@ -66,7 +66,7 @@ const BookingDetailsPage = () => {
   };
 
   useEffect(() => {
-    getBookingDetails(id, setDetails);
+    getPropertyBookingDetails(id, setDetails);
   }, []);
 
   return (

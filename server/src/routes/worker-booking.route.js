@@ -134,6 +134,17 @@ route.post("/workerbooking/process", requireAuth, async (req, res) => {
   res.send(await getBookingById(id));
 });
 
+route.post("/workerbooking/complete", requireAuth, async (req, res) => {
+  //To Do : Do neccessary Validation
+
+  const { bookingId } = req.body;
+  const workerBooking = await WorkerBooking.findById(bookingId);
+  workerBooking.status = "completed";
+  workerBooking.paymentStatus = "paid";
+  await workerBooking.save();
+  res.send(workerBooking);
+});
+
 const getBookingById = async (id) => {
   const booking = await WorkerBooking.findById(id)
     .populate({

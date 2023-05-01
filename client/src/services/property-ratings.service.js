@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 import axios from "../utils/axios_client";
 import { showError } from "../utils/utils";
 
-export const addratings = (model, cb) => {
+export const addPropertyratings = (model, cb) => {
   axios
     .post("/api//property/addratings", model)
     .then(({ data }) => {
@@ -21,7 +21,7 @@ export const getMyPropertyRatings = (id, cb) => {
     .catch(showError);
 };
 
-export const getAllRatings = (property, cb) => {
+export const getAllPropertyRatings = (property, cb) => {
   axios
     .get("/api/property/getallreviews/" + property)
     .then(({ data }) => {

@@ -20,33 +20,33 @@ export const bookingsForLandlord = (cb) => {
   });
 };
 
-export const bookingsForUser = (cb) => {
+export const propertyBookingsForUser = (cb) => {
   axios.get("/api/bookingsForUser").then(({ data }) => {
     cb(data);
   });
 };
 
-export const getBookingDetails = (id, cb) => {
+export const getPropertyBookingDetails = (id, cb) => {
   axios.get("/api/bookings/" + id).then(({ data }) => {
     cb(data);
   });
 };
 
-export const addComment = (id, comment, cb) => {
+export const addCommentToPropertyBooking = (id, comment, cb) => {
   axios.post("/api/addComment", { id, comment }).then(({ data }) => {
     Swal.fire("Comment added.");
     cb(data);
   });
 };
 
-export const cancelRequest = (id, cb) => {
+export const cancelPropertyRequest = (id, cb) => {
   axios.post("/api/cancelRequest", { id }).then(({ data }) => {
     Swal.fire("Booking Cancelled");
     cb(data);
   });
 };
 
-export const processRequest = (model, cb) => {
+export const processPropertyRequest = (model, cb) => {
   axios.post("/api/processRequest", model).then(({ data }) => {
     Swal.fire("Status updated.");
     cb(data);

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  addComment,
-  getBookingById,
-  processRequest,
+  addCommentToServiceBooking,
+  getServiceBookingById,
+  processServiceRequest,
 } from "../../services/worker-bookings.service";
 import { generateImagePath } from "../../utils/utils";
 import Moment from "react-moment";
@@ -15,12 +15,12 @@ const WorkerBookingDetailsPage = () => {
   const { id } = useParams();
   const [data, setData] = useState({});
   useEffect(() => {
-    getBookingById(id, setData);
+    getServiceBookingById(id, setData);
   }, [id]);
 
   const [comment, setComment] = useState("");
   const addNewComment = () => {
-    addComment(id, comment, (data) => {
+    addCommentToServiceBooking(id, comment, (data) => {
       setComment("");
       setData(data);
     });
@@ -60,7 +60,7 @@ const WorkerBookingDetailsPage = () => {
       model.price = 0;
     }
 
-    processRequest(model, (data) => {
+    processServiceRequest(model, (data) => {
       handleClose();
       setData(data);
       setModel({ status: "", price: 0, comment: "", id });
