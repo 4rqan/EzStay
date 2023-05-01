@@ -37,8 +37,6 @@ export const isLoggedIn = () => {
   return !isExpired(getToken());
 };
 
-export const apiUrl = "http://localhost:4000/";
-
 export const generateImagePath = (filePath) => {
   if (filePath) return "/" + filePath;
   return "/logo192.png";
