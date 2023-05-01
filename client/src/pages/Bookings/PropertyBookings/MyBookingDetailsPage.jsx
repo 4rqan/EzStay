@@ -1,23 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Card,
   Container,
   ListGroup,
   ListGroupItem,
+  Modal,
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import {
   addCommentToPropertyBooking,
   cancelPropertyRequest,
+  completePropertyBooking,
   getPropertyBookingDetails,
 } from "../../../services/property-booking.service";
 import { generateImagePath } from "../../../utils/utils";
+import { getPaymentAccountByProfileId } from "../../../services/payment-account.service";
+import {
+  capturePropertyPayment,
+  createPropertyOrder,
+} from "../../../services/payment.service";
+import useRazorpay from "react-razorpay";
 const MyBookingDetailsPage = () => {
   let { id } = useParams();
 
   const [comment, setComment] = useState("");
   const [details, setDetails] = useState({});
+
+  const [paymentAccount, setPaymentAccount] = useState(null);
+
+  const [showPayNowModal, setShowPayNowModal] = useState(false);
+  const RazorPay = useRazorpay();
+  const [payMethod, setPayMethod] = useState("later");
+  const handleClose = () => {
+    setShowPayNowModal(false);
+  };
 
   const addNewComment = () => {
     addCommentToPropertyBooking(id, comment, (data) => {
@@ -25,13 +42,76 @@ const MyBookingDetailsPage = () => {
       setDetails(data);
     });
   };
+
+  useEffect(() => {
+    if (details?.property?.owner)
+      getPaymentAccountByProfileId(details?.property?.owner, setPaymentAccount);
+  }, [details?.property?.owner]);
+
   const cancelBooking = () => {
     cancelPropertyRequest(id, setDetails);
   };
 
   useEffect(() => {
+    getBooking();
+  }, [id]);
+
+  const getBooking = () => {
     getPropertyBookingDetails(id, setDetails);
-  }, []);
+  };
+
+  const complete = () => {
+    if (payMethod == "later") {
+      completePropertyBooking(id, () => {
+        getBooking();
+        handleClose();
+      });
+    } else {
+      handlePayment();
+    }
+  };
+
+  const handlePayment = useCallback(async () => {
+    if (paymentAccount) {
+      const { data: order } = await createPropertyOrder({ bookingId: id });
+      const options = {
+        key: paymentAccount.keyId,
+        amount: order.amount,
+        currency: order.currency,
+        name: details.property?.title,
+        description: "Booked the property " + details.property?.title,
+        image: generateImagePath(details.property?.imageUrls[0].imagePath),
+        order_id: order.id,
+        handler: async (response) => {
+          await capturePropertyPayment({
+            paymentId: response.razorpay_payment_id,
+            orderId: order.id,
+            bookingId: id,
+          });
+
+          getBooking();
+          handleClose();
+        },
+        prefill: {
+          name: details.bookedBy?.fullname,
+          email: details.bookedBy?.email,
+          contact: details.bookedBy?.contactNo,
+        },
+        notes: {
+          address: details.bookedBy?.address?.address1,
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+
+      const rzpay = new RazorPay(options);
+      rzpay.on("payment.failed", async (response) => {
+        //write failure Logic
+      });
+      rzpay.open();
+    }
+  }, [RazorPay, paymentAccount]);
 
   return (
     <Container>
@@ -103,7 +183,12 @@ const MyBookingDetailsPage = () => {
               </button>
             )}
             {details.status === "confirmed" && (
-              <button className="btn btn-primary">Pay Advance</button>
+              <button
+                className="btn btn-primary"
+                onClick={() => setShowPayNowModal(true)}
+              >
+                Complete the Booking
+              </button>
             )}
           </div>
 
@@ -188,6 +273,56 @@ const MyBookingDetailsPage = () => {
           </div>
         </div>
       </div>
+
+      <Modal show={showPayNowModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Complete Booking</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="row">
+            <div className="ml-3">
+              <input
+                type="radio"
+                className="form-check-input"
+                name="payWhen"
+                id="payLater"
+                value={payMethod}
+                onChange={() => {
+                  setPayMethod("later");
+                }}
+              />
+              <label className="form-check-label" htmlFor="payLater">
+                Pay Later
+              </label>
+            </div>
+            {paymentAccount && (
+              <div className="ml-3">
+                <input
+                  type="radio"
+                  className="form-check-input"
+                  name="payWhen"
+                  id="payNow"
+                  value={payMethod}
+                  onChange={() => {
+                    setPayMethod("now");
+                  }}
+                />
+                <label className="form-check-label" htmlFor="payNow">
+                  Pay Now
+                </label>
+              </div>
+            )}
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <button className="btn btn-primary" onClick={complete}>
+            Complete Booking
+          </button>
+          <button type="button" class="btn btn-secondary" onClick={handleClose}>
+            Close
+          </button>
+        </Modal.Footer>
+      </Modal>
 
       <Card>
         <Card.Body>

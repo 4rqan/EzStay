@@ -32,6 +32,10 @@ export const AuthProvider = ({ children }) => {
     return user?.username;
   };
 
+  const getUserId = () => {
+    return user?.profileId;
+  };
+
   // call this function to sign out logged in user
   const logout = () => {
     setUser(null);
@@ -46,10 +50,10 @@ export const AuthProvider = ({ children }) => {
     return isInRole("Admin");
   };
 
-  const isInRole = (role) => {
+  const isInRole = (...roles) => {
     if (!isAuthenticated()) return false;
     const payload = decodeToken(user?.token);
-    return payload.role === role;
+    return roles.includes(payload.role);
   };
 
   const value = useMemo(
@@ -62,6 +66,7 @@ export const AuthProvider = ({ children }) => {
       isInRole,
       loginWithoutRedirecting,
       getUsername,
+      getUserId,
     }),
     [user]
   );

@@ -13,7 +13,7 @@ const WorkerDetailsPage = () => {
   const [showBookNowModal, setShowBookNowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, getUserId } = useAuth();
 
   const handleBookNowClick = () => {
     if (isAuthenticated()) {
@@ -78,22 +78,24 @@ const WorkerDetailsPage = () => {
           <span>Pincode:</span> <span>{data.profileId?.address?.pincode}</span>
         </div>
       </div>
-      <div className="worker-book-now">
-        <button onClick={handleBookNowClick}>Book Now</button>
-        <LoginModal
-          show={showLoginModal}
-          onClose={() => setShowLoginModal(false)}
-          onLogin={() => {
-            setShowLoginModal(false);
-            setShowBookNowModal(true);
-          }}
-        />
-        <WorkerBookNowComponet
-          workerId={id}
-          show={showBookNowModal}
-          onClose={() => setShowBookNowModal(false)}
-        />
-      </div>
+      {getUserId() != data.profileId?._id && (
+        <div className="worker-book-now">
+          <button onClick={handleBookNowClick}>Book Now</button>
+          <LoginModal
+            show={showLoginModal}
+            onClose={() => setShowLoginModal(false)}
+            onLogin={() => {
+              setShowLoginModal(false);
+              setShowBookNowModal(true);
+            }}
+          />
+          <WorkerBookNowComponet
+            workerId={id}
+            show={showBookNowModal}
+            onClose={() => setShowBookNowModal(false)}
+          />
+        </div>
+      )}
     </div>
   );
 };

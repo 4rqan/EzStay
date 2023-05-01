@@ -7,7 +7,7 @@ const {
   deleteFileAsync,
   uploadSingle,
 } = require("../utils/utils");
-const Booking = require("../models/booking.model");
+const Booking = require("../models/property-booking.model");
 
 const folderName = "rentalImages";
 const upload = uploadMultiple("files", folderName);

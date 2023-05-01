@@ -62,7 +62,7 @@ export const completeWorkerBooking = (bookingId, cb) => {
   axios
     .post("/api/workerbooking/complete", { bookingId })
     .then(({ data }) => {
-      Swal.fire("Status updated.");
+      Swal.fire("Booking completed.");
       cb(data);
     })
     .catch(showError);

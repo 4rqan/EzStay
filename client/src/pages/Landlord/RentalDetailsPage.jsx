@@ -117,12 +117,7 @@ const RentalDetailsPage = () => {
             <div className="row">
               <Form.Group className="mb-3 col-md-2" controlId="formState">
                 <Form.Label>State</Form.Label>
-                <Form.Select
-                  onChange={(e) => {
-                    console.log(e);
-                  }}
-                  {...register("address.state", { required: true })}
-                >
+                <Form.Select {...register("address.state", { required: true })}>
                   <option value="">Select State</option>
                   {states.map((item) => {
                     return (
@@ -140,12 +135,7 @@ const RentalDetailsPage = () => {
 
               <Form.Group className="mb-3 col-md-2" controlId="formCity">
                 <Form.Label>City</Form.Label>
-                <Form.Select
-                  onChange={(e) => {
-                    console.log(e);
-                  }}
-                  {...register("address.city", { required: true })}
-                >
+                <Form.Select {...register("address.city", { required: true })}>
                   <option value="">Select Cities</option>
                   {cities.map((item) => {
                     return (

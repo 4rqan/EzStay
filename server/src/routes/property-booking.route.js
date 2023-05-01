@@ -1,24 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const Booking = require("../models/booking.model");
+const PropertyBooking = require("../models/property-booking.model");
 const Property = require("../models/rental-listings.model");
 const requireAuth = require("../middlewares/requireAuth");
 const { sendMail } = require("../utils/utils");
 
-router.post("/bookings", requireAuth, async (req, res) => {
+router.post("/property/bookings", requireAuth, async (req, res) => {
   const { propertyId, checkIn, checkOut, totalGuests, comment } = req.body;
 
   if (!propertyId) return res.status(400).send("propertyId is required");
   if (!checkIn) return res.status(400).send("checkIn is required");
   if (!checkOut) return res.status(400).send("checkOut is required");
 
-  const count = await Booking.countDocuments({
+  const count = await PropertyBooking.countDocuments({
     property: propertyId,
     bookedBy: req.user.profileId,
   });
   if (count > 0) return res.status(400).send("Already booked");
 
-  const booking = new Booking({
+  const booking = new PropertyBooking({
     bookedBy: req.user.profileId,
     property: propertyId,
     checkIn,
@@ -49,12 +49,12 @@ router.post("/bookings", requireAuth, async (req, res) => {
   return res.send(booking);
 });
 
-router.get("/bookingsForLandlord", requireAuth, async (req, res) => {
+router.get("/property/bookingsForLandlord", requireAuth, async (req, res) => {
   if (req.user.role != "Landlord")
     return res
       .status(401)
       .send("You don't have permission to access this feature");
-  Booking.find()
+  PropertyBooking.find()
     .populate({
       path: "property",
     })
@@ -74,8 +74,8 @@ router.get("/bookingsForLandlord", requireAuth, async (req, res) => {
     });
 });
 
-router.get("/bookingsForUser", requireAuth, async (req, res) => {
-  const bookings = await Booking.find({
+router.get("/property/bookingsForUser", requireAuth, async (req, res) => {
+  const bookings = await PropertyBooking.find({
     bookedBy: req.user.profileId,
   }).populate({
     path: "property",
@@ -84,16 +84,14 @@ router.get("/bookingsForUser", requireAuth, async (req, res) => {
       select: ["fullname"],
     },
   });
-
-  console.log(bookings);
   res.send(bookings);
 });
 
-router.get("/bookings/:id", requireAuth, async (req, res) => {
-  const booking = await Booking.findById(req.params.id)
+router.get("/property/bookings/:id", requireAuth, async (req, res) => {
+  const booking = await PropertyBooking.findById(req.params.id)
     .populate({
       path: "bookedBy",
-      select: ["email", "fullname"],
+      select: ["email", "fullname", "address", "contactNo"],
     })
     .populate({
       path: "property",
@@ -103,7 +101,7 @@ router.get("/bookings/:id", requireAuth, async (req, res) => {
   res.send(booking);
 });
 
-router.post("/addComment", requireAuth, async (req, res) => {
+router.post("/property/addComment", requireAuth, async (req, res) => {
   const { id, comment } = req.body;
 
   const newComment = {
@@ -111,10 +109,10 @@ router.post("/addComment", requireAuth, async (req, res) => {
     comment,
   };
 
-  const booking = await Booking.findById(id);
+  const booking = await PropertyBooking.findById(id);
   booking.comments.push(newComment);
   await booking.save();
-  const newBooking = await Booking.findById(id)
+  const newBooking = await PropertyBooking.findById(id)
     .populate({
       path: "bookedBy",
       select: ["email", "fullname"],
@@ -127,14 +125,14 @@ router.post("/addComment", requireAuth, async (req, res) => {
   res.send(newBooking);
 });
 
-router.post("/cancelRequest", requireAuth, async (req, res) => {
+router.post("/property/cancelRequest", requireAuth, async (req, res) => {
   const { id } = req.body;
-  const booking = await Booking.findById(id);
+  const booking = await PropertyBooking.findById(id);
 
   booking.status = "cancelled";
   await booking.save();
 
-  const newBooking = await Booking.findById(id)
+  const newBooking = await PropertyBooking.findById(id)
     .populate({
       path: "bookedBy",
       select: ["email", "fullname"],
@@ -147,9 +145,9 @@ router.post("/cancelRequest", requireAuth, async (req, res) => {
   res.send(newBooking);
 });
 
-router.post("/processRequest", requireAuth, async (req, res) => {
+router.post("/property/processRequest", requireAuth, async (req, res) => {
   const { id, price, status, comment } = req.body;
-  const booking = await Booking.findById(id);
+  const booking = await PropertyBooking.findById(id);
   if (comment) {
     const newComment = {
       userId: req.user.profileId,
@@ -162,7 +160,7 @@ router.post("/processRequest", requireAuth, async (req, res) => {
   booking.status = status;
 
   await booking.save();
-  const newBooking = await Booking.findById(id)
+  const newBooking = await PropertyBooking.findById(id)
     .populate({
       path: "bookedBy",
       select: ["email", "fullname"],
@@ -177,12 +175,23 @@ router.post("/processRequest", requireAuth, async (req, res) => {
 
 router.get("/property/hasbooked/:property", requireAuth, async (req, res) => {
   const { property } = req.params;
-  const count = await Booking.countDocuments({
+  const count = await PropertyBooking.countDocuments({
     property,
     bookedBy: req.user.profileId,
   });
 
   res.send({ hasBooked: count > 0 });
+});
+
+router.post("/propertybooking/complete", requireAuth, async (req, res) => {
+  //To Do : Do neccessary Validation
+
+  const { bookingId } = req.body;
+  const propertyBooking = await PropertyBooking.findById(bookingId);
+  propertyBooking.status = "completed";
+  propertyBooking.paymentStatus = "pay later";
+  await propertyBooking.save();
+  res.send(propertyBooking);
 });
 
 module.exports = router;

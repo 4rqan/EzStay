@@ -6,7 +6,10 @@ const WorkerBooking = require("../models/worker-booking.model");
 const WorkerPayment = require("../models/worker-payment.model");
 const PaymentAccount = require("../models/payment-account.model");
 
-route.post("/payment/createorder", requireAuth, async (req, res) => {
+const PropertyBooking = require("../models/property-booking.model");
+const PropertyPayment = require("../models/property-payment.model");
+
+route.post("/service/payment/createorder", requireAuth, async (req, res) => {
   try {
     const { bookingId } = req.body;
 
@@ -53,7 +56,7 @@ route.post("/payment/createorder", requireAuth, async (req, res) => {
   }
 });
 
-route.post("/payment/capture", requireAuth, async (req, res) => {
+route.post("/service/payment/capture", requireAuth, async (req, res) => {
   try {
     const { paymentId, bookingId, orderId } = req.body;
 
@@ -98,6 +101,109 @@ route.post("/payment/capture", requireAuth, async (req, res) => {
     workerBooking.status = "completed";
     workerBooking.paymentStatus = "paid";
     await workerBooking.save();
+
+    res.json(payment);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+route.post("/property/payment/createorder", requireAuth, async (req, res) => {
+  try {
+    const { bookingId } = req.body;
+
+    const booking = await PropertyBooking.findById(bookingId).populate(
+      "property"
+    );
+    if (booking.status != "confirmed") {
+      return res.status(400).send("Payment cannot be created");
+    }
+
+    const paymentAccount = await PaymentAccount.findOne({
+      profile: booking.property.owner,
+    });
+
+    if (!paymentAccount) {
+      return res.status(400).send("Worker doesn't have payment account");
+    }
+
+    const instance = getRazorPayInstance(
+      paymentAccount.keyId,
+      paymentAccount.keySecret
+    );
+
+    const options = {
+      amount: booking.totalPrice * 100,
+      currency: "INR",
+      receipt: bookingId,
+    };
+
+    const order = await instance.orders.create(options);
+
+    if (!order) return res.status(500).send("Some error occured");
+
+    const propertyPayment = new PropertyPayment({
+      booking: bookingId,
+      paymentMode: "online",
+      createdOn: Date.now(),
+      razorPayOrderId: order.id,
+      status: "created",
+    });
+    await propertyPayment.save();
+
+    res.json(order);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+route.post("/property/payment/capture", requireAuth, async (req, res) => {
+  try {
+    const { paymentId, bookingId, orderId } = req.body;
+
+    const booking = await PropertyBooking.findById(bookingId).populate(
+      "property"
+    );
+    if (booking.status != "confirmed") {
+      return res.status(400).send("Payment cannot be captured");
+    }
+
+    const paymentAccount = await PaymentAccount.findOne({
+      profile: booking.property.owner,
+    });
+
+    if (!paymentAccount) {
+      return res.status(400).send("Worker doesn't have payment account");
+    }
+
+    const instance = getRazorPayInstance(
+      paymentAccount.keyId,
+      paymentAccount.keySecret
+    );
+    const order = await instance.orders.fetch(orderId);
+    const payment = await instance.payments.capture(
+      paymentId,
+      order.amount,
+      order.currency
+    );
+
+    if (!payment) return res.status(500).send("Some error occured");
+
+    const propertyPayment = await PropertyPayment.findOne({
+      razorPayOrderId: orderId,
+    });
+
+    propertyPayment.amountPaid = order.amount / 100;
+    propertyPayment.currency = order.currency;
+    propertyPayment.paidOn = Date.now();
+    propertyPayment.status = "captured";
+
+    await propertyPayment.save();
+
+    const propertyBooking = await PropertyBooking.findById(bookingId);
+    propertyBooking.status = "completed";
+    propertyBooking.paymentStatus = "paid";
+    await propertyBooking.save();
 
     res.json(payment);
   } catch (error) {

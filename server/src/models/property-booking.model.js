@@ -22,7 +22,7 @@ const commentsSchema = new Schema({
   },
 });
 
-const bookingSchema = new Schema(
+const propertyBookingSchema = new Schema(
   {
     property: {
       type: Schema.Types.ObjectId,
@@ -51,7 +51,7 @@ const bookingSchema = new Schema(
     },
     paymentStatus: {
       type: String,
-      enum: ["pending", "paid"],
+      enum: ["pending", "pay later", "paid"],
       default: "pending",
     },
     cancelled: {
@@ -71,4 +71,4 @@ const bookingSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Booking", bookingSchema);
+module.exports = mongoose.model("PropertyBooking", propertyBookingSchema);

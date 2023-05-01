@@ -55,7 +55,7 @@ const workerBookingSchema = new Schema(
     },
     paymentStatus: {
       type: String,
-      enum: ["pending", "paid"],
+      enum: ["pending", "pay later", "paid"],
       default: "pending",
     },
     cancelled: {

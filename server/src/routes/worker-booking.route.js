@@ -140,7 +140,7 @@ route.post("/workerbooking/complete", requireAuth, async (req, res) => {
   const { bookingId } = req.body;
   const workerBooking = await WorkerBooking.findById(bookingId);
   workerBooking.status = "completed";
-  workerBooking.paymentStatus = "paid";
+  workerBooking.paymentStatus = "pay later";
   await workerBooking.save();
   res.send(workerBooking);
 });

@@ -10,7 +10,10 @@ import {
 import useRazorpay from "react-razorpay";
 import { useParams } from "react-router-dom";
 import { generateImagePath } from "../../../utils/utils";
-import { capturePayment, createOrder } from "../../../services/payment.service";
+import {
+  captureServicePayment,
+  createServiceOrder,
+} from "../../../services/payment.service";
 import Moment from "react-moment";
 import { Form, Modal } from "react-bootstrap";
 import { getPaymentAccountByProfileId } from "../../../services/payment-account.service";
@@ -44,26 +47,32 @@ const MyServiceBookingDetailsPage = () => {
   const RazorPay = useRazorpay();
 
   const [comment, setComment] = useState("");
+  const [payMethod, setPayMethod] = useState("later");
   const addNewComment = () => {
     addCommentToServiceBooking(id, comment, (data) => {
       setComment("");
       setData(data);
     });
   };
+
   const cancelBooking = () => {
     cancelServiceRequest(id, setData);
   };
 
   const complete = () => {
-    completeWorkerBooking(id, () => {
-      getBooking();
-      handleClose();
-    });
+    if (payMethod == "later") {
+      completeWorkerBooking(id, () => {
+        getBooking();
+        handleClose();
+      });
+    } else {
+      handlePayment();
+    }
   };
 
   const handlePayment = useCallback(async () => {
     if (paymentAccount) {
-      const { data: order } = await createOrder({ bookingId: id });
+      const { data: order } = await createServiceOrder({ bookingId: id });
       const options = {
         key: paymentAccount.keyId,
         amount: order.amount,
@@ -73,7 +82,7 @@ const MyServiceBookingDetailsPage = () => {
         image: generateImagePath(data.worker?.imagePath),
         order_id: order.id,
         handler: async (response) => {
-          await capturePayment({
+          await captureServicePayment({
             paymentId: response.razorpay_payment_id,
             orderId: order.id,
             bookingId: id,
@@ -101,7 +110,8 @@ const MyServiceBookingDetailsPage = () => {
       });
       rzpay.open();
     }
-  }, [RazorPay, data]);
+  }, [RazorPay, paymentAccount]);
+
   return (
     data && (
       <div className="booking-details-container">
@@ -229,21 +239,44 @@ const MyServiceBookingDetailsPage = () => {
           </Modal.Header>
           <Modal.Body>
             <div className="row">
+              <div className="ml-3">
+                <input
+                  type="radio"
+                  className="form-check-input"
+                  name="payWhen"
+                  id="payLater"
+                  value={payMethod}
+                  onChange={() => {
+                    setPayMethod("later");
+                  }}
+                />
+                <label className="form-check-label" htmlFor="payLater">
+                  Pay Later
+                </label>
+              </div>
               {paymentAccount && (
-                <div className="col-md-6">
-                  <button className="btn btn-primary" onClick={handlePayment}>
-                    Pay Now and Complete
-                  </button>
+                <div className="ml-3">
+                  <input
+                    type="radio"
+                    className="form-check-input"
+                    name="payWhen"
+                    id="payNow"
+                    value={payMethod}
+                    onChange={() => {
+                      setPayMethod("now");
+                    }}
+                  />
+                  <label className="form-check-label" htmlFor="payNow">
+                    Pay Now
+                  </label>
                 </div>
               )}
-              <div className="col-md-6">
-                <button className="btn btn-primary" onClick={complete}>
-                  Pay Later and Complete
-                </button>
-              </div>
             </div>
           </Modal.Body>
           <Modal.Footer>
+            <button className="btn btn-primary" onClick={complete}>
+              Complete Booking
+            </button>
             <button
               type="button"
               class="btn btn-secondary"
