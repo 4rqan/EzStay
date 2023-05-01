@@ -13,7 +13,7 @@ const workerRoute = require("./routes/worker.route");
 const workerBookingRoute = require("./routes/worker-booking.route");
 const paymentRoute = require("./routes/payment.route");
 const paymentAccountRoute = require("./routes/payment-account.route");
-const propertyRatingsRoute = require("./routes/property-raings.route");
+const propertyRatingsRoute = require("./routes/property-ratings.route");
 app.use(express.static("public/uploads"));
 app.use(express.json());
 
