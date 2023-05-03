@@ -1,13 +1,17 @@
-import { Dropdown } from "react-bootstrap";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-
+import { Dropdown, NavDropdown } from "react-bootstrap";
+import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-
 import { useAuth } from "../../contexts/AuthContext";
+import { EZDropdown, EZDropdownItem } from "../Reusables/EzDropdown/EzDropdown";
 
 const PrivateLayout = ({ children }) => {
+  const [showNavBar, setShowNavBar] = useState(false);
+
   const { logout, isAdmin, isInRole, getUsername } = useAuth();
+
+  const hideNavBar = () => {
+    setShowNavBar(false);
+  };
   return (
     <>
       <header className="">
@@ -21,6 +25,9 @@ const PrivateLayout = ({ children }) => {
             <button
               className="navbar-toggler"
               type="button"
+              onClick={() => {
+                setShowNavBar(!showNavBar);
+              }}
               data-toggle="collapse"
               data-target="#navbarResponsive"
               aria-controls="navbarResponsive"
@@ -29,15 +36,19 @@ const PrivateLayout = ({ children }) => {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
-            <div className="collapse navbar-collapse" id="navbarResponsive">
+            <div
+              className={!showNavBar ? "collapse navbar-collapse" : ""}
+              id="navbarResponsive"
+            >
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/">
+                  <NavLink className="nav-link" to="/" onClick={hideNavBar}>
                     Home
                   </NavLink>
                 </li>
                 <li className="nav-item">
                   <NavLink
+                    onClick={hideNavBar}
                     className="nav-link"
                     activeClassName="active"
                     to="/allproperties"
@@ -46,33 +57,28 @@ const PrivateLayout = ({ children }) => {
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <Dropdown>
-                    <Dropdown.Toggle
-                      className="nav-link"
-                      id="dropdown-basic"
-                      style={{
-                        color: "white",
-                        background: "transparent",
-                        border: "transparent",
-                      }}
+                  <NavDropdown title="My Bookings" menuVariant="dark">
+                    <NavDropdown.Item
+                      as={Link}
+                      to="/mybookings"
+                      onClick={hideNavBar}
                     >
-                      My Bookings
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item as={Link} to="/mybookings">
-                        Property Bookings
-                      </Dropdown.Item>
-                      <Dropdown.Item as={Link} to="/myservicebookings">
-                        Service Bookings
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
+                      Property Bookings
+                    </NavDropdown.Item>
+                    <NavDropdown.Item
+                      as={Link}
+                      to="/myservicebookings"
+                      onClick={hideNavBar}
+                    >
+                      Service Bookings
+                    </NavDropdown.Item>
+                  </NavDropdown>
                 </li>
                 {isAdmin() && (
                   <>
                     <li className="nav-item">
                       <NavLink
+                        onClick={hideNavBar}
                         className="nav-link"
                         to="/admin/users"
                         activeClassName="active"
@@ -84,80 +90,69 @@ const PrivateLayout = ({ children }) => {
                 )}
                 {isInRole("Landlord") && (
                   <>
-                    <Dropdown>
-                      <Dropdown.Toggle
-                        className="nav-link"
-                        id="dropdown-basic"
-                        style={{
-                          color: "white",
-                          background: "transparent",
-                          border: "transparent",
-                        }}
+                    <NavDropdown title="Landlord" menuVariant="dark">
+                      <NavDropdown.Item
+                        onClick={hideNavBar}
+                        as={Link}
+                        to="/landlord/addListings"
                       >
-                        Landlord
-                      </Dropdown.Toggle>
-
-                      <Dropdown.Menu>
-                        <Dropdown.Item as={Link} to="/landlord/addListings">
-                          Add Listings
-                        </Dropdown.Item>
-
-                        <Dropdown.Item to="/landlord/rentalListings" as={Link}>
-                          Rental Listings
-                        </Dropdown.Item>
-                        <Dropdown.Item to="/landlord/bookings" as={Link}>
-                          Lanlord Bookings
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
+                        Add Listings
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        to="/landlord/rentalListings"
+                        as={Link}
+                        onClick={hideNavBar}
+                      >
+                        Rental Listings
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        onClick={hideNavBar}
+                        to="/landlord/bookings"
+                        as={Link}
+                      >
+                        Lanlord Bookings
+                      </NavDropdown.Item>
+                    </NavDropdown>
                   </>
                 )}
                 {isInRole("Worker") && (
                   <>
-                    <Dropdown>
-                      <Dropdown.Toggle
-                        className="nav-link"
-                        id="dropdown-basic"
-                        style={{
-                          color: "white",
-                          background: "transparent",
-                          border: "transparent",
-                        }}
+                    <NavDropdown title="Worker" menuVariant="dark">
+                      <NavDropdown.Item
+                        onClick={hideNavBar}
+                        as={Link}
+                        to="/worker/mybookings"
                       >
-                        Worker
-                      </Dropdown.Toggle>
-
-                      <Dropdown.Menu>
-                        <Dropdown.Item as={Link} to="/worker/mybookings">
-                          My Bookings
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
+                        My Bookings
+                      </NavDropdown.Item>
+                    </NavDropdown>
                   </>
                 )}
-                <Dropdown>
-                  <Dropdown.Toggle
-                    className="nav-link"
-                    id="dropdown-basic"
-                    style={{
-                      color: "white",
-                      background: "transparent",
-                      border: "transparent",
+
+                <NavDropdown title={getUsername()} menuVariant="dark">
+                  <NavDropdown.Item
+                    onClick={hideNavBar}
+                    as={Link}
+                    to="/profile"
+                  >
+                    Profile
+                  </NavDropdown.Item>
+                  <NavDropdown.Item
+                    onClick={hideNavBar}
+                    as={Link}
+                    to="/changepassword"
+                  >
+                    Change Password
+                  </NavDropdown.Item>
+                  <NavDropdown.Item
+                    onClick={() => {
+                      hideNavBar();
+                      logout();
                     }}
                   >
-                    {getUsername()}
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item as={Link} to="/profile">
-                      Profile
-                    </Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/changepassword">
-                      Change Password
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
               </ul>
             </div>
           </div>

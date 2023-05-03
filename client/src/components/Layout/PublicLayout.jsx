@@ -7,9 +7,16 @@ import "../../assets/css/fontawesome.css";
 import "../../assets/css/templatemo-sixteen.css";
 import "../../assets/css/owl.css";
 import PrivateLayout from "./PrivateLayout";
+import { useState } from "react";
 
 const PublicLayout = ({ children }) => {
   const { isAuthenticated } = useAuth();
+
+  const [showNavBar, setShowNavBar] = useState(false);
+
+  const hideNavBar = () => {
+    setShowNavBar(false);
+  };
 
   if (isAuthenticated()) {
     return <PrivateLayout>{children}</PrivateLayout>;
@@ -28,6 +35,9 @@ const PublicLayout = ({ children }) => {
             <button
               className="navbar-toggler"
               type="button"
+              onClick={() => {
+                setShowNavBar(!showNavBar);
+              }}
               data-toggle="collapse"
               data-target="#navbarResponsive"
               aria-controls="navbarResponsive"
@@ -36,15 +46,24 @@ const PublicLayout = ({ children }) => {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
-            <div className="collapse navbar-collapse" id="navbarResponsive">
+            <div
+              className={!showNavBar ? "collapse navbar-collapse" : ""}
+              id="navbarResponsive"
+            >
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
-                  <NavLink className="nav-link" activeClassName="active" to="/">
+                  <NavLink
+                    onClick={hideNavBar}
+                    className="nav-link"
+                    activeClassName="active"
+                    to="/"
+                  >
                     Home
                   </NavLink>
                 </li>
                 <li className="nav-item">
                   <NavLink
+                    onClick={hideNavBar}
                     className="nav-link"
                     activeClassName="active"
                     to="/allproperties"
@@ -55,6 +74,7 @@ const PublicLayout = ({ children }) => {
                 <>
                   <li className="nav-item">
                     <NavLink
+                      onClick={hideNavBar}
                       className="nav-link"
                       activeClassName="active"
                       to="/login"
@@ -64,6 +84,7 @@ const PublicLayout = ({ children }) => {
                   </li>
                   <li className="nav-item">
                     <NavLink
+                      onClick={hideNavBar}
                       className="nav-link"
                       activeClassName="active"
                       to="/signup"
@@ -74,6 +95,7 @@ const PublicLayout = ({ children }) => {
                 </>
                 <li className="nav-item">
                   <NavLink
+                    onClick={hideNavBar}
                     className="nav-link"
                     to="/about"
                     activeClassName="active"
@@ -83,6 +105,7 @@ const PublicLayout = ({ children }) => {
                 </li>
                 <li className="nav-item">
                   <NavLink
+                    onClick={hideNavBar}
                     className="nav-link"
                     to="/contact"
                     activeClassName="active"
