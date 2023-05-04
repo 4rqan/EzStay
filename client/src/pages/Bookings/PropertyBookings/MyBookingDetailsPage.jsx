@@ -1,12 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  Container,
-  ListGroup,
-  ListGroupItem,
-  Modal,
-} from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import {
   addCommentToPropertyBooking,
@@ -21,6 +14,14 @@ import {
   createPropertyOrder,
 } from "../../../services/payment.service";
 import useRazorpay from "react-razorpay";
+import Moment from "react-moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faIndianRupeeSign,
+  faRupee,
+  faRupeeSign,
+} from "@fortawesome/free-solid-svg-icons";
+
 const MyBookingDetailsPage = () => {
   let { id } = useParams();
 
@@ -114,8 +115,8 @@ const MyBookingDetailsPage = () => {
   }, [RazorPay, paymentAccount]);
 
   return (
-    <Container>
-      <div className="row">
+    <div className="booking-details-container">
+      {/* <div className="row">
         <div className="col-md-6">
           <div className="mb-3">
             <label className="lbl font-weight-bold" htmlFor="title">
@@ -273,7 +274,6 @@ const MyBookingDetailsPage = () => {
           </div>
         </div>
       </div>
-
       <Modal show={showPayNowModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Complete Booking</Modal.Title>
@@ -323,7 +323,6 @@ const MyBookingDetailsPage = () => {
           </button>
         </Modal.Footer>
       </Modal>
-
       <Card>
         <Card.Body>
           <ListGroup>
@@ -365,8 +364,228 @@ const MyBookingDetailsPage = () => {
             </div>
           )}
         </Card.Body>
-      </Card>
-    </Container>
+      </Card> */}
+      <div className="row mt-3 justify-content-end">
+        {details.status === "confirmed" && (
+          <div className="col-md-2">
+            <button
+              className="btn btn-primary"
+              onClick={() => setShowPayNowModal(true)}
+            >
+              Complete the Booking
+            </button>
+          </div>
+        )}
+        {(details.status === "pending" || details.status === "confirmed") && (
+          <div className="col-md-2">
+            <button onClick={cancelBooking} className="btn btn-outline-danger">
+              Cancel
+            </button>
+          </div>
+        )}
+      </div>
+      <div className="row m-2">
+        <div className="col-md-3">
+          <img
+            style={{ height: "300px", width: "100%", borderRadius: "5px" }}
+            src={generateImagePath(details.property?.imageUrls[0].imagePath)}
+            alt="Property"
+          />
+        </div>
+
+        <div className=" col-md-4 booking-details-header-info">
+          <h1>{details.property?.title}</h1>
+          <p>
+            Rate: <FontAwesomeIcon icon={faIndianRupeeSign} />
+            {details.property?.price}
+          </p>
+          <p>Property Type: {details.property?.propertyType}</p>
+          <p>
+            Location:
+            {details.property?.address?.city},{details.property?.address?.state}
+            ,{details.property?.address?.pincode}
+          </p>
+        </div>
+        <div className="booking-details-content col-md-5">
+          <div className="booking-details-info ">
+            <div class="form-field">
+              <span class="label">Electricity:</span>
+              <span class="value">
+                {details.property?.amenities?.electricityAvailable
+                  ? "Yes"
+                  : "No"}
+              </span>
+            </div>
+            <div class="form-field">
+              <span class="label">Furnished:</span>
+              <span class="value">
+                {details.property?.amenities?.furnished ? "Yes" : "No"}
+              </span>
+            </div>
+            <div class="form-field">
+              <span class="label">Water Supply:</span>
+              <span class="value">
+                {details.property?.amenities?.waterAvailable ? "Yes" : "No"}
+              </span>
+            </div>
+            <div class="form-field">
+              <span class="label">Parking Space:</span>
+              <span class="value">
+                {details.property?.amenities?.parkingSpace ? "Yes" : "No"}
+              </span>
+            </div>
+
+            <div class="form-field">
+              <span class="label">Heating:</span>
+              <span class="value">{details.property?.amenities?.heating}</span>
+            </div>
+            <div class="form-field">
+              <span class="label">Cooling:</span>
+              <span class="value">{details.property?.amenities?.cooling}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="row mt-5 p-5">
+        <div className="booking-details-content col-md-5">
+          <div className="booking-details-info ">
+            <div class="form-field">
+              <span class="label">Check In:</span>
+              <span class="value">
+                <Moment format="d-MMM-yyyy">{details.checkIn}</Moment>
+              </span>
+            </div>
+            <div class="form-field">
+              <span class="label">Check Out:</span>
+              <span class="value">
+                <Moment format="d-MMM-yyyy">{details.checkOut}</Moment>
+              </span>
+            </div>
+            <div class="form-field">
+              <span class="label">Total Guests:</span>
+              <span class="value">{details.totalGuests}</span>
+            </div>
+            <div class="form-field">
+              <span class="label">Total Price:</span>
+              <span class="value">{details.totalPrice}</span>
+            </div>
+
+            <div class="form-field">
+              <span class="label">Booking Status:</span>
+              <span class="value">{details.status}</span>
+            </div>
+
+            <div class="form-field">
+              <span class="label">Payment Status:</span>
+              <span class="value">{details.paymentStatus}</span>
+            </div>
+          </div>
+        </div>
+        <div className="booking-details-comments col-md-7">
+          <h2>Comments</h2>
+          <ul>
+            {details.comments?.map((item) => {
+              return (
+                <li key={item._id}>
+                  <div className="comment-header">
+                    <div className="comment-avatar-container">
+                      <img
+                        src={generateImagePath(item.userId.dpPath)}
+                        alt="User"
+                        className="comment-avatar"
+                      />
+                    </div>
+                    <h3> {item.userId.fullname}</h3>
+                  </div>
+                  <p>{item.comment}</p>
+                </li>
+              );
+            })}
+          </ul>
+          {!(details.status == "cancelled" || details.status == "rejected") && (
+            <div className="comment-add-section">
+              <div className="">
+                <img
+                  src="/images/electrician.jpg"
+                  alt="User"
+                  className="comment-avatar"
+                />
+              </div>
+              <div className="px-3 col-md-9">
+                <input
+                  type="text"
+                  name="comment"
+                  value={comment}
+                  onChange={(e) => {
+                    setComment(e.target.value);
+                  }}
+                  className="form-control"
+                  placeholder="Add a comment"
+                />
+              </div>
+              <div className="">
+                <button
+                  type="submit"
+                  onClick={addNewComment}
+                  className="btn btn-primary"
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      <Modal show={showPayNowModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Complete Booking</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="row">
+            <div className="ml-3">
+              <input
+                type="radio"
+                className="form-check-input"
+                name="payWhen"
+                id="payLater"
+                value={payMethod}
+                onChange={() => {
+                  setPayMethod("later");
+                }}
+              />
+              <label className="form-check-label" htmlFor="payLater">
+                Pay Later
+              </label>
+            </div>
+            {paymentAccount && (
+              <div className="ml-3">
+                <input
+                  type="radio"
+                  className="form-check-input"
+                  name="payWhen"
+                  id="payNow"
+                  value={payMethod}
+                  onChange={() => {
+                    setPayMethod("now");
+                  }}
+                />
+                <label className="form-check-label" htmlFor="payNow">
+                  Pay Now
+                </label>
+              </div>
+            )}
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <button className="btn btn-primary" onClick={complete}>
+            Complete Booking
+          </button>
+          <button type="button" class="btn btn-secondary" onClick={handleClose}>
+            Close
+          </button>
+        </Modal.Footer>
+      </Modal>
+    </div>
   );
 };
 

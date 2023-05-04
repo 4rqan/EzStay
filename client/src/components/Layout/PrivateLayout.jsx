@@ -2,7 +2,6 @@ import { Dropdown, NavDropdown } from "react-bootstrap";
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { EZDropdown, EZDropdownItem } from "../Reusables/EzDropdown/EzDropdown";
 
 const PrivateLayout = ({ children }) => {
   const [showNavBar, setShowNavBar] = useState(false);

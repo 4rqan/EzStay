@@ -15,6 +15,7 @@ import {
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Swal from "sweetalert2";
+import { generateImagePath } from "../../utils/utils";
 
 const BookingDetailsPage = () => {
   let { id } = useParams();
@@ -189,8 +190,14 @@ const BookingDetailsPage = () => {
               return (
                 <ListGroupItem key={item._id}>
                   <div className="row">
-                    <div className="col-md-2">Furqan</div>
-                    <div className="col-md-10">{item.comment}</div>
+                    <div className="col-md-3">
+                      <img
+                        style={{ height: "40px", width: "40px" }}
+                        src={generateImagePath(item.userId.dpPath)}
+                      />
+                      {item.userId.fullname}
+                    </div>
+                    <div className="col-md-9">{item.comment}</div>
                   </div>
                 </ListGroupItem>
               );
