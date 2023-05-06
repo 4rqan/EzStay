@@ -67,6 +67,8 @@ router.post("/rentallistings", requireAuth, async (req, res) => {
           } = req.body)
         );
 
+        rentalListing.priceType =
+          rentalListing.propertyType == "AirBnb" ? "Per Day" : "Per Month";
         rentalListing.imageUrls = filenames;
 
         rentalListing.owner = req.user.profileId;
@@ -117,6 +119,8 @@ router.put("/rentallistings", requireAuth, async (req, res) => {
     property.description = description;
     property.propertyType = propertyType;
     property.price = price;
+    property.priceType = propertyType == "AirBnb" ? "Per Day" : "Per Month";
+
     property.availableDate = availableDate;
     property.amenities = {
       furnished,
@@ -199,20 +203,6 @@ router.get("/rentallistings", requireAuth, async (req, res) => {
 router.get("/rentallistings/:id", async (req, res) => {
   const rentalListing = await RentalListing.findById(req.params.id);
   res.send(rentalListing);
-  // const stateName = (
-  //   await State.findOne({
-  //     isoCode: rentalListing.address.state,
-  //   })
-  // ).name;
-
-  // const data = rentalListing.toJSON();
-  // res.json({
-  //   ...data,
-  //   address: {
-  //     ...data.address,
-  //     stateName,
-  //   },
-  // });
 });
 
 router.get("/allListings", async (req, res) => {

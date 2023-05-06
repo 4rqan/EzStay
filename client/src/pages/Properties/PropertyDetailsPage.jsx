@@ -3,13 +3,13 @@ import { Card, Carousel, Container } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import { getRentalDetails, hasBooked } from "../../services/listings.service";
 import { generateImagePath } from "../../utils/utils";
-import StarRatings from "react-star-ratings";
 import {
   addPropertyratings,
   getAllPropertyRatings,
   getMyPropertyRatings,
 } from "../../services/property-ratings.service";
 import { useAuth } from "../../contexts/AuthContext";
+import { Rating } from "@mui/material";
 
 const PropertyDetailsPage = () => {
   let { id } = useParams();
@@ -155,14 +155,12 @@ const Ratings = ({ property }) => {
       {booked.hasBooked ? (
         <div>
           <h4>Ratings</h4>
-          <StarRatings
-            rating={model.rating}
-            starRatedColor="blue"
-            changeRating={(val) => {
-              setModel({ ...model, rating: val });
+          <Rating
+            name="simple-controlled"
+            value={model.rating}
+            onChange={(_, newValue) => {
+              setModel({ ...model, rating: newValue });
             }}
-            numberOfStars={5}
-            name="rating"
           />
           <div className="form-group">
             <label htmlFor="feedback">Feedback</label>
@@ -212,12 +210,7 @@ const Ratings = ({ property }) => {
               </div>
               <div className="col-md-9">
                 <div>
-                  <StarRatings
-                    rating={item.rating}
-                    starRatedColor="blue"
-                    numberOfStars={5}
-                    disabled={true}
-                  />
+                  <Rating name="read-only" value={item.rating} readOnly />
                 </div>
                 <div>{item.feedback}</div>
               </div>

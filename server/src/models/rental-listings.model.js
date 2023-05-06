@@ -18,7 +18,12 @@ addressSchema.virtual("stateName", {
 const rentalListingSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
-  propertyType: { type: String, required: true },
+  propertyType: {
+    type: String,
+    enum: ["Apartment", "House", "AirBnb", "Building"],
+    required: true,
+  },
+
   address: { type: addressSchema, required: true },
 
   amenities: {
@@ -39,6 +44,11 @@ const rentalListingSchema = new mongoose.Schema({
   },
 
   price: { type: Number, required: true },
+  priceType: {
+    type: String,
+    enum: ["Per Day", "Per Month"],
+    default: "Per Month",
+  },
 
   imageUrls: [
     {

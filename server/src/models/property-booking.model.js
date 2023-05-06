@@ -42,6 +42,7 @@ const propertyBookingSchema = new Schema(
       type: Date,
       required: true,
     },
+    stayPeriod: { type: Number, min: 1, max: 12, default: 1 },
     totalGuests: {
       type: Number,
       required: true,

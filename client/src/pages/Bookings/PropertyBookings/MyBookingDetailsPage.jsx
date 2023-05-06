@@ -452,13 +452,13 @@ const MyBookingDetailsPage = () => {
             <div class="form-field">
               <span class="label">Check In:</span>
               <span class="value">
-                <Moment format="d-MMM-yyyy">{details.checkIn}</Moment>
+                <Moment format="DD-MMM-yyyy">{details.checkIn}</Moment>
               </span>
             </div>
             <div class="form-field">
               <span class="label">Check Out:</span>
               <span class="value">
-                <Moment format="d-MMM-yyyy">{details.checkOut}</Moment>
+                <Moment format="DD-MMM-yyyy">{details.checkOut}</Moment>
               </span>
             </div>
             <div class="form-field">

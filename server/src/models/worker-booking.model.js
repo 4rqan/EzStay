@@ -1,6 +1,18 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+const attendanceSchema = new Schema({
+  date: { type: Date, required: true },
+  modifiedDate: { type: Date, default: Date.now() },
+  workingHours: { type: Number, required: true },
+  approvalStatus: {
+    type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending",
+  },
+  userComment: String,
+});
+
 const commentsSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
@@ -71,6 +83,7 @@ const workerBookingSchema = new Schema(
       default: "pending",
     },
     comments: [commentsSchema],
+    attendance: [attendanceSchema],
   },
   { timestamps: true }
 );

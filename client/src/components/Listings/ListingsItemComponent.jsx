@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { generateImagePath } from "../../utils/utils";
-import StarRatings from "react-star-ratings";
 import "./styles.css";
+import { Rating } from "@mui/material";
 
 const ListingsItemComponent = ({ item }) => {
   return (
@@ -26,26 +26,20 @@ const ListingsItemComponent = ({ item }) => {
 
           <p>{item.description}</p>
           <div className="row">
-            <div className="col-md-12">
-              <div className="product-info">
-                {item.totalRatings > 0 && (
-                  <div className="product-rating">
-                    <ul className="stars">
-                      <StarRatings
-                        rating={item.averageRating}
-                        starRatedColor="#f33f3f"
-                        starEmptyColor="#EAEAEA"
-                        starDimension="20px"
-                        starSpacing="2px"
-                        numberOfStars={5}
-                        disabled
-                      />
-                    </ul>
-                    <div className="reviews">Reviews ({item.totalRatings})</div>
-                  </div>
-                )}
+            {item.totalRatings > 0 && (
+              <div className="product-rating row">
+                <div className="col-md-7">
+                  <Rating
+                    name="read-only"
+                    value={item.averageRating}
+                    readOnly
+                  />
+                </div>
+                <div className="reviews col-md-5">
+                  Reviews ({item.totalRatings})
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

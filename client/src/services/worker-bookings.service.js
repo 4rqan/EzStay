@@ -14,10 +14,22 @@ export const bookWorker = (model, navigate) => {
     });
 };
 
-export const getServiceBookingById = (id, cb) => {
-  axios.get("/api/workerbookings/" + id).then(({ data }) => {
-    cb(data);
-  });
+export const getServiceBookingForUserById = (id, cb) => {
+  axios
+    .get("/api/workerbookings/foruser/" + id)
+    .then(({ data }) => {
+      cb(data);
+    })
+    .catch(showError);
+};
+
+export const getServiceBookingForWorkerById = (id, cb) => {
+  axios
+    .get("/api/workerbookings/forworker/" + id)
+    .then(({ data }) => {
+      cb(data);
+    })
+    .catch(showError);
 };
 
 export const getServiceBookingsForUser = (cb) => {
@@ -63,6 +75,36 @@ export const completeWorkerBooking = (bookingId, cb) => {
     .post("/api/workerbooking/complete", { bookingId })
     .then(({ data }) => {
       Swal.fire("Booking completed.");
+      cb(data);
+    })
+    .catch(showError);
+};
+
+export const addAttendance = (model, cb) => {
+  axios
+    .post("/api/workerbooking/attendance", model)
+    .then(({ data }) => {
+      Swal.fire("Attendance Added");
+      cb(data);
+    })
+    .catch(showError);
+};
+
+export const approveAttendance = (model, cb) => {
+  axios
+    .put("/api/workerbooking/attendance/approve", model)
+    .then(({ data }) => {
+      Swal.fire("Attendance Approved");
+      cb(data);
+    })
+    .catch(showError);
+};
+
+export const rejectAttendance = (model, cb) => {
+  axios
+    .put("/api/workerbooking/attendance/reject", model)
+    .then(({ data }) => {
+      Swal.fire("Attendance Rejected");
       cb(data);
     })
     .catch(showError);

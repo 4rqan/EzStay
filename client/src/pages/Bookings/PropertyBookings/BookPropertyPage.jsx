@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { bookProperty } from "../../../services/property-booking.service";
 import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Select, InputLabel, MenuItem } from "@mui/material";
 
 const BookPropertyPage = () => {
   let { id } = useParams();
@@ -13,8 +14,13 @@ const BookPropertyPage = () => {
     checkOut: new Date(),
     comment: "",
     propertyId: id,
+    stayPeriod: 1,
     totalGuests: 1,
   });
+
+  const [periods, setPeriods] = useState([
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+  ]);
 
   const navigate = useNavigate();
 
@@ -43,7 +49,7 @@ const BookPropertyPage = () => {
                 <strong>Location:</strong> {data.address?.landmark}
               </ListGroupItem>
               <ListGroupItem>
-                <strong>Price:</strong> {data.price}q
+                <strong>Price:</strong> {data.price} {data.priceType}
               </ListGroupItem>
               <ListGroupItem>
                 <strong>Bedrooms:</strong> {data.amenities?.bedrooms}
@@ -69,15 +75,36 @@ const BookPropertyPage = () => {
             />
           </div>
 
-          <div className="form-group col-md-6">
-            <label htmlFor="checkOut">Check Out</label>
-            <DatePicker
-              className="form-control"
-              selected={model.checkOut}
-              onChange={(date) => setModel({ ...model, checkOut: date })}
-            />
-          </div>
-
+          {data?.propertyType != "AirBnb" ? (
+            <div className="form-group col-md-6">
+              <InputLabel id="demo-simple-select-autowidth-label">
+                Stay Period
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                value={model.stayPeriod}
+                onChange={(e) => {
+                  setModel({ ...model, stayPeriod: e.target.value });
+                }}
+                autoWidth
+                label="Stay Period"
+              >
+                {periods.map((item) => (
+                  <MenuItem value={item}>{item} Month</MenuItem>
+                ))}
+              </Select>
+            </div>
+          ) : (
+            <div className="form-group col-md-6">
+              <label htmlFor="checkOut">Check Out</label>
+              <DatePicker
+                className="form-control"
+                selected={model.checkOut}
+                onChange={(date) => setModel({ ...model, checkOut: date })}
+              />
+            </div>
+          )}
           <div className="form-group col-md-6">
             <label htmlFor="totalGuests">Total Guests</label>
             <input

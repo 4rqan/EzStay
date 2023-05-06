@@ -6,34 +6,94 @@ const requireAuth = require("../middlewares/requireAuth");
 const { sendMail } = require("../utils/utils");
 
 router.post("/property/bookings", requireAuth, async (req, res) => {
-  const { propertyId, checkIn, checkOut, totalGuests, comment } = req.body;
+  debugger;
+  const { propertyId, checkIn, checkOut, totalGuests, comment, stayPeriod } =
+    req.body;
 
   if (!propertyId) return res.status(400).send("propertyId is required");
+
+  const property = await Property.findOne({ _id: propertyId }).populate({
+    path: "owner",
+    select: ["fullname", "email"],
+  });
+
+  if (req.user.profileId == property.owner._id)
+    return res
+      .status(400)
+      .send(`You cannot book your own ${property.propertyType}`);
+
   if (!checkIn) return res.status(400).send("checkIn is required");
-  if (!checkOut) return res.status(400).send("checkOut is required");
+  const newCheckInDate = getOnlyDate(new Date(checkIn));
+  if (newCheckInDate < getOnlyDate(new Date())) {
+    return res.status(400).send("checkIn date cannot be in past");
+  }
+  if (!checkOut && property.propertyType == "AirBnb")
+    return res.status(400).send("checkOut is required");
+
+  let totalPrice = 0;
+  let newCheckOutDate;
+  if (property.propertyType != "AirBnb") {
+    newCheckOutDate = newCheckInDate.setMonth(
+      newCheckInDate.getMonth(),
+      stayPeriod
+    );
+    totalPrice = parseInt(stayPeriod) * property.price;
+  } else {
+    newCheckOutDate = getOnlyDate(new Date(checkOut));
+    const diffInMs = Math.abs(
+      newCheckOutDate.getTime() - newCheckInDate.getTime()
+    );
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    totalPrice = diffInDays * property.price;
+  }
 
   const count = await PropertyBooking.countDocuments({
     property: propertyId,
-    bookedBy: req.user.profileId,
+    $and: [
+      {
+        $or: [{ status: "confirmed" }, { status: "completed" }],
+      },
+      {
+        $or: [
+          {
+            $and: [
+              { checkIn: { $lte: newCheckInDate } },
+              { checkOut: { $gt: newCheckInDate } },
+            ],
+          },
+          {
+            $and: [
+              { checkIn: { $lt: newCheckOutDate } },
+              { checkOut: { $gte: newCheckOutDate } },
+            ],
+          },
+          {
+            $and: [
+              { checkIn: { $gte: newCheckInDate } },
+              { checkOut: { $lte: newCheckOutDate } },
+            ],
+          },
+        ],
+      },
+    ],
   });
-  if (count > 0) return res.status(400).send("Already booked");
+
+  if (count > 0)
+    return res.status(400).send("Property already booked in this period");
 
   const booking = new PropertyBooking({
     bookedBy: req.user.profileId,
     property: propertyId,
-    checkIn,
-    checkOut,
+    checkIn: newCheckInDate,
+    checkOut: newCheckOutDate,
     totalGuests,
+    totalPrice,
   });
 
   if (comment) booking.comments = [{ comment, userId: req.user.profileId }];
 
   await booking.save();
 
-  const property = await Property.findOne({ _id: propertyId }).populate({
-    path: "owner",
-    select: ["fullname", "email"],
-  });
   const replacements = {
     "##LANDLORD##": property.owner.fullname,
     "##USER##": req.user.fullname,
@@ -193,5 +253,13 @@ router.post("/propertybooking/complete", requireAuth, async (req, res) => {
   await propertyBooking.save();
   res.send(propertyBooking);
 });
+
+const getOnlyDate = (date) => {
+  date.setHours(0);
+  date.setMinutes(0);
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+  return date;
+};
 
 module.exports = router;

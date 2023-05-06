@@ -485,7 +485,8 @@ header .navbar {
 }
 
 .product-item .down-content .reviews {
-  font-size: 13px;
+  font-size: 12px;
+  margin-top: 5px;
   color: #f33f3f;
   font-weight: 500;
 }
