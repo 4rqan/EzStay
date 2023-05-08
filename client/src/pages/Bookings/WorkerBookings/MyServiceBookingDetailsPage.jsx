@@ -30,11 +30,14 @@ import {
 import { getPaymentAccountByProfileId } from "../../../services/payment-account.service";
 import { IconButton, Tooltip } from "@mui/material";
 import { Comment } from "@mui/icons-material";
+import { useAuth } from "../../../contexts/AuthContext";
 const MyServiceBookingDetailsPage = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
 
   const [paymentAccount, setPaymentAccount] = useState(null);
+
+  const { getDpAndFullName } = useAuth();
 
   const [showPayNowModal, setShowPayNowModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
@@ -238,7 +241,7 @@ const MyServiceBookingDetailsPage = () => {
                     <div className="comment-add-section">
                       <div className="">
                         <img
-                          src="/images/electrician.jpg"
+                          src={generateImagePath(getDpAndFullName().dpPath)}
                           alt="User"
                           className="comment-avatar"
                         />

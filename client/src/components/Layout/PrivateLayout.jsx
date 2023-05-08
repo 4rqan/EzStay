@@ -6,7 +6,7 @@ import { useAuth } from "../../contexts/AuthContext";
 const PrivateLayout = ({ children }) => {
   const [showNavBar, setShowNavBar] = useState(false);
 
-  const { logout, isAdmin, isInRole, getUsername } = useAuth();
+  const { logout, isAdmin, isInRole, getDpAndFullName } = useAuth();
 
   const hideNavBar = () => {
     setShowNavBar(false);
@@ -128,7 +128,10 @@ const PrivateLayout = ({ children }) => {
                   </>
                 )}
 
-                <NavDropdown title={getUsername()} menuVariant="dark">
+                <NavDropdown
+                  title={getDpAndFullName()?.fullname}
+                  menuVariant="dark"
+                >
                   <NavDropdown.Item
                     onClick={hideNavBar}
                     as={Link}

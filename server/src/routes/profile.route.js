@@ -46,4 +46,18 @@ route.post("/uploadDp", requireAuth, async (req, res) => {
   });
 });
 
+route.get("/profile/compact", requireAuth, async (req, res) => {
+  try {
+    const profile = await Profile.findById(req.user.profileId);
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+    const { fullname, dpPath } = profile;
+    res.json({ fullname, dpPath });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 module.exports = route;

@@ -32,6 +32,11 @@ export const AuthProvider = ({ children }) => {
     return user?.username;
   };
 
+  const getDpAndFullName = () => {
+    if (user) return { fullname: user.fullname, dpPath: user.dpPath };
+    return {};
+  };
+
   const getUserId = () => {
     return user?.profileId;
   };
@@ -67,6 +72,7 @@ export const AuthProvider = ({ children }) => {
       loginWithoutRedirecting,
       getUsername,
       getUserId,
+      getDpAndFullName,
     }),
     [user]
   );
