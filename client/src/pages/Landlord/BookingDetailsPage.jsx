@@ -16,12 +16,17 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Swal from "sweetalert2";
 import { generateImagePath } from "../../utils/utils";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faIndianRupeeSign } from "@fortawesome/free-solid-svg-icons";
+import Moment from "react-moment";
+import { useAuth } from "../../contexts/AuthContext";
 
 const BookingDetailsPage = () => {
   let { id } = useParams();
 
   const [comment, setComment] = useState("");
   const [details, setDetails] = useState({});
+  const { getDpAndFullName } = useAuth();
 
   const [model, setModel] = useState({
     status: "",
@@ -71,161 +76,173 @@ const BookingDetailsPage = () => {
   }, []);
 
   return (
-    <Container>
-      <div className="row">
-        <div className="col-md-6">
-          <div className="mb-3">
-            <label className="lbl" htmlFor="bookedBy">
-              Booked By:
-            </label>
-            <span className="ml-3" id="bookedBy">
-              {details.bookedBy?.email}
-            </span>
+    <div className="booking-details-container">
+      <div className="row mt-3 justify-content-end">
+        {["pending", "confirmed"].includes(details.status) && (
+          <div className="col-md-2">
+            <button className="btn btn-primary" onClick={handleShow}>
+              Process
+            </button>
           </div>
-          <div className="mb-3">
-            <label className="lbl" htmlFor="bookedBy">
-              Booked By:
-            </label>
-            <span className="ml-3" id="bookedBy">
-              {details.bookedBy?.fullname}
-            </span>
-          </div>
-
-          <div className="mb-3">
-            <label className="lbl" htmlFor="title">
-              Property Title:
-            </label>
-            <span className="ml-3" id="title">
-              {details.property?.title}
-            </span>
-          </div>
-
-          <div className="mb-3">
-            <label className="lbl" htmlFor="checkIn">
-              Check In Date:
-            </label>
-            <span className="ml-3" id="checkIn">
-              {details.checkIn}
-            </span>
-          </div>
+        )}
+      </div>
+      <div className="row m-2">
+        <div className="col-md-3">
+          <img
+            style={{ height: "300px", width: "100%", borderRadius: "5px" }}
+            src={generateImagePath(details.property?.imageUrls[0].imagePath)}
+            alt="Property"
+          />
         </div>
 
-        <div className="col-md-6">
-          <div className="mb-3">
-            <label className="lbl" htmlFor="checkOut">
-              Check Out Date:
-            </label>
-            <span className="ml-3" id="checkOut">
-              {details.checkOut}
-            </span>
-          </div>
+        <div className=" col-md-4 booking-details-header-info">
+          <h1>{details.property?.title}</h1>
+          <p>
+            Rate: <FontAwesomeIcon icon={faIndianRupeeSign} />
+            {details.property?.price}
+          </p>
+          <p>
+            Booked By:
+            {details.bookedBy?.fullname}, Email: {details.bookedBy?.email}
+          </p>
 
-          <div className="mb-3">
-            <label className="lbl" htmlFor="price">
-              Price:
-            </label>
-            <span className="ml-3" id="price">
-              {details.property?.price}
-            </span>
-          </div>
-          <div className="mb-3">
-            <label className="lbl" htmlFor="totalPrice">
-              Total Price:
-            </label>
-            <span className="ml-3" id="paymentStatus">
-              {details.totalPrice}
-            </span>
-          </div>
-          <div className="mb-3">
-            <label className="lbl" htmlFor="paymentStatus">
-              Payment Status:
-            </label>
-            <span className="ml-3" id="paymentStatus">
-              {details.paymentStatus}
-            </span>
+          <p>Property Type: {details.property?.propertyType}</p>
+          <p>
+            Location:
+            {details.property?.address?.city},{details.property?.address?.state}
+            ,{details.property?.address?.pincode}
+          </p>
+        </div>
+        <div className="booking-details-content col-md-5">
+          <div className="booking-details-info ">
+            <div class="form-field">
+              <span class="label">Electricity:</span>
+              <span class="value">
+                {details.property?.amenities?.electricityAvailable
+                  ? "Yes"
+                  : "No"}
+              </span>
+            </div>
+            <div class="form-field">
+              <span class="label">Furnished:</span>
+              <span class="value">
+                {details.property?.amenities?.furnished ? "Yes" : "No"}
+              </span>
+            </div>
+            <div class="form-field">
+              <span class="label">Water Supply:</span>
+              <span class="value">
+                {details.property?.amenities?.waterAvailable ? "Yes" : "No"}
+              </span>
+            </div>
+            <div class="form-field">
+              <span class="label">Parking Space:</span>
+              <span class="value">
+                {details.property?.amenities?.parkingSpace ? "Yes" : "No"}
+              </span>
+            </div>
+
+            <div class="form-field">
+              <span class="label">Heating:</span>
+              <span class="value">{details.property?.amenities?.heating}</span>
+            </div>
+            <div class="form-field">
+              <span class="label">Cooling:</span>
+              <span class="value">{details.property?.amenities?.cooling}</span>
+            </div>
           </div>
         </div>
       </div>
+      <div className="row mt-5 p-5">
+        <div className="booking-details-content col-md-5">
+          <div className="booking-details-info ">
+            <div class="form-field">
+              <span class="label">Check In:</span>
+              <span class="value">
+                <Moment format="DD-MMM-yyyy">{details.checkIn}</Moment>
+              </span>
+            </div>
+            <div class="form-field">
+              <span class="label">Check Out:</span>
+              <span class="value">
+                <Moment format="DD-MMM-yyyy">{details.checkOut}</Moment>
+              </span>
+            </div>
+            <div class="form-field">
+              <span class="label">Total Guests:</span>
+              <span class="value">{details.totalGuests}</span>
+            </div>
+            <div class="form-field">
+              <span class="label">Total Price:</span>
+              <span class="value">{details.totalPrice}</span>
+            </div>
 
-      <div className="row">
-        <div className="col-md-6">
-          <div className="mb-3">
-            <label className="lbl" htmlFor="totalGuests">
-              Total Guests:
-            </label>
-            <span className="ml-3" id="totalGuests">
-              {details.totalGuests}
-            </span>
-          </div>
+            <div class="form-field">
+              <span class="label">Booking Status:</span>
+              <span class="value">{details.status}</span>
+            </div>
 
-          <div className="mb-3">
-            <label className="lbl" htmlFor="status">
-              Status:
-            </label>
-            <span className="ml-3" id="status">
-              {details.status}
-            </span>
-          </div>
-
-          <div className="mb-3">
-            <span className="ml-3" id="pbutton">
-              {["pending", "confirmed"].includes(details.status) && (
-                <Button
-                  onClick={handleShow}
-                  className="btn btn-primary"
-                  role="button"
-                >
-                  Process
-                </Button>
-              )}
-            </span>
+            <div class="form-field">
+              <span class="label">Payment Status:</span>
+              <span class="value">{details.paymentStatus}</span>
+            </div>
           </div>
         </div>
-      </div>
-
-      <Card>
-        <Card.Body>
-          <ListGroup>
+        <div className="booking-details-comments col-md-7">
+          <h2>Comments</h2>
+          <ul>
             {details.comments?.map((item) => {
               return (
-                <ListGroupItem key={item._id}>
-                  <div className="row">
-                    <div className="col-md-3">
+                <li key={item._id}>
+                  <div className="comment-header">
+                    <div className="comment-avatar-container">
                       <img
-                        style={{ height: "40px", width: "40px" }}
                         src={generateImagePath(item.userId.dpPath)}
+                        alt="User"
+                        className="comment-avatar"
                       />
-                      {item.userId.fullname}
                     </div>
-                    <div className="col-md-9">{item.comment}</div>
+                    <h3> {item.userId.fullname}</h3>
                   </div>
-                </ListGroupItem>
+                  <p>{item.comment}</p>
+                </li>
               );
             })}
-          </ListGroup>
-          {!["cancelled", "rejected"].includes(details.status) && (
-            <div className="row">
-              <div className="col-md-8">
-                <textarea
+          </ul>
+          {!(details.status == "cancelled" || details.status == "rejected") && (
+            <div className="comment-add-section">
+              <div className="">
+                <img
+                  src={generateImagePath(getDpAndFullName()?.dpPath)}
+                  alt="User"
+                  className="comment-avatar"
+                />
+              </div>
+              <div className="px-3 col-md-9">
+                <input
+                  type="text"
                   name="comment"
                   value={comment}
                   onChange={(e) => {
                     setComment(e.target.value);
                   }}
-                  rows="10"
                   className="form-control"
-                ></textarea>
+                  placeholder="Add a comment"
+                />
               </div>
-              <div className="col-md-4">
-                <button className="btn btn-primary" onClick={addNewComment}>
-                  Add Comment
+              <div className="">
+                <button
+                  type="submit"
+                  onClick={addNewComment}
+                  className="btn btn-primary"
+                >
+                  Send
                 </button>
               </div>
             </div>
           )}
-        </Card.Body>
-      </Card>
-
+        </div>
+      </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
@@ -277,7 +294,7 @@ const BookingDetailsPage = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </Container>
+    </div>
   );
 };
 
