@@ -4,6 +4,7 @@ const WorkerBooking = require("../models/worker-booking.model");
 const Worker = require("../models/worker.model");
 const requireAuth = require("../middlewares/requireAuth");
 const { generateBookingId } = require("../models/last-bookings-ids.model");
+const { sendMail } = require("../utils/utils");
 
 route.post("/bookworker", requireAuth, async (req, res) => {
   const { worker, noOfDays, startDate, workType, comment, location } = req.body;
@@ -12,9 +13,12 @@ route.post("/bookworker", requireAuth, async (req, res) => {
     return res.status(400).send("Missing required fields");
   }
 
-  const wrk = await Worker.findById(worker);
+  const wrk = await Worker.findById(worker).populate({
+    path: "profileId",
+    select: ["fullname", "email"],
+  });
 
-  if (req.user.profileId == wrk.profileId)
+  if (req.user.profileId == wrk.profileId._id)
     return res.status(400).send(`You cannot book yourself`);
 
   if (isNaN(Date.parse(startDate))) {
@@ -41,7 +45,20 @@ route.post("/bookworker", requireAuth, async (req, res) => {
 
   await workerBooking.save();
 
-  //sendBookingNotificationEmail(workerBooking);
+  const replacements = {
+    "[MESSAGE1]": `Hi ${wrk.profileId.fullname}`,
+    "[MESSAGE2]": `${req.user.fullname} has booked your service from ${new Date(
+      startDate
+    ).toDateString()} for ${workType}, location(${location}) for ${noOfDays} days`,
+    "[MESSAGE3]": "Kindly visit EzStay and process the booking.",
+    "[MESSAGE4]": "Thanks and regards",
+  };
+  sendMail(
+    [wrk.profileId.email, req.user.email],
+    "Booking Placed",
+    "general-template.html",
+    replacements
+  );
   res.send(workerBooking);
 });
 

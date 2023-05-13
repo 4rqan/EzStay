@@ -97,14 +97,17 @@ router.post("/property/bookings", requireAuth, async (req, res) => {
   await booking.save();
 
   const replacements = {
-    "##LANDLORD##": property.owner.fullname,
-    "##USER##": req.user.fullname,
-    "##TITLE##": property.title,
+    "[MESSAGE1]": `Hi ${property.owner.fullname}`,
+    "[MESSAGE2]": `${req.user.fullname} has booked the property ${
+      property.title
+    } from ${newCheckInDate.toDateString()} to ${newCheckInDate.toDateString()}`,
+    "[MESSAGE3]": "Kindly visit EzStay and process the booking.",
+    "[MESSAGE4]": "Thanks and regards",
   };
   sendMail(
     [property.owner.email, req.user.email],
     "Booking Placed",
-    "booking-placed.html",
+    "general-template.html",
     replacements
   );
 
