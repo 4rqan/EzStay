@@ -164,7 +164,7 @@ const WorkerBookingDetailsPage = () => {
                 />
                 <div className="booking-details-header-info">
                   <h1>{data.worker?.profileId?.fullname}</h1>
-
+                  <p>BookingId: {data.bookingId}</p>
                   <p>Booked By: {data.bookedBy?.fullname} </p>
                   <p>Location: {data.location} </p>
                   <p>Daily Rate: R {data.worker?.dailyRate} </p>

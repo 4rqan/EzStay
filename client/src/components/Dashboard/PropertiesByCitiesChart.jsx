@@ -18,17 +18,19 @@ const PropertiesByCitiesChart = () => {
   }, []);
 
   return (
-    <div>
-      <h3 className="text-center">Properties By Cities</h3>
-      <BarChart width={750} height={250} data={data}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="cityName" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="count" fill="green" />
-      </BarChart>
-    </div>
+    data.length > 0 && (
+      <div>
+        <h3 className="text-center">Properties By Cities</h3>
+        <BarChart width={750} height={250} data={data}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="cityName" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="count" fill="green" />
+        </BarChart>
+      </div>
+    )
   );
 };
 

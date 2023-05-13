@@ -23,7 +23,7 @@ const CallToActionComponent = () => {
                   </div>
                   <div className="col-md-4">
                     <Link to={"/allproperties"} className="filled-button">
-                      Book Now
+                      Book Property
                     </Link>
                   </div>
                 </div>

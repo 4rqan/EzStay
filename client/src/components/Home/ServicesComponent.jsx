@@ -8,28 +8,30 @@ const ServicesComponent = () => {
     getServices(setServices);
   }, []);
   return (
-    <div className="sservice-main">
-      <h4 className="sservice-heading">Services</h4>
-      <div className="row sservices">
-        {services.map((item) => {
-          return (
-            <div key={item.service} className="col-md-3">
-              <Link to={"/services/" + item.service}>
-                <img
-                  className="sservice-image"
-                  src={"/images/" + item.service + ".jpg"}
-                />
-              </Link>
-              <div className="sservice-title">{item.service}</div>
-              <div className="sservice-price row">
-                <div className="col"> Avg Price {item.price}</div>
-                <div className="col"> Count {item.count}</div>
+    services.length > 0 && (
+      <div className="sservice-main mx-5">
+        <h4 className="sservice-heading">Services</h4>
+        <div className="row sservices">
+          {services.map((item) => {
+            return (
+              <div key={item.service} className="col-md-3">
+                <Link to={"/services/" + item.service}>
+                  <img
+                    className="sservice-image"
+                    src={"/images/" + item.service + ".jpg"}
+                  />
+                </Link>
+                <div className="sservice-title">{item.service}</div>
+                <div className="sservice-price row">
+                  <div className="col"> Avg Price {item.price}</div>
+                  <div className="col"> Count {item.count}</div>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-    </div>
+    )
   );
 };
 

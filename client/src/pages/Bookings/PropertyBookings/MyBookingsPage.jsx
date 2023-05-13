@@ -48,11 +48,11 @@ const MyBookingsPage = () => {
                 </div>
                 <div>
                   <span className="font-weight-bold">Check In:</span>{" "}
-                  <Moment format="d-MMM-yyyy">{item.checkIn}</Moment>
+                  <Moment format="DD-MMM-yyyy">{item.checkIn}</Moment>
                 </div>
                 <div>
                   <span className="font-weight-bold">Check Out:</span>{" "}
-                  <Moment format="d-MMM-yyyy">{item.checkOut}</Moment>
+                  <Moment format="DD-MMM-yyyy">{item.checkOut}</Moment>
                 </div>
               </div>
               <div className="col-md-4">

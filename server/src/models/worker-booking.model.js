@@ -41,6 +41,7 @@ const workerBookingSchema = new Schema(
       ref: "worker",
       required: true,
     },
+    bookingId: String,
     bookedBy: {
       type: Schema.Types.ObjectId,
       ref: "profile",

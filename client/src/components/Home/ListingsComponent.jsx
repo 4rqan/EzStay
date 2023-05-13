@@ -4,14 +4,14 @@ import { getAllListings } from "../../services/listings.service";
 import ListingsItemComponent from "../Listings/ListingsItemComponent";
 
 const ListingsComponent = () => {
-  const [list, setList] = useState([]);
+  const [data, setData] = useState();
 
   useEffect(() => {
-    getAllListings(setList);
+    getAllListings(setData);
   }, []);
   return (
-    <div className="latest-products">
-      <div className="container">
+    data?.RentalListings?.length > 0 && (
+      <div className="latest-products mx-5">
         <div className="row">
           <div className="col-md-12">
             <div className="section-heading">
@@ -21,12 +21,12 @@ const ListingsComponent = () => {
               </Link>
             </div>
           </div>
-          {list.RentalListings?.map((item) => {
+          {data.RentalListings?.map((item) => {
             return <ListingsItemComponent key={item._id} item={item} />;
           })}
         </div>
       </div>
-    </div>
+    )
   );
 };
 

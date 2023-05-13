@@ -17,17 +17,19 @@ const UsersByCitiesChart = () => {
   }, []);
 
   return (
-    <div>
-      <h3 className="text-center">Users By Cities</h3>
-      <BarChart width={750} height={250} data={data}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="cityName" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="count" fill="#8884d8" />
-      </BarChart>
-    </div>
+    data.length > 0 && (
+      <div>
+        <h3 className="text-center">Users By Cities</h3>
+        <BarChart width={750} height={250} data={data}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="cityName" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="count" fill="#8884d8" />
+        </BarChart>
+      </div>
+    )
   );
 };
 

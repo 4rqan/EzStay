@@ -29,6 +29,7 @@ const propertyBookingSchema = new Schema(
       ref: "rentalListing",
       required: true,
     },
+    bookingId: String,
     bookedBy: {
       type: Schema.Types.ObjectId,
       ref: "profile",

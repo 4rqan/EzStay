@@ -67,7 +67,7 @@ const PaymentProfile = () => {
     <div className="row justify-content-center align-items-center">
       <div className="col-md-6">
         <div className="form-group">
-          <label htmlFor="keyId">Key Id</label>
+          <label htmlFor="keyId">Razorpay Key Id</label>
           <input
             value={keysModel.keyId}
             id="keyId"
@@ -79,7 +79,7 @@ const PaymentProfile = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="keySecret">Key secret</label>
+          <label htmlFor="keySecret">Razorpay Key secret</label>
           <input
             value={keysModel.keySecret}
             id="keySecret"
@@ -94,10 +94,11 @@ const PaymentProfile = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="showKeys">Show Keys</label>
+          <label htmlFor="showKeys">Show Keys </label>
           <input
             id="showKeys"
             type="checkbox"
+            className="ml-2"
             value={true}
             checked={showKeys}
             onClick={(e) => {
@@ -111,6 +112,21 @@ const PaymentProfile = () => {
           </button>
         </div>
       </div>
+      <div>
+        <p className=" row justify-content-center align-items-center ">
+          Don't have a Razorpay Account?
+          <a
+            className=" row justify-content-center align-items-center"
+            href="https://dashboard.razorpay.com/signin?screen=sign_in&next=%2Fdocs%2F%2F"
+            target="_blank"
+          >
+            Click here to SignUp...
+          </a>
+        </p>
+      </div>
+      <p className="text-center">
+        For Assistance <Link to="/contact">Contact</Link> EzStay Admin
+      </p>
     </div>
   );
 };
@@ -132,6 +148,12 @@ const WorkerProfile = () => {
     { value: "Plumber", label: "Plumber" },
     { value: "Carpenter", label: "Carpenter" },
     { value: "Mason", label: "Mason" },
+    { value: "Mechanic", label: "Mechanic" },
+    { value: "Painter", label: "Painter" },
+    { value: "Floor Layer", label: "Floor Layer" },
+    { value: "Mason", label: "Mason" },
+    { value: "Wallpaper Installer", label: "Wallpaper Installer" },
+    { value: "Khatamband Expert", label: "Khatamband Expert" },
   ];
 
   useEffect(() => {

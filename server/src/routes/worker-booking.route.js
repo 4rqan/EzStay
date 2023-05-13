@@ -3,6 +3,7 @@ const route = express.Router();
 const WorkerBooking = require("../models/worker-booking.model");
 const Worker = require("../models/worker.model");
 const requireAuth = require("../middlewares/requireAuth");
+const { generateBookingId } = require("../models/last-bookings-ids.model");
 
 route.post("/bookworker", requireAuth, async (req, res) => {
   const { worker, noOfDays, startDate, workType, comment, location } = req.body;
@@ -32,6 +33,7 @@ route.post("/bookworker", requireAuth, async (req, res) => {
     location,
   });
   workerBooking.bookedBy = req.user.profileId;
+  workerBooking.bookingId = await generateBookingId("service");
 
   if (comment) {
     workerBooking.comments = [{ comment, userId: req.user.profileId }];

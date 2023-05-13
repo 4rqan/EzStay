@@ -9,27 +9,29 @@ const PropertiesByCitiesComponent = () => {
     getPropertiesByCities(setList);
   }, []);
   return (
-    <div className="sservice-main ">
-      <h4 className="sservice-heading">Properties By Cities</h4>
-      <div className="row sservices">
-        {list.map((item) => {
-          return (
-            <div key={item.cityName} className="col-md-2">
-              <Link to="/allproperties" state={{ cityName: item.cityName }}>
-                <img
-                  className="sservice-image"
-                  src={"/images/" + item.cityName + ".jpg"}
-                />
-              </Link>
-              <div className="sservice-title">{item.cityName}</div>
-              <div className="sservice-price row">
-                <div className="col"> Count {item.count}</div>
+    list.length > 0 && (
+      <div className="sservice-main mx-5">
+        <h4 className="sservice-heading">Properties By Cities</h4>
+        <div className="row sservices">
+          {list.map((item) => {
+            return (
+              <div key={item.cityName} className="col-md-2">
+                <Link to="/allproperties" state={{ cityName: item.cityName }}>
+                  <img
+                    className="sservice-image"
+                    src={"/images/" + item.cityName + ".jpg"}
+                  />
+                </Link>
+                <div className="sservice-title">{item.cityName}</div>
+                <div className="sservice-price row">
+                  <div className="col"> Count {item.count}</div>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-    </div>
+    )
   );
 };
 

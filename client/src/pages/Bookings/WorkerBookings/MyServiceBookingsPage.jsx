@@ -45,7 +45,7 @@ const MyServiceBookingsPage = () => {
             <div className="col-md-3">
               <div>
                 <span className="booking-label">Start Date</span>{" "}
-                <Moment format="d-MMM-yyyy">{item.startDate}</Moment>
+                <Moment format="DD-MMM-yyyy">{item.startDate}</Moment>
               </div>
               <div>
                 <span className="booking-label">No of days</span>{" "}

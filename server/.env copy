@@ -1,0 +1,9 @@
+API_PORT = 4000
+JWT_SECRET = 'GHBNbkhhgbnbnmhglhfgdhfbndb'
+MAIL_USERNAME = 'youremail@gmail.com'
+MAIL_PASSWORD = 'yourpassword'
+MAIL_FROM = "'Ez Stay' <admin@ezstay.com>"
+SMTP_SERVER = 'smtp-relay.sendinblue.com'
+SMPT_PORT = 587
+CLIENT_URL = 'http://localhost:3000'
+DB_CONNECTION = 'mongodb://127.0.0.1:27017/EzStayDB'

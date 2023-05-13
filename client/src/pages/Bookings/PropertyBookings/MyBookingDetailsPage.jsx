@@ -16,11 +16,7 @@ import {
 import useRazorpay from "react-razorpay";
 import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faIndianRupeeSign,
-  faRupee,
-  faRupeeSign,
-} from "@fortawesome/free-solid-svg-icons";
+import { faIndianRupeeSign } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../../contexts/AuthContext";
 
 const MyBookingDetailsPage = () => {
@@ -129,6 +125,14 @@ const MyBookingDetailsPage = () => {
             </button>
           </div>
         )}
+        {details.status === "completed" &&
+          details.paymentStatus == "pay later" && (
+            <div className="col-md-2">
+              <button className="btn btn-primary" onClick={handlePayment}>
+                Pay Now
+              </button>
+            </div>
+          )}
         {(details.status === "pending" || details.status === "confirmed") && (
           <div className="col-md-2">
             <button onClick={cancelBooking} className="btn btn-outline-danger">
@@ -148,6 +152,7 @@ const MyBookingDetailsPage = () => {
 
         <div className=" col-md-4 booking-details-header-info">
           <h1>{details.property?.title}</h1>
+          <p>BookingId: {details.bookingId}</p>
           <p>
             Rate: <FontAwesomeIcon icon={faIndianRupeeSign} />
             {details.property?.price}

@@ -1,135 +1,269 @@
-import { useEffect, useState } from "react";
-import { Card, Carousel, Container } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
-import { getRentalDetails, hasBooked } from "../../services/listings.service";
+import React, { useEffect, useState } from "react";
+import {
+  Container,
+  Grid,
+  Button,
+  Box,
+  Typography,
+  IconButton,
+  Rating,
+} from "@mui/material";
+import { styled } from "@mui/system";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBed,
+  faBath,
+  faFan,
+  faParking,
+  faTint,
+  faFireAlt,
+  faMapMarkerAlt,
+  faEnvelope,
+  faUser,
+  faPhone,
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
+import "pure-react-carousel/dist/react-carousel.es.css";
 import { generateImagePath } from "../../utils/utils";
+import { getRentalDetails, hasBooked } from "../../services/listings.service";
+import { Link, useParams } from "react-router-dom";
 import {
   addPropertyratings,
   getAllPropertyRatings,
   getMyPropertyRatings,
 } from "../../services/property-ratings.service";
 import { useAuth } from "../../contexts/AuthContext";
-import { Rating } from "@mui/material";
+import LoginModal from "../../components/LoginModal";
+import PropertyBookNowComponent from "../../components/PropertyBookNowComponent";
+
+const Title = styled(Typography)({
+  fontSize: 30,
+  fontWeight: "bold",
+  marginBottom: 20,
+});
+
+const Description = styled(Typography)({
+  fontSize: 16,
+  marginBottom: 20,
+});
+
+const Feature = styled(Typography)({
+  fontSize: 14,
+  marginBottom: 5,
+  display: "flex",
+  alignItems: "center",
+});
+
+const FeatureIcon = styled(FontAwesomeIcon)({
+  marginRight: 5,
+});
+
+const CarouselContainer = styled(Box)({
+  width: "100%",
+  height: "400px",
+  position: "relative",
+  overflow: "hidden",
+  // display: "flex",
+  // alignItems: "center",
+  // justifyContent: "center",
+});
+
+const Image = styled(Box)({
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+});
+
+const BackButton = styled(IconButton)({
+  position: "absolute",
+  top: "50%",
+  left: "15px",
+  transform: "translateY(-50%)",
+  zIndex: 1,
+});
+
+const NextButton = styled(IconButton)({
+  position: "absolute",
+  top: "50%",
+  right: "15px",
+  transform: "translateY(-50%)",
+  zIndex: 1,
+});
 
 const PropertyDetailsPage = () => {
-  let { id } = useParams();
+  const { id } = useParams();
 
   const [details, setData] = useState();
+
+  const [showBookNowModal, setShowBookNowModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const { isAuthenticated, getUserId } = useAuth();
+
+  const handleBookNowClick = () => {
+    if (isAuthenticated()) {
+      setShowBookNowModal(true);
+    } else {
+      setShowLoginModal(true);
+    }
+  };
+
   useEffect(() => {
     getRentalDetails(id, setData);
   }, [id]);
 
-  return details ? (
-    <Container>
-      <h3 className="text-center">Property Details</h3>
-      <Card>
-        <Card.Body className="row">
-          <div className="row">
-            <div className="col-md-6">
-              <div>
-                <span className="font-weight-bold">Title:</span> {details.title}
-              </div>
-              <div className="font-weight-bold">{details.description}</div>
-              <div>
-                <span className="font-weight-bold">Property Type:</span>{" "}
-                {details.propertyType}
-                <div>
-                  <span className="font-weight-bold">Bedrooms:</span>{" "}
-                  {details.amenities?.bedrooms}
-                </div>
-                <div>
-                  <span className="font-weight-bold">bathrooms:</span>{" "}
-                  {details.amenities?.bathrooms}
-                </div>
-                <div>
-                  <span className="font-weight-bold">Furnished:</span>{" "}
-                  {details.amenities?.furnished ? "Yes" : "No"}
-                </div>
-                <div>
-                  <span className="font-weight-bold">Electricity:</span>{" "}
-                  {details.amenities?.electricityAvailable ? "Yes" : "No"}
-                </div>
-                <div>
-                  <span className="font-weight-bold">24*7 Water Supply:</span>{" "}
-                  {details.amenities?.waterAvailable ? "Yes" : "No"}
-                </div>
-                <div>
-                  <span className="font-weight-bold">Parking Space:</span>{" "}
-                  {details.ameniies?.parkingSpace ? "Yes" : "No"}
-                </div>
-                <div>
-                  {" "}
-                  <span className="font-weight-bold">Heating:</span>{" "}
-                  {details.amenities?.heating}
-                </div>
-                <div>
-                  <span className="font-weight-bold">Cooling:</span>{" "}
+  return (
+    <Container maxWidth="lg" className="mt-3">
+      {details && (
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <Box sx={{ maxWidth: 500 }}>
+              <CarouselProvider
+                naturalSlideWidth={100}
+                naturalSlideHeight={100}
+                totalSlides={details.imageUrls?.length}
+                isPlaying={true}
+                interval={3000}
+              >
+                <CarouselContainer>
+                  <Slider>
+                    {details.imageUrls?.map((item, i) => {
+                      return (
+                        <Slide index={i} key={item.imagePath}>
+                          <Image
+                            component="img"
+                            src={generateImagePath(item.imagePath)}
+                            alt="Property"
+                          />
+                        </Slide>
+                      );
+                    })}
+                  </Slider>
+                  <BackButton>
+                    <FontAwesomeIcon icon={faChevronLeft} />
+                  </BackButton>
+                  <NextButton>
+                    <FontAwesomeIcon icon={faChevronRight} />
+                  </NextButton>
+                </CarouselContainer>
+              </CarouselProvider>
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Title variant="h4" gutterBottom>
+              {details.title}
+            </Title>
+            <Description variant="body1" gutterBottom>
+              {details.description}
+            </Description>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <Feature variant="body2" gutterBottom>
+                  <FeatureIcon icon={faBed} /> {details.amenities?.bedrooms}
+                  Bedrooms
+                </Feature>
+                <Feature variant="body2" gutterBottom>
+                  <FeatureIcon icon={faBath} /> {details.amenities?.bathrooms}
+                  Bathrooms
+                </Feature>
+                <Feature variant="body2" gutterBottom>
+                  <FeatureIcon icon={faFan} />
                   {details.amenities?.cooling}
-                </div>
-              </div>
-            </div>
-            <Carousel className="col-md-6 mb-5">
-              {details.imageUrls?.map((item) => {
-                return (
-                  <Carousel.Item key={item.imagePath}>
-                    <img
-                      className="d-block w-100"
-                      src={generateImagePath(item.imagePath)}
-                      alt={`Image ${item.imagePath}`}
-                      style={{ height: "400px", width: "400px" }}
+                </Feature>
+                <Feature variant="body2" gutterBottom>
+                  <FeatureIcon icon={faParking} />
+                  Parking Space :{" "}
+                  {details.ameniies?.parkingSpace ? "Yes" : "No"}
+                </Feature>
+                <Feature variant="body2" gutterBottom>
+                  <FeatureIcon icon={faTint} />
+                  Water Supply :{" "}
+                  {details.amenities?.waterAvailable ? "Yes" : "No"}
+                </Feature>
+                <Feature variant="body2" gutterBottom>
+                  <FeatureIcon icon={faFireAlt} />
+                  {details.amenities?.heating}
+                </Feature>
+                {getUserId() != details.owner && (
+                  <>
+                    <Button
+                      onClick={handleBookNowClick}
+                      variant="contained"
+                      sx={{ marginTop: 5 }}
+                    >
+                      Book Now
+                    </Button>
+                    <LoginModal
+                      show={showLoginModal}
+                      onClose={() => setShowLoginModal(false)}
+                      onLogin={() => {
+                        setShowLoginModal(false);
+                        setShowBookNowModal(true);
+                      }}
                     />
-                  </Carousel.Item>
-                );
-              })}
-            </Carousel>
-          </div>
-
-          <div className="col-md-3">
-            <div>
-              <span className="font-weight-bold">State:</span>{" "}
-              {details.address?.state}
-            </div>
-            <div>
-              <span className="font-weight-bold">City:</span>{" "}
-              {details.address?.city}
-            </div>
-            <div>
-              <span className="font-weight-bold">Landmark:</span>{" "}
-              {details.address?.landmark}
-            </div>
-            <div>
-              <span className="font-weight-bold">House No:</span>{" "}
-              {details.address?.houseNo}{" "}
-              <span className="font-weight-bold">Pincode:</span>{" "}
-              {details.address?.pincode}
-            </div>
-          </div>
-
-          <div className="col-md-3">
-            <div>
-              <span className="font-weight-bold">Name:</span>{" "}
-              {details.contact?.name}
-            </div>
-            <div>
-              <span className="font-weight-bold">Phone:</span>{" "}
-              {details.contact?.phone}
-            </div>
-            <div>
-              <span className="font-weight-bold">Email:</span>{" "}
-              {details.contact?.email}
-            </div>
-          </div>
-          <div className="mb-5">
-            <Link to={"/bookproperty/" + id} className="filled-button">
-              Book Now
-            </Link>
-          </div>
-        </Card.Body>
-      </Card>
-      <Ratings property={id} />
+                    <PropertyBookNowComponent
+                      property={details}
+                      show={showBookNowModal}
+                      onClose={() => setShowBookNowModal(false)}
+                    />
+                  </>
+                )}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: 2,
+                  }}
+                >
+                  <FeatureIcon icon={faMapMarkerAlt} />
+                  <Typography variant="body2">
+                    {details.address?.state}, {details.address?.city},
+                    {details.address?.landmark}, {details.address?.pincode}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: 2,
+                  }}
+                >
+                  <FeatureIcon icon={faUser} />
+                  <Typography variant="body2">
+                    Name: {details.contact?.name}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: 2,
+                  }}
+                >
+                  <FeatureIcon icon={faEnvelope} />
+                  <Typography variant="body2">
+                    Email: {details.contact?.email}
+                  </Typography>
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <FeatureIcon icon={faPhone} />
+                  <Typography variant="body2">
+                    Phone: {details.contact?.phone}
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      )}
+      <div style={{ marginTop: "100px" }}>
+        <Ratings className="mt-5" property={id} />
+      </div>
     </Container>
-  ) : (
-    <div>Loading..............</div>
   );
 };
 
@@ -162,32 +296,34 @@ const Ratings = ({ property }) => {
               setModel({ ...model, rating: newValue });
             }}
           />
-          <div className="form-group">
-            <label htmlFor="feedback">Feedback</label>
-            <textarea
-              value={model.feedback}
-              name="feedback"
-              id="feedback"
-              cols="20"
-              rows="4"
-              className="form-control"
-              onChange={(e) => {
-                setModel({ ...model, feedback: e.target.value });
-              }}
-            ></textarea>
-          </div>
-          <div className="form-group">
-            <button
-              className="btn btn-primary"
-              onClick={() => {
-                addPropertyratings(model, (data) => {
-                  setModel(data);
-                  getAllPropertyRatings(property, setReviews);
-                });
-              }}
-            >
-              Save
-            </button>
+
+          <div className="row">
+            <div className="form-group col-md-6">
+              <label htmlFor="feedback">Feedback</label>
+              <textarea
+                value={model.feedback}
+                name="feedback"
+                id="feedback"
+                rows="2"
+                className="form-control"
+                onChange={(e) => {
+                  setModel({ ...model, feedback: e.target.value });
+                }}
+              ></textarea>
+            </div>
+            <div className="form-group col-md-6 mt-5">
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  addPropertyratings(model, (data) => {
+                    setModel(data);
+                    getAllPropertyRatings(property, setReviews);
+                  });
+                }}
+              >
+                Save
+              </button>
+            </div>
           </div>
         </div>
       ) : null}

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { bookWorker } from "../services/worker-bookings.service";
 import { useNavigate } from "react-router-dom";
 
-const WorkerBookNowComponet = ({ show, onClose, workerId }) => {
+const WorkerBookNowComponent = ({ show, onClose, workerId }) => {
   const {
     register,
     handleSubmit,
@@ -81,4 +81,4 @@ const WorkerBookNowComponet = ({ show, onClose, workerId }) => {
   );
 };
 
-export default WorkerBookNowComponet;
+export default WorkerBookNowComponent;

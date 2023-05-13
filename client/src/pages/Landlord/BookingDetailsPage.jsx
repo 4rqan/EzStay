@@ -97,6 +97,8 @@ const BookingDetailsPage = () => {
 
         <div className=" col-md-4 booking-details-header-info">
           <h1>{details.property?.title}</h1>
+
+          <p>BookingId: {details.bookingId}</p>
           <p>
             Rate: <FontAwesomeIcon icon={faIndianRupeeSign} />
             {details.property?.price}
@@ -105,7 +107,6 @@ const BookingDetailsPage = () => {
             Booked By:
             {details.bookedBy?.fullname}, Email: {details.bookedBy?.email}
           </p>
-
           <p>Property Type: {details.property?.propertyType}</p>
           <p>
             Location:

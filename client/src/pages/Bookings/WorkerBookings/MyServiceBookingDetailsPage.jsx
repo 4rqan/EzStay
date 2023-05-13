@@ -159,6 +159,19 @@ const MyServiceBookingDetailsPage = () => {
                     </button>
                   </div>
                 )}
+
+                {data.status === "completed" &&
+                  data.paymentStatus == "pay later" && (
+                    <div className="col-md-2">
+                      <button
+                        className="btn btn-primary"
+                        onClick={handlePayment}
+                      >
+                        Pay Now
+                      </button>
+                    </div>
+                  )}
+
                 {(data.status === "pending" || data.status === "confirmed") && (
                   <div className="col-md-2">
                     <button
@@ -177,6 +190,7 @@ const MyServiceBookingDetailsPage = () => {
                 />
                 <div className="booking-details-header-info">
                   <h1>{data.worker?.profileId?.fullname}</h1>
+                  <p>BookingId: {data.bookingId}</p>
                   <p>Daily Rate: R {data.worker?.dailyRate} </p>
                   <p>Availability: {data.worker?.availability}</p>
                   <p>Skills: {data.worker?.skills.join(",")}</p>
@@ -188,7 +202,7 @@ const MyServiceBookingDetailsPage = () => {
                     <div class="form-field">
                       <span class="label">Start Date:</span>
                       <span class="value">
-                        <Moment format="d-MMM-yyyy">{data.startDate}</Moment>
+                        <Moment format="DD-MMM-yyyy">{data.startDate}</Moment>
                       </span>
                     </div>
                     <div class="form-field">
@@ -398,11 +412,11 @@ const MyServiceBookingDetailsPage = () => {
                     return (
                       <tr>
                         <td>
-                          <Moment format="d-MMM-yyyy">{item.date}</Moment>
+                          <Moment format="DD-MMM-yyyy">{item.date}</Moment>
                         </td>
                         <td>{item.workingHours}</td>
                         <td>
-                          <Moment format="d-MMM-yyyy hh:mm:ss A">
+                          <Moment format="DD-MMM-yyyy hh:mm:ss A">
                             {item.modifiedDate}
                           </Moment>
                         </td>
@@ -476,6 +490,12 @@ const MyServiceBookingDetailsPage = () => {
             )}
           </Tab>
         </Tabs>
+        <div>
+          <p className="text-primary row justify-content-center align-items-center">
+            NOTE: The remuneration offered may vary depending on the nature and
+            duration of the work.
+          </p>
+        </div>
       </Container>
     )
   );

@@ -2,8 +2,7 @@ import React from "react";
 
 const BestFeaturesComponent = () => {
   return (
-    <div>
-      BestFeatures
+    <div className="mt-3 mx-5">
       <div className="best-features">
         <div className="container">
           <div className="row">
@@ -43,9 +42,9 @@ const BestFeaturesComponent = () => {
                     <a href="#">Trustworthy</a>
                   </li>
                 </ul>
-                <a href="about.html" className="filled-button">
+                {/* <a href="about.html" className="filled-button">
                   Read More
-                </a>
+                </a> */}
               </div>
             </div>
             <div className="col-md-6">

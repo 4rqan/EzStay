@@ -3,7 +3,6 @@ import AboutPage from "../pages/AboutPage";
 import UserDetailsPage from "../pages/Admin/UserDetailsPage";
 import UserListPage from "../pages/Admin/UserListPage";
 import AllPropertiesPage from "../pages/Properties/AllPropertiesPage";
-import BookPropertyPage from "../pages/Bookings/PropertyBookings/BookPropertyPage";
 import ChangePasswordPage from "../pages/Account/ChangePasswordPage";
 import ContactPage from "../pages/ContactPage";
 import ForgotPasswordPage from "../pages/Account/ForgotPasswordPage";
@@ -126,15 +125,6 @@ const AppRouter = () => {
             <PublicRoute>
               <WorkerDetailsPage />
             </PublicRoute>
-          }
-        />
-
-        <Route
-          path={"/bookproperty/:id"}
-          element={
-            <PrivateRoute>
-              <BookPropertyPage />
-            </PrivateRoute>
           }
         />
         <Route

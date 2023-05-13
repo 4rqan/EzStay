@@ -8,6 +8,7 @@ import "../../css/admin-layout.css";
 
 const AdminLayout = ({ children }) => {
   const { logout } = useAuth();
+  const { getDpAndFullName } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => {
@@ -19,10 +20,20 @@ const AdminLayout = ({ children }) => {
       <div className="col-md-2 sidenav">
         <div className="row justify-content-center">
           <img
-            src={generateImagePath()}
+            src={generateImagePath(getDpAndFullName()?.dpPath)}
             style={{ width: "100px", height: "100px", borderRadius: "50%" }}
             alt="Profile Image"
           />
+          <p
+            className="text-center text-capitalize"
+            style={{
+              marginTop: "20px",
+              color: "white",
+              fontWeight: 500,
+            }}
+          >
+            {getDpAndFullName()?.fullname}
+          </p>
         </div>
         <ul className="sidenav-list">
           <li className="sidenav-item active">

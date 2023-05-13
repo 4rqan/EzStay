@@ -4,7 +4,7 @@ import { getWorkerDetailsById } from "../../services/worker.service";
 import { generateImagePath } from "../../utils/utils";
 import "../../css/worker-style.css";
 import LoginModal from "../../components/LoginModal";
-import WorkerBookNowComponet from "../../components/WorkerBookNowComponet";
+import WorkerBookNowComponent from "../../components/WorkerBookNowComponent";
 import { useAuth } from "../../contexts/AuthContext";
 
 const WorkerDetailsPage = () => {
@@ -89,7 +89,7 @@ const WorkerDetailsPage = () => {
               setShowBookNowModal(true);
             }}
           />
-          <WorkerBookNowComponet
+          <WorkerBookNowComponent
             workerId={id}
             show={showBookNowModal}
             onClose={() => setShowBookNowModal(false)}

@@ -4,6 +4,7 @@ const PropertyBooking = require("../models/property-booking.model");
 const Property = require("../models/rental-listings.model");
 const requireAuth = require("../middlewares/requireAuth");
 const { sendMail } = require("../utils/utils");
+const { generateBookingId } = require("../models/last-bookings-ids.model");
 
 router.post("/property/bookings", requireAuth, async (req, res) => {
   debugger;
@@ -33,9 +34,8 @@ router.post("/property/bookings", requireAuth, async (req, res) => {
   let totalPrice = 0;
   let newCheckOutDate;
   if (property.propertyType != "AirBnb") {
-    newCheckOutDate = newCheckInDate.setMonth(
-      newCheckInDate.getMonth(),
-      stayPeriod
+    newCheckOutDate = new Date(newCheckInDate).setMonth(
+      newCheckInDate.getMonth() + stayPeriod
     );
     totalPrice = parseInt(stayPeriod) * property.price;
   } else {
@@ -89,6 +89,8 @@ router.post("/property/bookings", requireAuth, async (req, res) => {
     totalGuests,
     totalPrice,
   });
+
+  booking.bookingId = await generateBookingId("property");
 
   if (comment) booking.comments = [{ comment, userId: req.user.profileId }];
 

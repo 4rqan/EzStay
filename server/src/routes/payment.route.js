@@ -14,7 +14,10 @@ route.post("/service/payment/createorder", requireAuth, async (req, res) => {
     const { bookingId } = req.body;
 
     const booking = await WorkerBooking.findById(bookingId).populate("worker");
-    if (booking.status != "confirmed") {
+    if (
+      booking.status != "confirmed" &&
+      !(booking.status == "completed" && booking.paymentStatus == "pay later")
+    ) {
       return res.status(400).send("Payment cannot be created");
     }
 
@@ -61,7 +64,10 @@ route.post("/service/payment/capture", requireAuth, async (req, res) => {
     const { paymentId, bookingId, orderId } = req.body;
 
     const booking = await WorkerBooking.findById(bookingId).populate("worker");
-    if (booking.status != "confirmed") {
+    if (
+      booking.status != "confirmed" &&
+      !(booking.status == "completed" && booking.paymentStatus == "pay later")
+    ) {
       return res.status(400).send("Payment cannot be captured");
     }
 
@@ -115,7 +121,10 @@ route.post("/property/payment/createorder", requireAuth, async (req, res) => {
     const booking = await PropertyBooking.findById(bookingId).populate(
       "property"
     );
-    if (booking.status != "confirmed") {
+    if (
+      booking.status != "confirmed" &&
+      !(booking.status == "completed" && booking.paymentStatus == "pay later")
+    ) {
       return res.status(400).send("Payment cannot be created");
     }
 
@@ -164,7 +173,10 @@ route.post("/property/payment/capture", requireAuth, async (req, res) => {
     const booking = await PropertyBooking.findById(bookingId).populate(
       "property"
     );
-    if (booking.status != "confirmed") {
+    if (
+      booking.status != "confirmed" &&
+      !(booking.status == "completed" && booking.paymentStatus == "pay later")
+    ) {
       return res.status(400).send("Payment cannot be captured");
     }
 
