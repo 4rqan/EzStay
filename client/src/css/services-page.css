@@ -1,9 +1,3 @@
-.skill-container {
-  margin: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-}
-
 .skill-title {
   font-size: 24px;
   font-weight: bold;
@@ -14,16 +8,8 @@
   text-align: center;
 }
 
-.skill-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
 .skill-col {
-  width: calc(25% - 10px);
   margin-bottom: 20px;
-  border: 1px solid #ccc;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -39,7 +25,7 @@
 .skill-image {
   max-width: 100%;
   max-height: 100%;
-  border-radius: 50%;
+  border-radius: 5%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease;
 }
@@ -51,13 +37,13 @@
 .skill-name {
   font-size: 18px;
   font-weight: bold;
-  margin: 30px 0;
+  margin: 5px 0;
   text-align: center;
 }
 
 .skill-rate {
   font-size: 16px;
-  margin: 10px 0;
+  margin: 5px 0;
   text-align: center;
 }
 

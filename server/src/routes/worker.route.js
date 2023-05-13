@@ -50,6 +50,8 @@ route.get("/services", async (_, res) => {
         price: { $avg: "$dailyRate" },
       },
     },
+    { $sort: { count: -1 } },
+    { $limit: 4 },
     {
       $project: {
         _id: 0,
