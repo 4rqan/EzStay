@@ -23,6 +23,10 @@ const MyServiceBookingsPage = () => {
               />
             </div>
             <div className="col-md-3">
+              <div>
+                <span className="booking-label">Booking Id:</span>{" "}
+                {item.bookingId}
+              </div>
               <div className="booking-label">
                 {item.worker?.profileId?.fullname}
               </div>

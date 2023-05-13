@@ -25,6 +25,10 @@ const WorkerBookingsPage = () => {
               />
             </div>
             <div className="col-md-3">
+              <div>
+                <span className="booking-label">Booking Id:</span>{" "}
+                {item.bookingId}
+              </div>
               <span className="booking-label">Booked By</span>{" "}
               <div className="booking-label">{item.bookedBy?.fullname}</div>
               <div>

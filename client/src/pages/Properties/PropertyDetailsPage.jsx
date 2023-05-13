@@ -23,6 +23,7 @@ import {
   faPhone,
   faChevronLeft,
   faChevronRight,
+  faHouse,
 } from "@fortawesome/free-solid-svg-icons";
 import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
@@ -161,11 +162,15 @@ const PropertyDetailsPage = () => {
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
                 <Feature variant="body2" gutterBottom>
-                  <FeatureIcon icon={faBed} /> {details.amenities?.bedrooms}
+                  <FeatureIcon icon={faHouse} />
+                  Propert Type : {details.propertyType}
+                </Feature>
+                <Feature variant="body2" gutterBottom>
+                  <FeatureIcon icon={faBed} /> {details.amenities?.bedrooms}{" "}
                   Bedrooms
                 </Feature>
                 <Feature variant="body2" gutterBottom>
-                  <FeatureIcon icon={faBath} /> {details.amenities?.bathrooms}
+                  <FeatureIcon icon={faBath} /> {details.amenities?.bathrooms}{" "}
                   Bathrooms
                 </Feature>
                 <Feature variant="body2" gutterBottom>

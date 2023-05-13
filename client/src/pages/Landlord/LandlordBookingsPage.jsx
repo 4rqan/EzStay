@@ -55,12 +55,10 @@ const LandlordBookingsPage = () => {
                 </div>
               </div>
               <div className="col-md-4">
-                {/* <div>
-                  <div>
-                    <FontAwesomeIcon style={{ color: "blue" }} icon={faBed} />{" "}
-                    {item.property?.amenities?.bedrooms}
-                  </div>
-                </div> */}
+                <div>
+                  <span className="font-weight-bold">Booking Id:</span>{" "}
+                  {item.bookingId}
+                </div>
                 <div>
                   {" "}
                   <span className="font-weight-bold">Total Guests:</span>{" "}
