@@ -152,8 +152,8 @@ const WorkerProfile = () => {
     { value: "Painter", label: "Painter" },
     { value: "Floor Layer", label: "Floor Layer" },
     { value: "Mason", label: "Mason" },
-    { value: "Wallpaper Installer", label: "Wallpaper Installer" },
-    { value: "Khatamband Expert", label: "Khatamband Expert" },
+    { value: "Wallpaper", label: "Wallpaper" },
+    { value: "Khatamband", label: "Khatamband" },
   ];
 
   useEffect(() => {
