@@ -30,6 +30,7 @@ import WorkerBookingsPage from "../pages/Worker/WorkerBookingsPage";
 import WorkerBookingDetailsPage from "../pages/Worker/WorkerBookingDetailsPage";
 import MyServiceBookingsPage from "../pages/Bookings/WorkerBookings/MyServiceBookingsPage";
 import MyServiceBookingDetailsPage from "../pages/Bookings/WorkerBookings/MyServiceBookingDetailsPage";
+import FeedbackListPage from "../pages/Admin/FeedbackListPage";
 
 const AppRouter = () => {
   return (
@@ -202,6 +203,14 @@ const AppRouter = () => {
           element={
             <AdminRoute>
               <UserListPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path={"/admin/feedbacks"}
+          element={
+            <AdminRoute>
+              <FeedbackListPage />
             </AdminRoute>
           }
         />

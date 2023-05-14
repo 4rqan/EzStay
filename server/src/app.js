@@ -14,6 +14,7 @@ const workerBookingRoute = require("./routes/worker-booking.route");
 const paymentRoute = require("./routes/payment.route");
 const paymentAccountRoute = require("./routes/payment-account.route");
 const propertyRatingsRoute = require("./routes/property-ratings.route");
+const feedbackRoute = require("./routes/feedback.route");
 app.use(express.static("public/uploads"));
 app.use(express.json());
 
@@ -28,5 +29,6 @@ app.use("/api", workerBookingRoute);
 app.use("/api", paymentRoute);
 app.use("/api", paymentAccountRoute);
 app.use("/api", propertyRatingsRoute);
+app.use("/api", feedbackRoute);
 
 module.exports = app;

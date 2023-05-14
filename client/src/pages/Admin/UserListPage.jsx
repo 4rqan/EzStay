@@ -1,5 +1,3 @@
-import Table from "react-bootstrap/Table";
-import Container from "react-bootstrap/Container";
 import { useEffect, useState } from "react";
 import Pagination from "react-bootstrap/Pagination";
 import {
@@ -10,12 +8,16 @@ import {
 import Moment from "react-moment";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faSort,
-  faSortUp,
-  faSortDown,
-} from "@fortawesome/free-solid-svg-icons";
+  CircularProgress,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableSortLabel,
+} from "@mui/material";
 
 const UserListPage = () => {
   const [data, setData] = useState({ users: [], total: 0 });
@@ -23,94 +25,177 @@ const UserListPage = () => {
 
   const [sortOn, setSortOn] = useState({});
 
-  useEffect(() => {
-    getAllUsers(currentPage, sortOn, setData);
-  }, [currentPage, sortOn]);
+  const [loading, setLoading] = useState(true);
 
-  const handlePageClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const [pageSize, setPageSize] = useState(5);
+
+  useEffect(() => {
+    setLoading(true);
+    getAllUsers(currentPage, sortOn, pageSize, (d) => {
+      setData(d);
+      setLoading(false);
+    });
+  }, [currentPage, sortOn, pageSize]);
+
+  const handlePageClick = (_, pageNumber) => {
+    setCurrentPage(pageNumber + 1);
   };
 
-  const pageSize = 3;
-
-  const renderPaginationButtons = () => {
-    const buttons = [];
-    const pageCount = Math.ceil(data.total / pageSize);
-
-    for (let i = 1; i <= pageCount; i++) {
-      buttons.push(
-        <Pagination.Item
-          key={i}
-          active={i === currentPage}
-          onClick={() => handlePageClick(i)}
-        >
-          {i}
-        </Pagination.Item>
-      );
-    }
-    return buttons;
+  const handleSort = (e) => {
+    const field = e.target.getAttribute("prop");
+    let order =
+      sortOn.field === field && sortOn.order === "asc" ? "desc" : "asc";
+    setSortOn({ field, order });
+    setCurrentPage(1);
   };
 
   return (
-    <Container>
-      <h3 className="text-center">Users</h3>
-      <Table striped bordered>
-        <thead>
-          <tr>
-            <th>
-              Name{" "}
-              <FontAwesomeIcon
-                onClick={() => {
-                  let order =
-                    sortOn.field === "fullname" && sortOn.order === "asc"
-                      ? "desc"
-                      : "asc";
-                  setSortOn({ field: "fullname", order });
-                }}
-                icon={
-                  sortOn.field === "fullname"
-                    ? sortOn.order === "asc"
-                      ? faSortUp
-                      : faSortDown
-                    : faSort
-                }
-              />
-            </th>
-            <th>Email</th>
-            <th>Gender</th>
-            <th>D.O.B</th>
-            <th>User Role</th>
-            <th>Status</th>
-            <th>Approved</th>
-            <th>ContactNo</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.users.map((item) => {
-            return (
-              <tr key={item._id}>
-                <td>
+    <div className="container">
+      <h2 className="my-3">Users</h2>
+
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 15, 20, 15]}
+        component="div"
+        count={data.total}
+        rowsPerPage={pageSize}
+        page={currentPage - 1}
+        onPageChange={handlePageClick}
+        onRowsPerPageChange={(e) => {
+          setPageSize(parseInt(e.target.value, 10));
+          setCurrentPage(1);
+        }}
+      />
+
+      {loading && (
+        <div className="d-flex justify-content-center my-3">
+          <CircularProgress />
+        </div>
+      )}
+
+      {data.users.length === 0 && !loading && (
+        <div className="text-center my-3">
+          <p>No Users found.</p>
+        </div>
+      )}
+
+      {data.users.length > 0 && (
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <TableSortLabel
+                  prop="fullname"
+                  active={sortOn.field === "fullname"}
+                  direction={sortOn.order}
+                  onClick={handleSort}
+                  hideSortIcon={sortOn.field !== "fullname"}
+                >
+                  Name
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  prop="email"
+                  active={sortOn.field === "email"}
+                  direction={sortOn.order}
+                  onClick={handleSort}
+                  hideSortIcon={sortOn.field !== "email"}
+                >
+                  Email
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  prop="contactNo"
+                  active={sortOn.field === "contactNo"}
+                  direction={sortOn.order}
+                  onClick={handleSort}
+                  hideSortIcon={sortOn.field !== "contactNo"}
+                >
+                  Contact No
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  prop="gender"
+                  active={sortOn.field === "gender"}
+                  direction={sortOn.order}
+                  onClick={handleSort}
+                  hideSortIcon={sortOn.field !== "gender"}
+                >
+                  Gender
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  prop="dob"
+                  active={sortOn.field === "dob"}
+                  direction={sortOn.order}
+                  onClick={handleSort}
+                  hideSortIcon={sortOn.field !== "dob"}
+                >
+                  DOB
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  prop="role"
+                  active={sortOn.field === "role"}
+                  direction={sortOn.order}
+                  onClick={handleSort}
+                  hideSortIcon={sortOn.field !== "role"}
+                >
+                  User Role
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  prop="status"
+                  active={sortOn.field === "status"}
+                  direction={sortOn.order}
+                  onClick={handleSort}
+                  hideSortIcon={sortOn.field !== "status"}
+                >
+                  Status
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  prop="approved"
+                  active={sortOn.field === "approved"}
+                  direction={sortOn.order}
+                  onClick={handleSort}
+                  hideSortIcon={sortOn.field !== "approved"}
+                >
+                  approved
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>Action</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.users.map((item) => (
+              <TableRow key={item._id}>
+                <TableCell>
                   <Link to={"/admin/userdetails/" + item.user._id}>
                     {item.fullname}
                   </Link>
-                </td>
-                <td>
+                </TableCell>
+                <TableCell>
                   {item.user.email}, {item.user.username}
-                </td>
-                <td>{item.gender}</td>
-                <td>
-                  <Moment format="d-MMM-yyyy">{item.dob}</Moment>
-                </td>
-                <td>{item.user.role}</td>
-                <td>{item.user.status}</td>
-                <td>
+                </TableCell>
+                <TableCell>{item.contactNo}</TableCell>
+                <TableCell>{item.gender}</TableCell>
+                <TableCell>
+                  <Moment format="MMMM DD, YYYY hh:mm A">{item.dob}</Moment>
+                </TableCell>
+                <TableCell>{item.user.role}</TableCell>
+                <TableCell>{item.user.status}</TableCell>
+                <TableCell>
                   {item.user.role === "Landlord" &&
                     (item.user.approvedLL ? "Yes" : "No")}
-                </td>
-
-                <td>{item.contactNo}</td>
-                <td>
+                </TableCell>
+                <TableCell>
                   <Button
                     onClick={() => {
                       changeUserStatus(
@@ -146,15 +231,13 @@ const UserListPage = () => {
                       {item.user.approvedLL ? "DisApprove" : "Approve"}
                     </Button>
                   )}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
-
-      <Pagination>{renderPaginationButtons()}</Pagination>
-    </Container>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+    </div>
   );
 };
 

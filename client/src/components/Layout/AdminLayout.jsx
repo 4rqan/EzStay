@@ -52,6 +52,11 @@ const AdminLayout = ({ children }) => {
             </Link>
           </li>
           <li className="sidenav-item">
+            <Link className="nav-link" to="/admin/feedbacks">
+              Feedbacks
+            </Link>
+          </li>
+          <li className="sidenav-item">
             <Link className="nav-link" onClick={logout}>
               Logout <FontAwesomeIcon icon={faSignOut} />
             </Link>
@@ -64,7 +69,6 @@ const AdminLayout = ({ children }) => {
       <div className="col-md-10 main-content">{children}</div>
     </div>
   );
-  // return (
   //   <>
   //     <header className="">
   //       <nav className="navbar navbar-expand-lg">

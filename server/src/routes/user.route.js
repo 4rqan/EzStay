@@ -8,7 +8,7 @@ route.get("/users/list", adminRequireAuth, async (req, res) => {
   const {
     fullname,
     page = 1,
-    pageSize = 3,
+    pageSize = 5,
     sortField = "fullname",
     sortOrder = "asc",
   } = req.query;

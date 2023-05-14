@@ -1,10 +1,15 @@
 import Swal from "sweetalert2";
 import axios from "../utils/axios_client";
 
-export const getAllUsers = (page, sortOn, cb) => {
+export const getAllUsers = (page, sortOn, pageSize, cb) => {
   axios
     .get("/api/users/list", {
-      params: { page, sortField: sortOn.field, sortOrder: sortOn.order },
+      params: {
+        page,
+        sortField: sortOn.field,
+        sortOrder: sortOn.order,
+        pageSize,
+      },
     })
     .then(({ data }) => {
       cb(data);
