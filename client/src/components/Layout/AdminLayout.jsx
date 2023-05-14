@@ -1,143 +1,177 @@
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import {
+  AppBar,
+  Avatar,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import {
+  AccountCircle,
+  ChevronLeft,
+  ChevronRight,
+  Dashboard,
+  Feedback,
+  People,
+  Person,
+  PowerSettingsNew,
+} from "@mui/icons-material";
 import { useAuth } from "../../contexts/AuthContext";
 import { generateImagePath } from "../../utils/utils";
-import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faSignOut } from "@fortawesome/free-solid-svg-icons";
-import "../../css/admin-layout.css";
+
+const drawerWidth = 240;
+
+const Main = styled("div")(({ theme }) => ({
+  display: "flex",
+}));
+
+const ToolbarSpacer = styled("div")(({ theme }) => ({
+  ...theme.mixins.toolbar,
+}));
+
+const Sidebar = styled("div")(({ theme, open }) => ({
+  flexShrink: 0,
+  backgroundColor: "#f5f5f5",
+  transition: theme.transitions.create("transform", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  width: open ? drawerWidth : 0,
+}));
+
+const SidebarHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
+  padding: theme.spacing(0, 1),
+  ...theme.mixins.toolbar,
+}));
+
+const SidebarList = styled(List)(({ theme, open }) => ({
+  marginTop: theme.spacing(2),
+  position: "sticky",
+  top: theme.spacing(10),
+  transition: theme.transitions.create("transform", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  transform: open ? "none" : `translateX(-${drawerWidth}px)`,
+}));
+
+const Content = styled("div")(({ theme }) => ({
+  flexGrow: 1,
+  padding: theme.spacing(3),
+}));
 
 const AdminLayout = ({ children }) => {
-  const { logout } = useAuth();
-  const { getDpAndFullName } = useAuth();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [open, setOpen] = useState(true);
+  const { getDpAndFullName, logout } = useAuth();
 
-  const toggleSidebar = () => {
-    setIsCollapsed(!isCollapsed);
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
   };
 
   return (
-    <div className={`row ${isCollapsed ? "collapsed" : ""}`}>
-      <div className="col-md-2 sidenav">
-        <div className="row justify-content-center">
-          <img
-            src={generateImagePath(getDpAndFullName()?.dpPath)}
-            style={{ width: "100px", height: "100px", borderRadius: "50%" }}
-            alt="Profile Image"
-          />
-          <p
-            className="text-center text-capitalize"
-            style={{
-              marginTop: "20px",
-              color: "white",
-              fontWeight: 500,
-            }}
+    <Main>
+      <AppBar
+        position="fixed"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <Toolbar>
+          {open ? (
+            <IconButton
+              color="inherit"
+              onClick={handleDrawerClose}
+              sx={{ mr: 2 }}
+            >
+              <ChevronLeft />
+            </IconButton>
+          ) : (
+            <IconButton
+              color="inherit"
+              onClick={handleDrawerOpen}
+              sx={{ mr: 2 }}
+            >
+              <ChevronRight />
+            </IconButton>
+          )}
+          <div style={{ flexGrow: 1 }}></div>
+          <Typography
+            variant="body1"
+            sx={{ mr: 2 }}
+            style={{ color: "white" }}
+            component={Link}
+            to={"/admin/profile"}
           >
-            {getDpAndFullName()?.fullname}
-          </p>
-        </div>
-        <ul className="sidenav-list">
-          <li className="sidenav-item active">
-            <Link className="nav-link" to="/admin/dashboard">
-              Dashboard
-            </Link>
-          </li>
-          <li className="sidenav-item">
-            <Link className="nav-link" to="/admin/users">
-              Users
-            </Link>
-          </li>
-          <li className="sidenav-item">
-            <Link className="nav-link" to="/admin/profile">
-              Profile
-            </Link>
-          </li>
-          <li className="sidenav-item">
-            <Link className="nav-link" to="/admin/feedbacks">
-              Feedbacks
-            </Link>
-          </li>
-          <li className="sidenav-item">
-            <Link className="nav-link" onClick={logout}>
-              Logout <FontAwesomeIcon icon={faSignOut} />
-            </Link>
-          </li>
-        </ul>
-        <div className="toggle-sidebar" onClick={toggleSidebar}>
-          <FontAwesomeIcon icon={faBars} />
-        </div>
-      </div>
-      <div className="col-md-10 main-content">{children}</div>
-    </div>
+            {getDpAndFullName().fullname}
+          </Typography>
+          <IconButton color="inherit" component={Link} to={"/admin/profile"}>
+            <img
+              src={generateImagePath(getDpAndFullName().dpPath)}
+              alt="Profile"
+              width="32"
+              height="32"
+              title={getDpAndFullName().fullName}
+              style={{ borderRadius: "50%" }}
+            />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <Sidebar open={open}>
+        <SidebarHeader>
+          <IconButton onClick={handleDrawerClose}>
+            <ChevronLeft />
+          </IconButton>
+        </SidebarHeader>
+        <SidebarList open={open}>
+          <ListItem component={Link} to={"/admin/dashboard"}>
+            <ListItemIcon>
+              <Dashboard />
+            </ListItemIcon>
+            <ListItemText primary="Dashboard" />
+          </ListItem>
+          <ListItem component={Link} to={"/admin/users"}>
+            <ListItemIcon>
+              <People />
+            </ListItemIcon>
+            <ListItemText primary="Users" />
+          </ListItem>
+          <ListItem component={Link} to={"/admin/feedbacks"}>
+            <ListItemIcon>
+              <Feedback />
+            </ListItemIcon>
+            <ListItemText primary="Feedback" />
+          </ListItem>
+          <ListItem component={Link} to={"/admin/profile"}>
+            <ListItemIcon>
+              <Person />
+            </ListItemIcon>
+            <ListItemText primary="Profile" />
+          </ListItem>
+          <ListItem onClick={logout}>
+            <ListItemIcon>
+              <PowerSettingsNew />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItem>
+        </SidebarList>
+      </Sidebar>
+      <Content>
+        <ToolbarSpacer />
+        {children}
+      </Content>
+    </Main>
   );
-  //   <>
-  //     <header className="">
-  //       <nav className="navbar navbar-expand-lg">
-  //         <div className="container">
-  //           <Link className="navbar-brand" to={"/"}>
-  //             <h2>
-  //               Ez <em>Stay</em>
-  //             </h2>
-  //           </Link>
-  //           <button
-  //             className="navbar-toggler"
-  //             type="button"
-  //             data-toggle="collapse"
-  //             data-target="#navbarResponsive"
-  //             aria-controls="navbarResponsive"
-  //             aria-expanded="false"
-  //             aria-label="Toggle navigation"
-  //           >
-  //             <span className="navbar-toggler-icon"></span>
-  //           </button>
-  //           <div className="collapse navbar-collapse" id="navbarResponsive">
-  //             <ul className="navbar-nav ml-auto">
-  //               <li className="nav-item active">
-  //                 <Link className="nav-link" to="/">
-  //                   Home
-  //                   <span className="sr-only">(current)</span>
-  //                 </Link>
-  //               </li>
-
-  //               <>
-  //                 <li className="nav-item">
-  //                   <Link className="nav-link" to="/profile">
-  //                     Profile
-  //                   </Link>
-  //                 </li>
-  //               </>
-
-  //               <li className="nav-item">
-  //                 <Link className="nav-link" to="/admin/users">
-  //                   Users
-  //                 </Link>
-  //               </li>
-
-  //               <li className="nav-item">
-  //                 <Link className="nav-link" onClick={logout}>
-  //                   Logout
-  //                 </Link>
-  //               </li>
-  //             </ul>
-  //           </div>
-  //         </div>
-  //       </nav>
-  //     </header>
-
-  //     {children}
-
-  //     <footer>
-  //       <div className="container">
-  //         <div className="row">
-  //           <div className="col-md-12">
-  //             <div className="inner-content">
-  //               <p>Copyright &copy; {new Date().getFullYear()} Ez Stay</p>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </footer>
-  //   </>
-  // );
 };
 
 export default AdminLayout;
