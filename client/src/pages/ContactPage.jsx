@@ -64,15 +64,14 @@ const ContactPage = () => {
 
     // submit the form if there are no errors
     if (Object.keys(errors).length === 0) {
-      saveFeedback(
-        formValues,
+      saveFeedback(formValues, () => {
         setFormValues({
           name: "",
           email: "",
           phone: "",
           message: "",
-        })
-      );
+        });
+      });
     }
   };
 
