@@ -32,6 +32,7 @@ import MyServiceBookingsPage from "../pages/Bookings/WorkerBookings/MyServiceBoo
 import MyServiceBookingDetailsPage from "../pages/Bookings/WorkerBookings/MyServiceBookingDetailsPage";
 import FeedbackListPage from "../pages/Admin/FeedbackListPage";
 import SearchPage from "../pages/SearchPage";
+import PropertyListPage from "../pages/Admin/PropertyListPage";
 
 const AppRouter = () => {
   return (
@@ -212,6 +213,14 @@ const AppRouter = () => {
           element={
             <AdminRoute>
               <UserListPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path={"/admin/properties"}
+          element={
+            <AdminRoute>
+              <PropertyListPage />
             </AdminRoute>
           }
         />

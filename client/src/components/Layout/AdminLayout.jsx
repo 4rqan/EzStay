@@ -18,6 +18,7 @@ import {
   ChevronRight,
   Dashboard,
   Feedback,
+  House,
   People,
   Person,
   PowerSettingsNew,
@@ -26,10 +27,6 @@ import { useAuth } from "../../contexts/AuthContext";
 import { generateImagePath } from "../../utils/utils";
 
 const drawerWidth = 240;
-
-const Main = styled("div")(({ theme }) => ({
-  display: "flex",
-}));
 
 const ToolbarSpacer = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
@@ -82,7 +79,7 @@ const AdminLayout = ({ children }) => {
   };
 
   return (
-    <Main>
+    <>
       <AppBar
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -132,50 +129,58 @@ const AdminLayout = ({ children }) => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Sidebar open={open}>
-        <SidebarHeader>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeft />
-          </IconButton>
-        </SidebarHeader>
-        <SidebarList open={open}>
-          <ListItem component={Link} to={"/admin/dashboard"}>
-            <ListItemIcon>
-              <Dashboard />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-          </ListItem>
-          <ListItem component={Link} to={"/admin/users"}>
-            <ListItemIcon>
-              <People />
-            </ListItemIcon>
-            <ListItemText primary="Users" />
-          </ListItem>
-          <ListItem component={Link} to={"/admin/feedbacks"}>
-            <ListItemIcon>
-              <Feedback />
-            </ListItemIcon>
-            <ListItemText primary="Feedback" />
-          </ListItem>
-          <ListItem component={Link} to={"/admin/profile"}>
-            <ListItemIcon>
-              <Person />
-            </ListItemIcon>
-            <ListItemText primary="Profile" />
-          </ListItem>
-          <ListItem onClick={logout}>
-            <ListItemIcon>
-              <PowerSettingsNew />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
-          </ListItem>
-        </SidebarList>
-      </Sidebar>
-      <Content>
-        <ToolbarSpacer />
-        {children}
-      </Content>
-    </Main>
+      <div className="row">
+        <Sidebar open={open} className="col-md-3">
+          <SidebarHeader>
+            <IconButton onClick={handleDrawerClose}>
+              <ChevronLeft />
+            </IconButton>
+          </SidebarHeader>
+          <SidebarList open={open}>
+            <ListItem component={Link} to={"/admin/dashboard"}>
+              <ListItemIcon>
+                <Dashboard />
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItem>
+            <ListItem component={Link} to={"/admin/users"}>
+              <ListItemIcon>
+                <People />
+              </ListItemIcon>
+              <ListItemText primary="Users" />
+            </ListItem>
+            <ListItem component={Link} to={"/admin/properties"}>
+              <ListItemIcon>
+                <House />
+              </ListItemIcon>
+              <ListItemText primary="Properties" />
+            </ListItem>
+            <ListItem component={Link} to={"/admin/feedbacks"}>
+              <ListItemIcon>
+                <Feedback />
+              </ListItemIcon>
+              <ListItemText primary="Feedback" />
+            </ListItem>
+            <ListItem component={Link} to={"/admin/profile"}>
+              <ListItemIcon>
+                <Person />
+              </ListItemIcon>
+              <ListItemText primary="Profile" />
+            </ListItem>
+            <ListItem onClick={logout}>
+              <ListItemIcon>
+                <PowerSettingsNew />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItem>
+          </SidebarList>
+        </Sidebar>
+        <Content className="col-md-9">
+          <ToolbarSpacer />
+          {children}
+        </Content>
+      </div>
+    </>
   );
 };
 
