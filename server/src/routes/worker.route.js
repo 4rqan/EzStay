@@ -46,7 +46,9 @@ route.post(
       res,
       asyncHandler(async (err) => {
         if (!err) {
-          let worker = await Worker.findOne({ profileId: req.user.profileId });
+          let worker =
+            (await Worker.findOne({ profileId: req.user.profileId })) ||
+            new Worker({ profileId: req.user.profileId });
           const existingPath = worker.imagePath;
           worker.imagePath = req.file.filename;
           await worker.save();

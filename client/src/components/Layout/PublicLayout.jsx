@@ -121,7 +121,7 @@ const PublicLayout = ({ children }) => {
                     </NavLink>
                   </li>
                 </>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <NavLink
                     onClick={hideNavBar}
                     className="nav-link"
@@ -130,7 +130,7 @@ const PublicLayout = ({ children }) => {
                   >
                     About Us
                   </NavLink>
-                </li>
+                </li> */}
                 <li className="nav-item">
                   <NavLink
                     onClick={hideNavBar}

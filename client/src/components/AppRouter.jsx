@@ -33,6 +33,7 @@ import MyServiceBookingDetailsPage from "../pages/Bookings/WorkerBookings/MyServ
 import FeedbackListPage from "../pages/Admin/FeedbackListPage";
 import SearchPage from "../pages/SearchPage";
 import PropertyListPage from "../pages/Admin/PropertyListPage";
+import NotFoundPage from "../pages/NotFoundPage";
 
 const AppRouter = () => {
   return (
@@ -70,14 +71,14 @@ const AppRouter = () => {
             </PublicRoute>
           }
         />
-        <Route
+        {/* <Route
           path={"/about"}
           element={
             <PublicRoute>
               <AboutPage />
             </PublicRoute>
           }
-        />
+        /> */}
         <Route
           path={"/propertydetails/:id"}
           element={
@@ -303,6 +304,8 @@ const AppRouter = () => {
           }
         />
         {/* Lanlord Routes Ends */}
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );
