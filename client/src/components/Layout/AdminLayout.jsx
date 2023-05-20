@@ -105,6 +105,11 @@ const AdminLayout = ({ children }) => {
               <ChevronRight />
             </IconButton>
           )}
+          <div>
+            <Link to="/" style={{ color: "white" }}>
+              Go Back to EzStay
+            </Link>
+          </div>
           <div style={{ flexGrow: 1 }}></div>
           <Typography
             variant="body1"

@@ -117,8 +117,6 @@ const PrivateLayout = ({ children }) => {
                     </IconButton>
                   </div>
                 </li>
-
-                {/* End of search field */}
                 {isAdmin() && (
                   <>
                     <li className="nav-item">
