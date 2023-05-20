@@ -65,4 +65,21 @@ const sendMail = (to, subject, templateName, replacements) => {
     });
 };
 
-module.exports = { uploadMultiple, uploadSingle, deleteFileAsync, sendMail };
+function asyncHandler(fn) {
+  return async (req, res, next) => {
+    try {
+      await fn(req, res, next);
+    } catch (err) {
+      console.error("Exception:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
+}
+
+module.exports = {
+  uploadMultiple,
+  uploadSingle,
+  deleteFileAsync,
+  sendMail,
+  asyncHandler,
+};
