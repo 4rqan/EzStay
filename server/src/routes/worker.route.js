@@ -65,6 +65,29 @@ route.get("/services", async (_, res) => {
   res.send(data);
 });
 
+route.get("/all/services", async (_, res) => {
+  const data = await Worker.aggregate([
+    { $match: { skills: { $ne: null } } },
+    { $unwind: "$skills" },
+    {
+      $group: {
+        _id: "$skills",
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { count: -1 } },
+    {
+      $project: {
+        _id: 0,
+        service: "$_id",
+        count: "$count",
+      },
+    },
+  ]);
+
+  res.send(data);
+});
+
 route.get("/services/:skill", async (req, res) => {
   const { skill } = req.params;
 

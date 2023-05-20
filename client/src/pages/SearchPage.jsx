@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { search } from "../services/home.service";
 import { generateImagePath } from "../utils/utils";
+import { Link } from "react-router-dom";
 
 const SearchPage = () => {
   const searchParams = new URLSearchParams(window.location.search);
@@ -35,7 +36,11 @@ const SearchPage = () => {
             {searchResults.rentalListings &&
               searchResults.rentalListings.map((listing) => (
                 <Grid item key={listing._id} xs={12} sm={6} md={3}>
-                  <Card sx={{ height: "100%" }}>
+                  <Card
+                    sx={{ height: "100%" }}
+                    component={Link}
+                    to={"/propertyDetails/" + listing._id}
+                  >
                     <CardMedia
                       component="img"
                       height="140"
@@ -73,7 +78,11 @@ const SearchPage = () => {
             {searchResults.workers &&
               searchResults.workers.map((worker) => (
                 <Grid item key={worker._id} xs={12} sm={6} md={3}>
-                  <Card sx={{ height: "100%" }}>
+                  <Card
+                    sx={{ height: "100%" }}
+                    component={Link}
+                    to={"/worker/" + worker._id}
+                  >
                     <CardMedia
                       component="img"
                       height="140"
@@ -81,7 +90,13 @@ const SearchPage = () => {
                       alt={worker.profileId.fullname}
                     />
                     <CardContent>
-                      <Typography variant="subtitle1" component="div">
+                      <Typography
+                        variant="subtitle1"
+                        component="div"
+                        noWrap
+                        title={worker.skills.join(", ")}
+                        sx={{ height: 32, overflow: "hidden" }}
+                      >
                         Skills: {worker.skills.join(", ")}
                       </Typography>
                       <Typography variant="body2" component="div">

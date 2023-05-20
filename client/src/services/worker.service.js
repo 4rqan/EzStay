@@ -20,6 +20,12 @@ export const getServices = (cb) => {
   });
 };
 
+export const getAllServices = (cb) => {
+  axios.get("/api/all/services").then(({ data }) => {
+    cb(data);
+  });
+};
+
 export const getServicesBySkill = (skill, cb) => {
   axios.get("/api/services/" + skill).then(({ data }) => {
     cb(data);

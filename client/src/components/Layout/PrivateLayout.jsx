@@ -1,17 +1,23 @@
-import { useState } from "react";
-import { Dropdown, NavDropdown } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { NavDropdown } from "react-bootstrap";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { InputBase, IconButton } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
+import { getAllServices } from "../../services/worker.service";
 
 const PrivateLayout = ({ children }) => {
   const [showNavBar, setShowNavBar] = useState(false);
 
   const [searchText, setSearchText] = useState("");
+  const [services, setServices] = useState([]);
   const navigate = useNavigate();
 
   const { logout, isAdmin, isInRole, getDpAndFullName } = useAuth();
+
+  useEffect(() => {
+    getAllServices(setServices);
+  }, []);
 
   const hideNavBar = () => {
     setShowNavBar(false);
@@ -61,6 +67,22 @@ const PrivateLayout = ({ children }) => {
                     Properties
                   </NavLink>
                 </li>
+                {services.length > 0 && (
+                  <li className="nav-item">
+                    <NavDropdown title="Services" menuVariant="dark">
+                      {services.map((item) => (
+                        <NavDropdown.Item
+                          key={item.service}
+                          as={Link}
+                          to={"/services/" + item.service}
+                          onClick={hideNavBar}
+                        >
+                          {item.service}
+                        </NavDropdown.Item>
+                      ))}
+                    </NavDropdown>
+                  </li>
+                )}
                 <li className="nav-item">
                   <NavDropdown title="My Bookings" menuVariant="dark">
                     <NavDropdown.Item
@@ -79,58 +101,7 @@ const PrivateLayout = ({ children }) => {
                     </NavDropdown.Item>
                   </NavDropdown>
                 </li>
-                <li className="nav-item">
-                  <div className="search-field mt-2">
-                    <InputBase
-                      placeholder="Search..."
-                      inputProps={{ "aria-label": "search" }}
-                      sx={{
-                        backgroundColor: "#FFFFFF",
-                        borderRadius: "4px",
-                        paddingLeft: "8px",
-                        color: "#000000",
-                      }}
-                      value={searchText}
-                      onChange={(e) => {
-                        setSearchText(e.target.value);
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key == "Enter")
-                          navigate("/search?searchText=" + searchText);
-                      }}
-                    />
-                    <IconButton
-                      onClick={() => {
-                        navigate("/search?searchText=" + searchText);
-                      }}
-                      type="submit"
-                      aria-label="search"
-                      sx={{
-                        backgroundColor: "#FFFFFF",
-                        color: "#000000",
-                        height: "25px",
-                        width: "25px",
-                        margin: "-32px",
-                      }}
-                    >
-                      <SearchIcon />
-                    </IconButton>
-                  </div>
-                </li>
-                {isAdmin() && (
-                  <>
-                    <li className="nav-item">
-                      <NavLink
-                        onClick={hideNavBar}
-                        className="nav-link"
-                        to="/admin/users"
-                        activeClassName="active"
-                      >
-                        Admin Panel
-                      </NavLink>
-                    </li>
-                  </>
-                )}
+
                 {isInRole("Landlord") && (
                   <>
                     <NavDropdown title="Landlord" menuVariant="dark">
@@ -190,6 +161,15 @@ const PrivateLayout = ({ children }) => {
                   >
                     Change Password
                   </NavDropdown.Item>
+                  {isAdmin() && (
+                    <NavDropdown.Item
+                      onClick={hideNavBar}
+                      as={Link}
+                      to="/admin/dashboard"
+                    >
+                      Admin Panel
+                    </NavDropdown.Item>
+                  )}
                   <NavDropdown.Item
                     onClick={() => {
                       hideNavBar();
@@ -199,6 +179,45 @@ const PrivateLayout = ({ children }) => {
                     Logout
                   </NavDropdown.Item>
                 </NavDropdown>
+
+                <li className="nav-item">
+                  <div className="search-field mt-2">
+                    <InputBase
+                      placeholder="Search..."
+                      inputProps={{ "aria-label": "search" }}
+                      sx={{
+                        backgroundColor: "#FFFFFF",
+                        borderRadius: "4px",
+                        paddingLeft: "8px",
+                        color: "#000000",
+                      }}
+                      value={searchText}
+                      onChange={(e) => {
+                        setSearchText(e.target.value);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key == "Enter")
+                          navigate("/search?searchText=" + searchText);
+                      }}
+                    />
+                    <IconButton
+                      onClick={() => {
+                        navigate("/search?searchText=" + searchText);
+                      }}
+                      type="submit"
+                      aria-label="search"
+                      sx={{
+                        backgroundColor: "#FFFFFF",
+                        color: "#000000",
+                        height: "25px",
+                        width: "25px",
+                        margin: "-32px",
+                      }}
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
