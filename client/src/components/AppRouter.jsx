@@ -31,6 +31,7 @@ import WorkerBookingDetailsPage from "../pages/Worker/WorkerBookingDetailsPage";
 import MyServiceBookingsPage from "../pages/Bookings/WorkerBookings/MyServiceBookingsPage";
 import MyServiceBookingDetailsPage from "../pages/Bookings/WorkerBookings/MyServiceBookingDetailsPage";
 import FeedbackListPage from "../pages/Admin/FeedbackListPage";
+import SearchPage from "../pages/SearchPage";
 
 const AppRouter = () => {
   return (
@@ -193,6 +194,14 @@ const AppRouter = () => {
           element={
             <PublicRoute>
               <ResetPasswordPage />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path={"/search"}
+          element={
+            <PublicRoute>
+              <SearchPage />
             </PublicRoute>
           }
         />
