@@ -8,6 +8,7 @@ const {
   uploadSingle,
 } = require("../utils/utils");
 const Booking = require("../models/property-booking.model");
+const adminRequireAuth = require("../middlewares/adminRequireAuth");
 
 const folderName = "rentalImages";
 const upload = uploadMultiple("files", folderName);
@@ -215,7 +216,7 @@ router.get("/allListings", async (req, res) => {
     city,
   } = req.query;
 
-  let filter = {};
+  let filter = { blocked: false };
 
   if (stateCode) {
     filter["address.state"] = stateCode;
@@ -230,6 +231,46 @@ router.get("/allListings", async (req, res) => {
   RentalListing.aggregate([
     { $match: filter },
     { $sort: sortOptions },
+    { $skip: skipDocuments },
+    { $limit: parseInt(pageSize) },
+    {
+      $lookup: {
+        from: "propertyratings",
+        localField: "_id",
+        foreignField: "property",
+        as: "ratings",
+      },
+    },
+    {
+      $addFields: {
+        averageRating: { $avg: "$ratings.rating" },
+        totalRatings: { $size: "$ratings" },
+      },
+    },
+    {
+      $project: {
+        ratings: 0,
+        address: 0,
+        amenities: 0,
+        contact: 0,
+      },
+    },
+  ]).exec((err, properties) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.json({ RentalListings: properties, totalCount });
+    }
+  });
+});
+
+router.get("/admin/listings", async (req, res) => {
+  const { page = 1, pageSize = 6 } = req.query;
+  const skipDocuments = (page - 1) * pageSize;
+  const totalCount = await RentalListing.countDocuments();
+
+  RentalListing.aggregate([
+    { $sort: { title: 1 } },
     { $skip: skipDocuments },
     { $limit: parseInt(pageSize) },
     {
@@ -278,6 +319,14 @@ router.get("/propertiesbycities", async (_, res) => {
   ]);
 
   res.send(data);
+});
+
+router.put("/blockUnblockProperty", adminRequireAuth, async (req, res) => {
+  const { id, blocked } = req.body;
+  const property = await RentalListing.findById(id);
+  property.blocked = blocked;
+  await property.save();
+  res.send(property);
 });
 
 module.exports = router;

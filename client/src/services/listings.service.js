@@ -87,6 +87,16 @@ export const getAllListings = (
     });
 };
 
+export const getListingsForAdmin = (cb, page = 1, pageSize = 6) => {
+  axios
+    .get("/api/admin/listings", {
+      params: { page, pageSize },
+    })
+    .then(({ data }) => {
+      cb(data);
+    });
+};
+
 export const getStates = (cb) => {
   axios.get("/api/states").then(({ data }) => {
     cb(data);
@@ -109,4 +119,13 @@ export const hasBooked = (propertyId, cb) => {
   axios.get("/api/property/hasbooked/" + propertyId).then(({ data }) => {
     cb(data);
   });
+};
+export const blockUnblockProperty = (id, blocked, cb) => {
+  axios
+    .put("/api/blockUnblockProperty", { id, blocked })
+    .then(({ data }) => {
+      Swal.fire(`Property ${blocked ? "Blocked" : "Unblocked"} Successfully`);
+      cb(data);
+    })
+    .catch(showError);
 };

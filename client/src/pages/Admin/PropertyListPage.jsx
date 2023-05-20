@@ -1,21 +1,28 @@
 import { Button, Card, CardContent, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { getAllListings } from "../../services/listings.service";
+import {
+  blockUnblockProperty,
+  getAllListings,
+  getListingsForAdmin,
+} from "../../services/listings.service";
 import { generateImagePath } from "../../utils/utils";
+import Moment from "react-moment";
 
 const PropertyListPage = () => {
   const [data, setData] = useState({});
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [sortField, setSortField] = useState("title");
-  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
-    getAllListings(setData, page, pageSize, null, null, sortField, sortOrder);
-  }, [page, pageSize, sortField, sortOrder]);
+    getData();
+  }, [page, pageSize]);
 
-  const handleBlockUnblock = (propertyId) => {
-    console.log(`Block/Unblock property with ID: ${propertyId}`);
+  const getData = () => {
+    getListingsForAdmin(setData, page, pageSize);
+  };
+
+  const handleBlockUnblock = (propertyId, blocked) => {
+    blockUnblockProperty(propertyId, blocked, getData);
   };
 
   const handlePageChange = (event, newPage) => {
@@ -64,10 +71,6 @@ const PropertyListPage = () => {
 };
 
 const PropertyCard = ({ property, onBlockUnblock }) => {
-  const handleBlockUnblock = () => {
-    onBlockUnblock(property._id);
-  };
-
   return (
     <Card>
       <Grid container spacing={2}>
@@ -109,10 +112,15 @@ const PropertyCard = ({ property, onBlockUnblock }) => {
               Price: {property.price} {property.priceType}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Available Date: {property.availableDate}
+              Available Date:{" "}
+              <Moment format="DD/MM/yyyy">{property.availableDate}</Moment>
             </Typography>
-            <Button onClick={handleBlockUnblock}>
-              {property.isBlocked ? "Unblock" : "Block"}
+            <Button
+              onClick={() => {
+                onBlockUnblock(property._id, !property.blocked);
+              }}
+            >
+              {property.blocked ? "Unblock" : "Block"}
             </Button>
           </CardContent>
         </Grid>

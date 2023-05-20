@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   AppBar,
-  Avatar,
   IconButton,
   List,
   ListItem,
@@ -13,7 +12,6 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import {
-  AccountCircle,
   ChevronLeft,
   ChevronRight,
   Dashboard,
