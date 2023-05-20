@@ -6,6 +6,7 @@ const {
   uploadMultiple,
   deleteFileAsync,
   uploadSingle,
+  asyncHandler,
 } = require("../utils/utils");
 const Booking = require("../models/property-booking.model");
 const adminRequireAuth = require("../middlewares/adminRequireAuth");
@@ -14,90 +15,127 @@ const folderName = "rentalImages";
 const upload = uploadMultiple("files", folderName);
 const uploadOne = uploadSingle("file", folderName);
 
-router.delete("/rentallistings/:id", requireAuth, async (req, res) => {
-  const { id } = req.params;
-  const isBooked = await Booking.countDocuments({ property: id });
+router.delete(
+  "/rentallistings/:id",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const isBooked = await Booking.countDocuments({ property: id });
 
-  if (isBooked > 0) {
-    return res
-      .status(400)
-      .send("The Property cannot be deleted as its already Booked");
-  }
-  const property = await RentalListing.findById(id);
-  for (let item of property.imageUrls) {
-    await deleteFileAsync("./public/uploads/" + item.imagePath);
-  }
-  await RentalListing.deleteOne({ _id: id });
-
-  res.send("Deleted successfully");
-});
-
-router.post("/rentallistings", requireAuth, async (req, res) => {
-  if (req.user.role != "Landlord")
-    return res
-      .status(401)
-      .send("You don't have permission to access this feature");
-
-  upload(req, res, async (er) => {
-    if (!er) {
-      const filenames = req.files.map((file, i) => ({
-        imagePath: folderName + "/" + file.filename,
-        default: i == 0 ? 1 : 0,
-      }));
-
-      try {
-        const rentalListing = new RentalListing(
-          ({
-            title,
-            description,
-            propertyType,
-            price,
-            availableDate,
-            amenities: {
-              furnished,
-              parkingSpace,
-              electricityAvailable,
-              waterAvailable,
-              heating,
-              cooling,
-              bedrooms,
-              bathrooms,
-            },
-            address: { city, state, pincode, address1, houseNo },
-            contact: { name, email, phone },
-          } = req.body)
-        );
-
-        rentalListing.priceType =
-          rentalListing.propertyType == "AirBnb" ? "Per Day" : "Per Month";
-        rentalListing.imageUrls = filenames;
-
-        rentalListing.owner = req.user.profileId;
-        await rentalListing.save();
-        res.send(rentalListing);
-      } catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, error: err.message });
-      }
+    if (isBooked > 0) {
+      return res
+        .status(400)
+        .send("The Property cannot be deleted as it's already booked.");
     }
-  });
-});
+    const property = await RentalListing.findById(id);
+    for (let item of property.imageUrls) {
+      await deleteFileAsync("./public/uploads/" + item.imagePath);
+    }
+    await RentalListing.deleteOne({ _id: id });
 
-router.put("/rentallistings", requireAuth, async (req, res) => {
-  if (req.user.role != "Landlord")
-    return res
-      .status(401)
-      .send("You don't have permission to access this feature");
+    res.send("Deleted successfully");
+  })
+);
 
-  try {
-    const {
-      title,
-      description,
-      propertyType,
-      price,
-      availableDate,
-      _id,
-      amenities: {
+router.post(
+  "/rentallistings",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    if (req.user.role != "Landlord")
+      return res
+        .status(401)
+        .send("You don't have permission to access this feature");
+
+    upload(req, res, async (er) => {
+      if (!er) {
+        const filenames = req.files.map((file, i) => ({
+          imagePath: folderName + "/" + file.filename,
+          default: i == 0 ? 1 : 0,
+        }));
+
+        try {
+          const rentalListing = new RentalListing(
+            ({
+              title,
+              description,
+              propertyType,
+              price,
+              availableDate,
+              amenities: {
+                furnished,
+                parkingSpace,
+                electricityAvailable,
+                waterAvailable,
+                heating,
+                cooling,
+                bedrooms,
+                bathrooms,
+              },
+              address: { city, state, pincode, address1, houseNo },
+              contact: { name, email, phone },
+            } = req.body)
+          );
+
+          rentalListing.priceType =
+            rentalListing.propertyType == "AirBnb" ? "Per Day" : "Per Month";
+          rentalListing.imageUrls = filenames;
+
+          rentalListing.owner = req.user.profileId;
+          await rentalListing.save();
+          res.send(rentalListing);
+        } catch (err) {
+          console.error(err);
+          res.status(500).json({ success: false, error: err.message });
+        }
+      }
+    });
+  })
+);
+
+router.put(
+  "/rentallistings",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    if (req.user.role != "Landlord")
+      return res
+        .status(401)
+        .send("You don't have permission to access this feature");
+
+    try {
+      const {
+        title,
+        description,
+        propertyType,
+        price,
+        availableDate,
+        _id,
+        amenities: {
+          furnished,
+          parkingSpace,
+          electricityAvailable,
+          waterAvailable,
+          heating,
+          cooling,
+          bedrooms,
+          bathrooms,
+        },
+        address: { city, state, pincode, address1, houseNo },
+        contact: { name, email, phone },
+      } = req.body;
+
+      const property = await RentalListing.findById(_id);
+      if (!property || property.owner != req.user.profileId) {
+        return res.status(400).send("Invalid property");
+      }
+
+      property.title = title;
+      property.description = description;
+      property.propertyType = propertyType;
+      property.price = price;
+      property.priceType = propertyType == "AirBnb" ? "Per Day" : "Per Month";
+
+      property.availableDate = availableDate;
+      property.amenities = {
         furnished,
         parkingSpace,
         electricityAvailable,
@@ -106,100 +144,88 @@ router.put("/rentallistings", requireAuth, async (req, res) => {
         cooling,
         bedrooms,
         bathrooms,
-      },
-      address: { city, state, pincode, address1, houseNo },
-      contact: { name, email, phone },
-    } = req.body;
+      };
+      property.address = { city, state, pincode, address1, houseNo };
+      property.contact = { name, email, phone };
 
-    const property = await RentalListing.findById(_id);
-    if (!property || property.owner != req.user.profileId) {
-      return res.status(400).send("Invalid property");
+      await property.save();
+      res.json(property);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ success: false, error: err.message });
     }
+  })
+);
 
-    property.title = title;
-    property.description = description;
-    property.propertyType = propertyType;
-    property.price = price;
-    property.priceType = propertyType == "AirBnb" ? "Per Day" : "Per Month";
+router.delete(
+  "/rentallistings/images/:id/:imageId",
+  asyncHandler(async (req, res) => {
+    try {
+      const { id, imageId } = req.params;
+      const property = await RentalListing.findById(id);
 
-    property.availableDate = availableDate;
-    property.amenities = {
-      furnished,
-      parkingSpace,
-      electricityAvailable,
-      waterAvailable,
-      heating,
-      cooling,
-      bedrooms,
-      bathrooms,
-    };
-    property.address = { city, state, pincode, address1, houseNo };
-    property.contact = { name, email, phone };
-
-    await property.save();
-    res.json(property);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-router.delete("/rentallistings/images/:id/:imageId", async (req, res) => {
-  try {
-    const { id, imageId } = req.params;
-    const property = await RentalListing.findById(id);
-
-    if (!property) {
-      return res.status(404).json({ error: "Property not found" });
-    }
-
-    const imageToDelete = property.imageUrls.find((x) => x._id == imageId);
-
-    await deleteFileAsync("./public/uploads/" + imageToDelete.imagePath);
-
-    property.imageUrls = property.imageUrls.filter((x) => x._id != imageId);
-    await property.save();
-
-    res.json(property);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
-router.post("/rentallistings/images", requireAuth, async (req, res) => {
-  if (req.user.role != "Landlord")
-    return res
-      .status(401)
-      .send("You don't have permission to access this feature");
-
-  uploadOne(req, res, async (er) => {
-    if (!er) {
-      const filename = folderName + "/" + req.file.filename;
-
-      try {
-        const { id } = req.body;
-
-        const rentalListing = await RentalListing.findById(id);
-        if (!rentalListing || rentalListing.owner != req.user.profileId) {
-          return res.status(400).send("Invalid property");
-        }
-        rentalListing.imageUrls.push({ imagePath: filename });
-
-        await rentalListing.save();
-        res.json(rentalListing);
-      } catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, error: err.message });
+      if (!property) {
+        return res.status(404).json({ error: "Property not found" });
       }
-    }
-  });
-});
 
-router.get("/rentallistings", requireAuth, async (req, res) => {
-  const rentalListing = await RentalListing.find({ owner: req.user.profileId });
-  res.json(rentalListing);
-});
+      const imageToDelete = property.imageUrls.find((x) => x._id == imageId);
+
+      await deleteFileAsync("./public/uploads/" + imageToDelete.imagePath);
+
+      property.imageUrls = property.imageUrls.filter((x) => x._id != imageId);
+      await property.save();
+
+      res.json(property);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Server error" });
+    }
+  })
+);
+
+router.post(
+  "/rentallistings/images",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    if (req.user.role != "Landlord")
+      return res
+        .status(401)
+        .send("You don't have permission to access this feature");
+
+    uploadOne(req, res, async (er) => {
+      if (!er) {
+        const filename = folderName + "/" + req.file.filename;
+
+        try {
+          const { id } = req.body;
+
+          const rentalListing = await RentalListing.findById(id);
+          if (!rentalListing || rentalListing.owner != req.user.profileId) {
+            return res.status(400).send("Invalid property");
+          }
+          rentalListing.imageUrls.push({ imagePath: filename });
+
+          await rentalListing.save();
+          res.json(rentalListing);
+        } catch (err) {
+          console.error(err);
+          res.status(500).json({ success: false, error: err.message });
+        }
+      }
+    });
+  })
+);
+
+router.get(
+  "/rentallistings",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const rentalListing = await RentalListing.find({
+      owner: req.user.profileId,
+    });
+    res.json(rentalListing);
+  })
+);
 
 router.get("/rentallistings/:id", async (req, res) => {
   const rentalListing = await RentalListing.findById(req.params.id);
@@ -321,12 +347,16 @@ router.get("/propertiesbycities", async (_, res) => {
   res.send(data);
 });
 
-router.put("/blockUnblockProperty", adminRequireAuth, async (req, res) => {
-  const { id, blocked } = req.body;
-  const property = await RentalListing.findById(id);
-  property.blocked = blocked;
-  await property.save();
-  res.send(property);
-});
+router.put(
+  "/blockUnblockProperty",
+  adminRequireAuth,
+  asyncHandler(async (req, res) => {
+    const { id, blocked } = req.body;
+    const property = await RentalListing.findById(id);
+    property.blocked = blocked;
+    await property.save();
+    res.send(property);
+  })
+);
 
 module.exports = router;
